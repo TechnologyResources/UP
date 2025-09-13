@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upsourcebysolutions</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://f.top4top.io/p_3543u83kc1.png" type="image/png">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -375,7 +379,6 @@
     });
 
     function applyDiscount(index, basePrice, discountPercent, clickedElement) {
-      // Remove active class from all circles in this plan
       const container = document.getElementById(`discounts-${index}`);
       const circles = container.querySelectorAll('.discount-circle');
       circles.forEach(c => {
@@ -383,62 +386,16 @@
         c.style.transform = 'scale(1)';
       });
       
-      // Add active class to clicked circle
       clickedElement.classList.add('bg-purple-500', 'text-white', 'border-purple-600', 'shadow-md');
       clickedElement.style.transform = 'scale(1.1)';
       
-      // Calculate new price (prices already include VAT)
       const discountedPrice = basePrice - (basePrice * discountPercent / 100);
-      
-      // Update the price display with animation
       const finalPriceElement = document.getElementById(`final-price-${index}`);
       const formattedPrice = discountedPrice.toFixed(2);
       finalPriceElement.textContent = `${formattedPrice} ريال`;
-
-      // Also update the main price display (the big one)
       const mainPriceElement = finalPriceElement.closest('.plan-card').querySelector('.text-5xl');
-      if (mainPriceElement) {
-        mainPriceElement.textContent = formattedPrice;
-      }
+      if (mainPriceElement) mainPriceElement.textContent = formattedPrice;
 
-      // Animate the discount circle
-      anime({
-        targets: clickedElement,
-        scale: [1, 1.2, 1.1],
-        duration: 500,
-        easing: 'easeOutElastic'
-      });
-
-      // Show discount percentage in a floating bubble
-      const discountBubble = document.createElement('div');
-      discountBubble.className = 'absolute -top-8 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white text-sm font-bold px-2 py-1 rounded-full shadow-lg';
-      discountBubble.textContent = `${discountPercent}%`;
-      clickedElement.appendChild(discountBubble);
-
-      // Animate the bubble
-      anime({
-        targets: discountBubble,
-        translateY: [-20, 0],
-        opacity: [0, 1],
-        duration: 300,
-        easing: 'easeOutQuad',
-        complete: function() {
-          setTimeout(() => {
-            anime({
-              targets: discountBubble,
-              translateY: [0, -20],
-              opacity: [1, 0],
-              duration: 200,
-              easing: 'easeInQuad',
-              complete: function() {
-                discountBubble.remove();
-              }
-            });
-          }, 1000);
-        }
-      });
-
-      // Update the comparison table prices if this plan is selected
       if (selectedPlan1 === index || selectedPlan2 === index) {
         if (selectedPlan1 !== null && selectedPlan2 !== null) {
           showComparison(selectedPlan1, selectedPlan2);
@@ -446,16 +403,8 @@
       }
     }
 
-    // Populate plan selectors after plans are loaded
     populatePlanSelectors();
-    
-    // Initialize animations and icons
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
-    });
-    
+    AOS.init({duration: 800, easing: 'ease-in-out', once: true});
     feather.replace();
   </script>
 </body>
