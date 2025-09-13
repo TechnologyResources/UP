@@ -1,0 +1,465 @@
+<!DOCTYPE html>34
+</body>
+</html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+    
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #f9f5ff;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #9b4dad 0%, #6a1b9a 100%);
+    }
+    
+    .plan-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 25px 50px -12px rgba(158, 79, 173, 0.25);
+      min-height: 650px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #ffffff 0%, #f8f0ff 100%);
+      border: 1px solid rgba(155, 77, 173, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(155, 77, 173, 0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+      z-index: 0;
+    }
+    
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .discount-circle {
+      transition: all 0.2s ease;
+    }
+    
+    .discount-circle:hover {
+      transform: scale(1.1);
+    }
+    
+    .feature-icon {
+      color: #9b4dad;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="gradient-bg text-white py-8 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center items-center">
+        <img src="https://static.photos/white/200x200/1" alt="STC Logo" class="h-16 w-16 rounded-full mr-4">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-wider">STC</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Plans Section -->
+  <section class="py-12 px-4">
+    <div class="container mx-auto">
+      <div class="flex justify-center mb-8">
+        <button id="show-plans" class="px-6 py-3 bg-purple-600 text-white rounded-lg font-bold mx-2 shadow-lg hover:bg-purple-700 transition">عرض الباقات</button>
+        <button id="show-comparison" class="px-6 py-3 bg-white text-purple-600 border border-purple-600 rounded-lg font-bold mx-2 shadow-lg hover:bg-purple-50 transition">مقارنة الباقات</button>
+      </div>
+
+      <div id="plans-section">
+        <h2 class="text-3xl font-bold text-center mb-12 text-purple-900">باقات مفوتر المميزة</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="plans-container">
+          <!-- Plans will be inserted here by JavaScript -->
+        </div>
+      </div>
+
+      <div id="comparison-section" class="hidden">
+        <h2 class="text-3xl font-bold text-center mb-12 text-purple-900">مقارنة الباقات</h2>
+        <div class="flex justify-center gap-4 mb-8">
+          <select id="plan1-select" class="px-4 py-2 border border-purple-300 rounded-lg bg-white text-purple-800">
+            <option value="">اختر الباقة الأولى</option>
+          </select>
+          <select id="plan2-select" class="px-4 py-2 border border-purple-300 rounded-lg bg-white text-purple-800">
+            <option value="">اختر الباقة الثانية</option>
+          </select>
+        </div>
+        <div id="comparison-result" class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <!-- Comparison table will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-purple-900">مميزات إضافية</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-purple-50 p-6 rounded-xl text-center" data-aos="fade-up">
+          <div class="flex justify-center mb-4">
+            <i data-feather="wifi" class="feature-icon h-10 w-10"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-purple-800">إنترنت سريع</h3>
+          <p class="text-gray-700">استمتع بسرعات إنترنت فائقة لتصفح بدون حدود</p>
+        </div>
+        
+        <div class="bg-purple-50 p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex justify-center mb-4">
+            <i data-feather="phone" class="feature-icon h-10 w-10"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-purple-800">مكالمات لا محدودة</h3>
+          <p class="text-gray-700">تواصل مع أحبائك بدون قيود على المكالمات</p>
+        </div>
+        
+        <div class="bg-purple-50 p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex justify-center mb-4">
+            <i data-feather="globe" class="feature-icon h-10 w-10"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-purple-800">تجوال مميز</h3>
+          <p class="text-gray-700">استمبع بخدمات التجوال المميزة أثناء السفر</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="gradient-bg text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm text-purple-100"> جميع الحقوق محفوظة Khaled.55783</p>
+    </div>
+  </footer>
+
+  <script>
+    // بيانات الباقات
+    let selectedPlan1 = null;
+    let selectedPlan2 = null;
+
+    // Toggle between plans and comparison
+    document.getElementById('show-plans').addEventListener('click', function() {
+      document.getElementById('plans-section').classList.remove('hidden');
+      document.getElementById('comparison-section').classList.add('hidden');
+    });
+
+    document.getElementById('show-comparison').addEventListener('click', function() {
+      document.getElementById('plans-section').classList.add('hidden');
+      document.getElementById('comparison-section').classList.remove('hidden');
+    });
+
+    // Populate plan selectors
+    function populatePlanSelectors() {
+      const plan1Select = document.getElementById('plan1-select');
+      const plan2Select = document.getElementById('plan2-select');
+      
+      plansData.forEach((plan, index) => {
+        const option1 = document.createElement('option');
+        option1.value = index;
+        option1.textContent = plan.name;
+        
+        const option2 = document.createElement('option');
+        option2.value = index;
+        option2.textContent = plan.name;
+        
+        plan1Select.appendChild(option1);
+        plan2Select.appendChild(option2);
+      });
+      
+      plan1Select.addEventListener('change', function() {
+        selectedPlan1 = parseInt(this.value);
+        if (selectedPlan1 !== null && selectedPlan2 !== null) {
+          showComparison(selectedPlan1, selectedPlan2);
+        }
+      });
+      
+      plan2Select.addEventListener('change', function() {
+        selectedPlan2 = parseInt(this.value);
+        if (selectedPlan1 !== null && selectedPlan2 !== null) {
+          showComparison(selectedPlan1, selectedPlan2);
+        }
+      });
+    }
+
+    // Show comparison table
+    function showComparison(plan1Index, plan2Index) {
+      const plan1 = plansData[plan1Index];
+      const plan2 = plansData[plan2Index];
+      const comparisonResult = document.getElementById('comparison-result');
+      
+      // Get all unique features from both plans
+      const allFeatures = [...new Set([...plan1.details, ...plan2.details])];
+      
+      let comparisonHTML = `
+        <table class="w-full">
+          <thead>
+            <tr class="bg-purple-600 text-white">
+              <th class="p-4 text-right w-1/3">الميزة</th>
+              <th class="p-4 text-center w-1/3">
+                ${plan1.name}
+                <div class="text-sm font-normal mt-1">${plan1.price} ريال</div>
+              </th>
+              <th class="p-4 text-center w-1/3">
+                ${plan2.name}
+                <div class="text-sm font-normal mt-1">${plan2.price} ريال</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      allFeatures.forEach(feature => {
+        const hasPlan1 = plan1.details.includes(feature);
+        const hasPlan2 = plan2.details.includes(feature);
+        
+        comparisonHTML += `
+          <tr class="border-b border-gray-200 hover:bg-purple-50">
+            <td class="p-4 text-right font-medium">${feature}</td>
+            <td class="p-4 text-center">${hasPlan1 ? '<i data-feather="check" class="text-green-500 h-6 w-6"></i>' : '<i data-feather="x" class="text-red-500 h-6 w-6"></i>'}</td>
+            <td class="p-4 text-center">${hasPlan2 ? '<i data-feather="check" class="text-green-500 h-6 w-6"></i>' : '<i data-feather="x" class="text-red-500 h-6 w-6"></i>'}</td>
+          </tr>
+        `;
+      });
+      
+      comparisonHTML += `
+          </tbody>
+        </table>
+      `;
+      
+      comparisonResult.innerHTML = comparisonHTML;
+      feather.replace();
+    }
+
+    const plansData = [
+      {
+        name: "مفوتر بيسك+",
+        price: 90,
+        details: [
+          "أنترنت 10 قيقا",
+          "تواصل اجتماعي 10 قيقا بايت",
+          "مكالمات داخل الشبكة 300 دقيقة"
+        ],
+      },
+      {
+        name: "مفوتر 2",
+        price: 138,
+        details: [
+          "إنترنت 15 جيجا",
+          "تواصل اجتماعي 15 جيجا",
+          "خدمة لا يوقف 8 جيجا بسرعة 256 كيلوبايت",
+          "مكالمات داخل الشبكة لا محدود",
+          "مكالمات خارج الشبكة 200 دقيقة",
+          "رسائل داخل الشبكة لا محدود",
+          "رسائل خارج الشبكة 200 رسالة"
+        ]
+      },
+      {
+        name: "مفوتر 2 بلس",
+        price: 172.5,
+        details: [
+          "إنترنت 40 جيجا",
+          "تواصل اجتماعي 40 جيجا",
+          "مكالمات داخل الشبكة لا محدود",
+          "مكالمات خارج الشبكة 400 دقيقة",
+          "رسائل داخل الشبكة 150 رسالة",
+          "رسائل خارج الشبكة 150 رسالة"
+        ],
+      },
+      {
+        name: "مفوتر 3 بلس",
+        price: 264.5,
+        details: [
+          "إنترنت 110 جيجا",
+          "تواصل اجتماعي لا محدود",
+          "واي فاي 110 جيجا",
+          "مكالمات داخل الشبكة لا محدود",
+          "مكالمات خارج الشبكة لا محدود"
+        ]
+      },
+      {
+        name: "مفوتر 4",
+        price: 517.5,
+        details: [
+          "إنترنت لا محدود",
+          "تجوال 5 جيجا",
+          "واي فاي لا محدود",
+          "استخدام عادل للشرائح المتعددة",
+          "دقائق تجوال 100 دقيقة",
+          "stc tv مجانا",
+          "مكالمات داخل/خارج الشبكة لا محدود",
+          "رسائل داخل الشبكة لا محدود"
+        ],
+      },
+      {
+        name: "مفوتر ماكس",
+        price: 920,
+        details: [
+          "إنترنت لا محدود بدون سياسة استخدام عادل", 
+          "تجوال لا محدود (5 جيجا يوميًا)",
+          "مكالمات ورسائل لجميع الشبكات لا محدود",
+          "مكالمات دولية 200 دقيقة",
+          "تقسيط أجهزة حتى 8280 ريال",
+          "استقبال مكالمات تجوال لا محدود"
+        ]
+      }
+    ];
+
+    const discounts = [0, 10, 20, 30, 40, 50];
+    const plansContainer = document.getElementById("plans-container");
+
+    // Initialize the page
+    plansData.forEach((plan, index) => {
+      const planDiv = document.createElement("div");
+      planDiv.className = "plan-card bg-white rounded-xl overflow-hidden";
+      planDiv.innerHTML = `
+        <div class="p-6">
+          <h3 class="text-2xl font-bold text-center mb-4 text-purple-800 px-4">${plan.name}</h3>
+          
+          <div class="text-center mb-8 px-8 relative z-10">
+            <div class="inline-block bg-gradient-to-r from-purple-500 to-pink-400 text-transparent bg-clip-text">
+              <span class="text-5xl font-extrabold">${plan.price}</span>
+              <span class="text-xl">ريال/شهر</span>
+            </div>
+            <div class="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-70"></div>
+          </div>
+          
+          <div class="mb-8 px-8">
+            ${plan.details.map(detail => `
+              <div class="flex items-start mb-4 relative z-10">
+                <div class="mr-3 mt-1 flex-shrink-0">
+                  <div class="h-6 w-6 rounded-full bg-purple-100 flex items-center justify-center">
+                    <i data-feather="check" class="text-purple-600 h-4 w-4"></i>
+                  </div>
+                </div>
+                <span class="text-gray-800 text-lg leading-relaxed font-medium">${detail}</span>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="mb-6">
+            <p class="text-center text-gray-600 mb-2">اختر نسبة الخصم:</p>
+            <div class="flex justify-center flex-wrap gap-4" id="discounts-${index}">
+              ${discounts.map(d => `
+                <div class="relative">
+                  <div class="discount-circle w-16 h-16 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:bg-purple-50 text-xl font-medium transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+                       onclick="applyDiscount(${index}, ${plan.price}, ${d}, this)"
+                       style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,240,255,0.9) 100%)">
+                    ${d}%
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          
+          <div class="text-center py-4 bg-purple-50 rounded-lg mb-6 mx-8">
+            <p class="text-gray-600 text-lg">السعر بعد الخصم:</p>
+            <p class="text-2xl font-bold text-purple-800" id="final-price-${index}">${plan.price} ريال</p>
+          </div>
+          
+        </div>
+      `;
+      plansContainer.appendChild(planDiv);
+    });
+
+    function applyDiscount(index, basePrice, discountPercent, clickedElement) {
+      // Remove active class from all circles in this plan
+      const container = document.getElementById(`discounts-${index}`);
+      const circles = container.querySelectorAll('.discount-circle');
+      circles.forEach(c => {
+        c.classList.remove('bg-purple-500', 'text-white', 'border-purple-600', 'shadow-md');
+        c.style.transform = 'scale(1)';
+      });
+      
+      // Add active class to clicked circle
+      clickedElement.classList.add('bg-purple-500', 'text-white', 'border-purple-600', 'shadow-md');
+      clickedElement.style.transform = 'scale(1.1)';
+      
+      // Calculate new price (prices already include VAT)
+      const discountedPrice = basePrice - (basePrice * discountPercent / 100);
+      
+      // Update the price display with animation
+      const finalPriceElement = document.getElementById(`final-price-${index}`);
+      const formattedPrice = discountedPrice.toFixed(2);
+      finalPriceElement.textContent = `${formattedPrice} ريال`;
+
+      // Also update the main price display (the big one)
+      const mainPriceElement = finalPriceElement.closest('.plan-card').querySelector('.text-5xl');
+      if (mainPriceElement) {
+        mainPriceElement.textContent = formattedPrice;
+      }
+
+      // Animate the discount circle
+      anime({
+        targets: clickedElement,
+        scale: [1, 1.2, 1.1],
+        duration: 500,
+        easing: 'easeOutElastic'
+      });
+
+      // Show discount percentage in a floating bubble
+      const discountBubble = document.createElement('div');
+      discountBubble.className = 'absolute -top-8 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white text-sm font-bold px-2 py-1 rounded-full shadow-lg';
+      discountBubble.textContent = `${discountPercent}%`;
+      clickedElement.appendChild(discountBubble);
+
+      // Animate the bubble
+      anime({
+        targets: discountBubble,
+        translateY: [-20, 0],
+        opacity: [0, 1],
+        duration: 300,
+        easing: 'easeOutQuad',
+        complete: function() {
+          setTimeout(() => {
+            anime({
+              targets: discountBubble,
+              translateY: [0, -20],
+              opacity: [1, 0],
+              duration: 200,
+              easing: 'easeInQuad',
+              complete: function() {
+                discountBubble.remove();
+              }
+            });
+          }, 1000);
+        }
+      });
+
+      // Update the comparison table prices if this plan is selected
+      if (selectedPlan1 === index || selectedPlan2 === index) {
+        if (selectedPlan1 !== null && selectedPlan2 !== null) {
+          showComparison(selectedPlan1, selectedPlan2);
+        }
+      }
+    }
+
+    // Populate plan selectors after plans are loaded
+    populatePlanSelectors();
+    
+    // Initialize animations and icons
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+    
+    feather.replace();
+  </script>
+</body>
+</html>
