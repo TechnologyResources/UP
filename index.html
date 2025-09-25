@@ -13,18 +13,39 @@
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 <script src="https://unpkg.com/feather-icons"></script>
 <style>
-
-  
- /* الوضع الليلي: الأرقام داخل الدوائر باللون الأبيض */
-.dark .discount-circle {
-  color: white !important;
-  border-color: #d6bcfa !important;
-}
+  /* تحسين مظهر المقارنة في الوضع الليلي */
+  .dark #comparison-result table {
+    background-color: #1a1a1a; /* خلفية داكنة للجدول */
+    color: #fff; /* لون النص أبيض لسهولة القراءة */
+  }
 
 /* الوضع النهاري: الدائرة المحددة يكون لون النص داخلها أسود */
 .discount-circle.active {
   color: black !important;
 }
+  
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+body {
+  font-family: 'Cairo', sans-serif;
+}
+  .gradient-bg { background: linear-gradient(135deg, #9b4dad 0%, #6a1b9a 100%); }
+  .dark .gradient-bg { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); }
+
+  /* تعديل حجم الخط في المميزات */
+  .text-lg-custom {
+    font-size: 1.490rem; /* حجم أكبر قليلاً من المعتاد */
+    line-height: 2.75rem;
+  }
+  
+  /* زيادة حجم الدوائر */
+  .discount-circle {
+    width: 10rem;  /* زيادة الحجم إلى 4rem */
+    height: 7rem; /* زيادة الحجم إلى 4rem */
+    font-size: 2rem; /* تكبير النص داخل الدائرة */
+    font-bold: 2;
+  }
+
 
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 body {
@@ -105,7 +126,7 @@ body {
 
 <!-- Footer -->
 <footer class="gradient-bg text-white py-8">
-  <div class="container mx-auto px-4 text-center">
+  <div class="container mx-auto px-40 text-center">
     <p class="text-sm text-purple-100">جميع الحقوق محفوظة Khaled.55783</p>
   </div>
 </footer>
@@ -130,7 +151,7 @@ body {
   });
 
   const plansData = [
-    { name: "مفوتر بيسك+", price: 90, details:["أنترنت 10 قيقا","تواصل اجتماعي 10 قيقا بايت","مكالمات داخل الشبكة 300 دقيقة"] },
+    { name: "مفوتر بيسك+", price: 90.5, details:["أنترنت 10 قيقا","تواصل اجتماعي 10 قيقا بايت","مكالمات داخل الشبكة 300 دقيقة"] },
     { name: "مفوتر 2", price: 138, details:["إنترنت 15 قيقا","تواصل اجتماعي 15 قيقا","خدمة لا يوقف 8 قيقا بسرعة 256 كيلوبايت","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة 200 دقيقة","رسائل داخل الشبكة لا محدود","رسائل خارج الشبكة 200 رسالة"] },
     { name: "مفوتر 2 بلس", price: 172.5, details:["إنترنت 40 قيقا","تواصل اجتماعي 40 قيقا","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة 400 دقيقة","رسائل داخل الشبكة 150 رسالة","رسائل خارج الشبكة 150 رسالة"] },
     { name: "مفوتر 3 بلس", price: 264.5, details:["إنترنت 110 قيقا","تواصل اجتماعي لا محدود","واي فاي 110 قيقا","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة لا محدود","رسائل داخل الشبكة لا محدود","رسائل خارج الشبكة 1000 رسالة"] },
@@ -138,31 +159,41 @@ body {
     { name: "مفوتر ماكس", price: 920, details:["إنترنت لا محدود بدون سياسة استخدام عادل","تجوال لا محدود (5 قيقا يوميًا)","مكالمات ورسائل لجميع الشبكات لا محدود","مكالمات دولية 200 دقيقة","تقسيط أجهزة حتى 8280 ريال","استقبال مكالمات تجوال لا محدود"] }
   ];
 
-  const discounts=[0,10,20,30,40,50];
-  const plansContainer=document.getElementById("plans-container");
+  const discounts = [0, 10, 20, 30, 40, 50];
+  const plansContainer = document.getElementById("plans-container");
 
-  plansData.forEach((plan,index)=>{
-    const planDiv=document.createElement("div");
-    planDiv.className="plan-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition transform hover:scale-105";
-    planDiv.innerHTML=`
-      <h3 class="text-2xl font-bold text-purple-800 dark:text-purple-300 mb-4 text-center">${plan.name}</h3>
+  plansData.forEach((plan, index) => {
+    const planDiv = document.createElement("div");
+    planDiv.className = "plan-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition transform hover:scale-105";
+    planDiv.innerHTML = `
+      <h3 class="text-5xl font-bold text-purple-800 dark:text-purple-300 mb-4 text-center">${plan.name}</h3>
       <p class="text-5xl font-extrabold text-purple-700 dark:text-purple-300 text-center mb-6" id="final-price-${index}">${plan.price} ريال</p>
-      <div class="mb-6 space-y-2">
-        ${plan.details.map(d=>`<div class="flex items-center text-gray-800 dark:text-gray-100"><i data-feather="check" class="h-4 w-4 mr-2 text-green-500"></i>${d}</div>`).join("")}
+      <div class="mb-6 space-y-6">
+        ${plan.details.map(d => `<div class="flex items-center text-gray-800 dark:text-gray-100 text-lg-custom"><i data-feather="check" class="h-16 w-10 mr-2 text-green-500"></i>${d}</div>`).join("")}
       </div>
       <div class="flex justify-center gap-2 mb-4" id="discounts-${index}"></div>
     `;
     plansContainer.appendChild(planDiv);
 
-    const discountContainer=document.getElementById(`discounts-${index}`);
-    discounts.forEach(d=>{
-      const span=document.createElement("div");
-      span.className="discount-circle w-12 h-12 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-110 text-purple-700 dark:text-black transition";
-      span.textContent=`${d}%`;
-      span.onclick=()=>applyDiscount(index,plan.price,d,span);
+    const discountContainer = document.getElementById(`discounts-${index}`);
+    discounts.forEach(d => {
+      const span = document.createElement("div");
+      span.className = "discount-circle w-12 h-12 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-1 text-purple-700 dark:text-white transition";
+      span.textContent = `${d}%`;
+      span.onclick = () => applyDiscount(index, plan.price, d, span);
       discountContainer.appendChild(span);
     });
   });
+
+  function applyDiscount(index, basePrice, discountPercent, element) {
+    const discountedPrice = (basePrice - (basePrice * discountPercent / 100)).toFixed(2);
+    document.getElementById(`final-price-${index}`).textContent = `${discountedPrice} ريال`;
+    const container = document.getElementById(`discounts-${index}`);
+    container.querySelectorAll('.discount-circle').forEach(c => {
+      c.classList.remove('bg-purple-500', 'text-white', 'border-purple-600', 'shadow-md', 'scale-110', 'active');
+    });
+    element.classList.add('bg-purple-500', 'border-purple-600', 'shadow-md', 'scale-110', 'active');
+  }
 
   function applyDiscount(index,basePrice,discountPercent,element){
     const discountedPrice=(basePrice-(basePrice*discountPercent/100)).toFixed(2);
