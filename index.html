@@ -42,7 +42,7 @@ body {
   .discount-circle {
     width: 20rem;  /* زيادة الحجم إلى 4rem */
     height: 5rem; /* زيادة الحجم إلى 4rem */
-    font-size: 3rem; /* تكبير النص داخل الدائرة */
+    font-size: 2rem; /* تكبير النص داخل الدائرة */
   }
 
 
@@ -177,7 +177,7 @@ body {
     const discountContainer = document.getElementById(`discounts-${index}`);
     discounts.forEach(d => {
       const span = document.createElement("div");
-      span.className = "discount-circle w-12 h-12 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-1 text-purple-700 dark:text-white transition";
+      span.className = "discount-circle w-19 h-19 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-1 text-purple-700 dark:text-white transition";
       span.textContent = `${d}%`;
       span.onclick = () => applyDiscount(index, plan.price, d, span);
       discountContainer.appendChild(span);
