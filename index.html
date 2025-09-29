@@ -1,270 +1,88 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="">
+<html lang="ar" dir="rtl">
+  <link rel="icon" href="images/favicon.png"
+  type="image/png">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Up</title>
-<link rel="icon" href="images/favicon.png" type="image/png">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = { darkMode: 'class' }
-</script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
-<style>
-  /* تحسين مظهر المقارنة في الوضع الليلي */
-  .dark #comparison-result table {
-    background-color: #1a1a1a; /* خلفية داكنة للجدول */
-    color: #fff; /* لون النص أبيض لسهولة القراءة */
-  }
-
-/* الوضع النهاري: الدائرة المحددة يكون لون النص داخلها أسود */
-.discount-circle.active {
-  color: black !important;
-}
-  
-
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-body {
-  font-family: 'Cairo', sans-serif;
-}
-  .gradient-bg { background: linear-gradient(135deg, #9b4dad 0%, #6a1b9a 100%); }
-  .dark .gradient-bg { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); }
-
-  /* تعديل حجم الخط في المميزات */
-  .text-lg-custom {
-    font-size: 1.490rem; /* حجم أكبر قليلاً من المعتاد */
-    line-height: 2.75rem;
-  }
-  
-  /* زيادة حجم الدوائر */
-  .discount-circle {
-    width: 20rem;  /* زيادة الحجم إلى 4rem */
-    height: 5rem; /* زيادة الحجم إلى 4rem */
-    font-size: 2rem; /* تكبير النص داخل الدائرة */
-  }
-  discount-circle {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: lightblue;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end; /* محاذاة المحتوى للأسفل */
-  padding: 10px;
-}
-
-.content {
-  background-color: yellow;
-  padding: 20px;
-  text-align: center;
-}
-
-
-  
-
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-body {
-  font-family: 'Cairo', sans-serif;
-}
-  .gradient-bg { background: linear-gradient(135deg, #9b4dad 0%, #6a1b9a 100%); }
-  .dark .gradient-bg { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); }
-</style>
-</head>
-<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-1000 transition-colors duration-500">
-
-<!-- زر الوضع الليلي -->
-<div class="fixed top-4 left-4 z-50">
-  <button id="dark-toggle" class="px-4 py-2 rounded-lg shadow-md bg-purple-600 text-white hover:bg-purple-700 transition">🌙 وضع ليلي</button>
-</div>
-
-
-<!-- Header -->
-<header class="gradient-bg text-white py-8 shadow-lg">
-  <div class="container mx-auto px-4">
-    <div class="flex justify-center items-center">
-      <img src="https://f.top4top.io/p_3543u83kc1.png" alt="Logo" class="h-24 w-auto mr-4">
-    </div>
-  </div>
-</header>
-
-<!-- Toggle Plans / Comparison -->
-<section class="py-12 px-4">
-  <div class="container mx-auto">
-    <div class="flex justify-center mb-8">
-      <button id="show-plans" class="px-9 py-3 bg-purple-600 text-white rounded-lg font-bold mx-2 shadow-lg hover:bg-purple-700 transition">عرض الباقات</button>
-      <button id="show-comparison" class="px-9 py-3 bg-white text-purple-600 border border-purple-600 rounded-lg font-extrabold mx-20 shadow-lg hover:bg-purple-50 transition">مقارنة الباقات</button>
-    </div>
-
-    <div id="plans-section">
-      <h2 class="text-5xl font-bold text-center mb-12 text-purple-900 dark:text-purple-300">باقات مفوتر المميزة</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="plans-container"></div>
-    </div>
-
-    <div id="comparison-section" class="hidden">
-      <h2 class="text-3xl font-extrabold text-center mb-12  text-purple-900 dark:text-purple-300">مقارنة الباقات</h2>
-      <div class="flex justify-center gap-4 mb-8">
-        <select id="plan1-select" class="px-14 py-20 border border-purple-300 rounded-lg bg-white text-2xl dark:bg-gray-800 dark:text-gray-100 text-purple-800">
-          <option value="">اختر الباقة الأولى</option>
-        </select>
-        <select id="plan2-select" class="px-14 py-20 border border-purple-300 rounded-lg bg-white text-2xl dark:bg-gray-800 dark:text-gray-100 text-purple-800">
-          <option value="">اختر الباقة الثانية</option> 
-        </select> 
-      </div>
-      <div id="comparison-result" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"></div>
-    </div>
-  </div>
-</section>
-
-<!-- Features -->
-<section class="py-12 bg-white dark:bg-gray-900">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold text-center mb-12 text-purple-900 dark:text-purple-300">مميزات إضافية</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="bg-purple-50 dark:bg-gray-800 p-6 rounded-xl text-center" data-aos="fade-up">
-        <div class="flex justify-center mb-4"><i data-feather="wifi" class="feature-icon h-10 w-10 text-purple-600"></i></div>
-        <h3 class="text-xl font-semibold mb-2 text-purple-800 dark:text-purple-300">إنترنت سريع</h3>
-        <p class="text-gray-700 dark:text-gray-300">استمتع بسرعات إنترنت فائقة لتصفح بدون حدود</p>
-      </div>
-      <div class="bg-purple-50 dark:bg-gray-800 p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="100">
-        <div class="flex justify-center mb-4"><i data-feather="phone" class="feature-icon h-10 w-10 text-purple-600"></i></div>
-        <h3 class="text-xl font-semibold mb-2 text-purple-800 dark:text-purple-300">مكالمات لا محدودة</h3>
-        <p class="text-gray-700 dark:text-gray-300">تواصل مع أحبائك بدون قيود على المكالمات</p>
-      </div>
-      <div class="bg-purple-50 dark:bg-gray-800 p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="200">
-        <div class="flex justify-center mb-4"><i data-feather="globe" class="feature-icon h-10 w-10 text-purple-600"></i></div>
-        <h3 class="text-xl font-semibold mb-2 text-purple-800 dark:text-purple-300">تجوال مميز</h3>
-        <p class="text-gray-700 dark:text-gray-300">استمتع بخدمات التجوال المميزة أثناء السفر</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="gradient-bg text-white py-8">
-  <div class="container mx-auto px-40 text-center">
-    <p class="text-sm text-purple-100">جميع الحقوق محفوظة Khaled.55783</p>
-  </div>
-</footer>
-
-<script>
-  // Dark mode toggle
-  if(localStorage.theme === 'dark'){
-    document.documentElement.classList.add('dark');
-    document.getElementById('dark-toggle').textContent = "☀️ وضع نهاري";
-  }
-
-  document.getElementById('dark-toggle').addEventListener('click', ()=>{
-    if(document.documentElement.classList.contains('dark')){
-      document.documentElement.classList.remove('dark');
-      localStorage.theme='light';
-      document.getElementById('dark-toggle').textContent="🌙 وضع ليلي";
-    }else{
-      document.documentElement.classList.add('dark');
-      localStorage.theme='dark';
-      document.getElementById('dark-toggle').textContent="☀️ وضع نهاري";
+  <meta charset="UTF-8">
+  <title>Up</title>
+  <style>
+    *, *::before, *::after {
+      margin:0; padding:0; box-sizing: border-box;
     }
-  });
+    body {
+      height: 100vh;
+      font-family: 'Tajawal', sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(
+                  rgba(0, 0, 0, 0.5),
+                  rgba(0, 0, 0, 0.5)
+                ),
+                url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+    }
 
-  const plansData = [
-    { name: "مفوتر بيسك+", price: 90.5, details:["أنترنت 10 قيقا","تواصل اجتماعي 10 قيقا بايت","مكالمات داخل الشبكة 300 دقيقة"] },
-    { name: "مفوتر 2", price: 138, details:["إنترنت 15 قيقا","تواصل اجتماعي 15 قيقا","خدمة لا يوقف 8 قيقا بسرعة 256 كيلوبايت","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة 200 دقيقة","رسائل داخل الشبكة لا محدود","رسائل خارج الشبكة 200 رسالة"] },
-    { name: "مفوتر 2 بلس", price: 172.5, details:["إنترنت 40 قيقا","تواصل اجتماعي 40 قيقا","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة 400 دقيقة","رسائل داخل الشبكة 150 رسالة","رسائل خارج الشبكة 150 رسالة"] },
-    { name: "مفوتر 3 بلس", price: 264.5, details:["إنترنت 110 قيقا","تواصل اجتماعي لا محدود","واي فاي 110 قيقا","مكالمات داخل الشبكة لا محدود","مكالمات خارج الشبكة لا محدود","رسائل داخل الشبكة لا محدود","رسائل خارج الشبكة 1000 رسالة"] },
-    { name: "مفوتر 4", price: 517.5, details:["إنترنت لا محدود","تجوال 5 قيقا","واي فاي لا محدود","استخدام عادل للشرائح المتعددة","دقائق تجوال 100 دقيقة","STC TV مجانا","مكالمات لكل الشبكات لا محدود","رسائل لكل الشبكات لا محدود"] },
-    { name: "مفوتر ماكس", price: 920, details:["إنترنت لا محدود بدون سياسة استخدام عادل","تجوال لا محدود (5 قيقا يوميًا)","مكالمات ورسائل لجميع الشبكات لا محدود","مكالمات دولية 200 دقيقة","تقسيط أجهزة حتى 8280 ريال","استقبال مكالمات تجوال لا محدود"] }
-  ];
+    .container {
+      max-width: 90%;
+      width: 600px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    }
 
-  const discounts = [0, 10, 20, 30, 40, 50];
-  const plansContainer = document.getElementById("plans-container");
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
 
-  plansData.forEach((plan, index) => {
-    const planDiv = document.createElement("div");
-    planDiv.className = "plan-card bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition transform hover:scale-105";
-    planDiv.innerHTML = `
-      <h3 class="text-5xl font-bold text-purple-800 dark:text-purple-300 mb-4 text-center">${plan.name}</h3>
-      <p class="text-5xl font-extrabold text-purple-700 dark:text-purple-300 text-center mb-6" id="final-price-${index}">${plan.price} ريال</p>
-      <div class="mb-6 space-y-6">
-        ${plan.details.map(d => `<div class="flex items-center text-gray-800 dark:text-gray-100 text-lg-custom"><i data-feather="check" class="h-16 w-10 mr-2 text-green-500"></i>${d}</div>`).join("")}
-      </div>
-      <div class="flex justify-center gap-2 mb-4" id="discounts-${index}"></div>
-    `;
-    plansContainer.appendChild(planDiv);
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
 
-    const discountContainer = document.getElementById(`discounts-${index}`);
-    discounts.forEach(d => {
-      const span = document.createElement("div");
-      span.className = "discount-circle w-19 h-19 rounded-full border-2 border-purple-400 flex items-center justify-center cursor-pointer hover:scale-1 text-purple-700 dark:text-white transition";
-      span.textContent = `${d}%`;
-      span.onclick = () => applyDiscount(index, plan.price, d, span);
-      discountContainer.appendChild(span);
-    });
-  });
+    .countdown {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚧 الموقع تحت التطوير 🚧</h1>
+    <p>نعتذر على الانقطاع المؤقت، نعمل على تحسينات مميزة ليظهر الموقع قريباً.</p>
+    <div class="countdown" id="timer">00:00:00</div>
+  </div>
 
-  function applyDiscount(index, basePrice, discountPercent, element) {
-    const discountedPrice = (basePrice - (basePrice * discountPercent / 100)).toFixed(2);
-    document.getElementById(`final-price-${index}`).textContent = `${discountedPrice} ريال`;
-    const container = document.getElementById(`discounts-${index}`);
-    container.querySelectorAll('.discount-circle').forEach(c => {
-      c.classList.remove('bg-purple-500', 'text-white', 'border-purple-600', 'shadow-md', 'scale-110', 'active');
-    });
-    element.classList.add('bg-purple-500', 'border-purple-600', 'shadow-md', 'scale-110', 'active');
-  }
+  <script>
+    // ⚠️ حدد التاريخ اللي ينتهي فيه التطوير (مثلاً: 1 أكتوبر 2025 - الساعة 12:00 ظهراً)
+    const targetDate = new Date("2025-10-01T12:00:00").getTime();
 
-  function applyDiscount(index,basePrice,discountPercent,element){
-    const discountedPrice=(basePrice-(basePrice*discountPercent/100)).toFixed(2);
-    document.getElementById(`final-price-${index}`).textContent=`${discountedPrice} ريال`;
-    const container=document.getElementById(`discounts-${index}`);
-container.querySelectorAll('.discount-circle').forEach(c=>{
-  c.classList.remove('bg-purple-500','text-white','border-purple-600','shadow-md','scale-110','active');
-});
-element.classList.add('bg-purple-500','border-purple-600','shadow-md','scale-110','active');
+    const timerEl = document.getElementById('timer');
 
-  }
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
 
-  // Populate selects for comparison
-  const plan1Select=document.getElementById('plan1-select');
-  const plan2Select=document.getElementById('plan2-select');
-  plansData.forEach((plan,index)=>{
-    const opt1=document.createElement('option');
-    opt1.value=index; opt1.textContent=plan.name; plan1Select.appendChild(opt1);
-    const opt2=document.createElement('option');
-    opt2.value=index; opt2.textContent=plan.name; plan2Select.appendChild(opt2);
-  });
+      if (distance <= 0) {
+        timerEl.textContent = "انتهى التحديث!";
+        clearInterval(interval);
+        return;
+      }
 
-  let selectedPlan1=null, selectedPlan2=null;
-  plan1Select.addEventListener('change',function(){ selectedPlan1=parseInt(this.value); if(selectedPlan1!==null && selectedPlan2!==null) showComparison(selectedPlan1,selectedPlan2); });
-  plan2Select.addEventListener('change',function(){ selectedPlan2=parseInt(this.value); if(selectedPlan1!==null && selectedPlan2!==null) showComparison(selectedPlan1,selectedPlan2); });
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  function showComparison(plan1Index,plan2Index){
-    const plan1=plansData[plan1Index], plan2=plansData[plan2Index];
-    const comparisonResult=document.getElementById('comparison-result');
-    const allFeatures=[...new Set([...plan1.details,...plan2.details])];
-    let html=`<table class="w-full text-gray-800 dark:text-gray-800 border-collapse">
-      <thead><tr class="bg-purple-600 text-white">
-        <th class="p-4 text-right w-1/3">الميزة</th>
-        <th class="p-4 text-center w-1/3">${plan1.name}<div class="text-sm font-normal mt-1">${plan1.price} ريال</div></th>
-        <th class="p-4 text-center w-1/3">${plan2.name}<div class="text-sm font-normal mt-1">${plan2.price} ريال</div></th>
-      </tr></thead><tbody>`;
-    allFeatures.forEach(f=>{
-      const has1=plan1.details.includes(f), has2=plan2.details.includes(f);
-      html+=`<tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-700">
-        <td class="p-4 text-right font-medium">${f}</td>
-        <td class="p-4 text-center">${has1?'✔️':'❌'}</td>
-        <td class="p-4 text-center">${has2?'✔️':'❌'}</td>
-      </tr>`;
-    });
-    html+='</tbody></table>';
-    comparisonResult.innerHTML=html;
-  }
+      timerEl.textContent = `${days} يوم ${hours.toString().padStart(2,'0')} : ${minutes.toString().padStart(2,'0')} : ${seconds.toString().padStart(2,'0')}`;
+    }
 
-  // Toggle between plans/comparison
-  document.getElementById('show-plans').addEventListener('click',()=>{document.getElementById('plans-section').classList.remove('hidden'); document.getElementById('comparison-section').classList.add('hidden');});
-  document.getElementById('show-comparison').addEventListener('click',()=>{document.getElementById('plans-section').classList.add('hidden'); document.getElementById('comparison-section').classList.remove('hidden');});
-
-  AOS.init({duration:800, easing:'ease-in-out', once:true});
-  feather.replace();
-</script>
+    const interval = setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
 </body>
 </html>
