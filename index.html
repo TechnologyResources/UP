@@ -1,785 +1,990 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Up</title>
-<link rel="icon" href="images/favicon.png" type="image/png">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Up</title>
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+</head>
+<body>
+  <header class="header1">
+    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار الموقع" style="height: 100px;">
+  </header>
+  <div style="text-align:center; margin-top: 40px; font-size: 24px; color: white;">
+  </div>
 
-    <title>الموقع تحت التطوير</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      *, *::before, *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        min-height: 100vh;
-        font-family: "Tajawal", sans-serif;
-        background: linear-gradient(
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0.5)
-          ),
-          url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1950&q=80")
-            no-repeat center center/cover;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-      }
-      .container {
-        background: rgba(0, 0, 0, 0.9);
-        border-radius: 15px;
-        padding: 20px 30px;
-        max-width: 700px;
-        width: 100%;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-      }
-      h1 {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-        text-align: center;
-      }
-      p {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      #timer {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 25px;
-        text-align: center;
-      }
+  <title>باقات المفوتر</title>
+  <style>
+    /* الوضع الليلي الافتراضي */
+body {
+  background: linear-gradient(135deg, #6a1b9a, #8b57c9);
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 50px;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+    
+    /* تغيير اللون عند اختيار زر */
+button.selected {
+  background-color: #4caf50; /* اللون عند الاختيار */
+  color: white;
+  border: none;
+}
 
-      /* Tabs style */
-      .tabs {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-      .tab {
-        padding: 10px 18px;
-        border-radius: 10px;
-        cursor: pointer;
-        background: #222;
-        color: #eee;
-        font-weight: bold;
-        user-select: none;
-        transition: background 0.3s ease;
-      }
-      .tab.active,
-      .tab:hover {
-        background: #ff9800;
-        color: #111;
-      }
+button:hover {
+  opacity: 0.8; /* تأثير عند التمرير */
+}
+select {
+  border-radius: 25px;
+}
 
-      /* Games container */
-      .game {
-        display: none;
-      }
-      .game.active {
-        display: block;
-      }
 
-      /* XO Game */
-      #xoBoard {
-        display: grid;
-        grid-template-columns: repeat(3, 80px);
-        grid-template-rows: repeat(3, 80px);
-        gap: 8px;
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-      .xoCell {
-        background: #333;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2.8rem;
-        cursor: pointer;
-        border-radius: 10px;
-        user-select: none;
-        transition: background 0.3s ease;
-      }
-      .xoCell:hover {
-        background: #ffb74d;
-      }
-      #xoStatus {
-        margin-bottom: 10px;
-        font-weight: bold;
-        font-size: 1.1rem;
-      }
-      #xoResetBtn {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
-        background: #ff9800;
-        color: #111;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      #xoResetBtn:hover {
-        background: #e67e22;
-      }
+body.light-mode {
+  background: linear-gradient(135deg, #3F2552 0%, #6a1b9a 100%);
+  color: #222;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+    .header {
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(1deg, #C3AED4 10%, #5a2483 60%);
+  display: flex;
+  overflow: visible;
+  text-overflow: unset;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 30px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 12px 140px rgba(255, 255, 255, 1);
+  margin-bottom: -190px;
+  transition: background 0.5s ease, color 0.5s ease;
+}
 
-      /* Memory Game */
-      #memoryBoard {
-        display: grid;
-        grid-template-columns: repeat(4, 80px);
-        grid-template-rows: repeat(3, 80px);
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-      .memoryCard {
-        background: #333;
-        border-radius: 12px;
-        font-size: 2.2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        user-select: none;
-        transition: background 0.3s ease;
-      }
-      .memoryCard.flipped {
-        background: #ff9800;
-        color: #111;
-        cursor: default;
-      }
-      #memoryStatus {
-        margin-bottom: 10px;
-        font-weight: bold;
-        font-size: 1.1rem;
-        min-height: 24px;
-      }
-      #memoryResetBtn {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
-        background: #ff9800;
-        color: #111;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      #memoryResetBtn:hover {
-        background: #e67e22;
-      }
+/* دعم الوضع النهاري لغلاف */
+body.light-mode .header {
+ background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
+  color: #222;
+  box-shadow: 10 40px 150px rgba(180, 150, 220, 0.5);
+}
 
-      /* Catch Game */
-      #catchGame {
-        position: relative;
-        width: 350px;
-        height: 250px;
-        background: #222;
-        border-radius: 15px;
-        margin: 0 auto 10px;
-        user-select: none;
-        overflow: hidden;
-      }
-      #catchBox {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background: #ff9800;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-      }
-      #catchScore {
-        text-align: center;
-        margin-bottom: 10px;
-        font-weight: bold;
-        font-size: 1.1rem;
-      }
-      #catchResetBtn {
-        display: block;
-        margin: 0 auto;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
-        background: #ff9800;
-        color: #111;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      #catchResetBtn:hover {
-        background: #e67e22;
-      }
+    .header1 {
+  max-width: 500%;
+  height: 180px;
+  justify-content: flex-start;
+  background: linear-gradient(1deg, #C3AED4 10%, #5a2483 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 40px;
+  color: #fff;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 12px 140px rgba(255, 255, 255, 1);
+  margin-bottom: 40px;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+.header1 {
+  justify-content: center; /* وهذا موجود بالفعل */
+}
 
-      /* Dinosaur Game */
-      #dinoCanvas {
-        background-color: #1a1a1a;
-        border-radius: 12px;
-        display: block;
-        margin: 0 auto 10px;
-        user-select: none;
-      }
-      #dinoResetBtn {
-        display: block;
-        margin: 0 auto;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
-        background: #ff9800;
-        color: #111;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      #dinoResetBtn:hover {
-        background: #e67e22;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>🚧 الموقع تحت التطوير 🚧</h1>
-      <p>
-        نعتذر على الانقطاع المؤقت، نعمل على تحسينات مميزة ليظهر الموقع
-        قريباً.
-      </p>
-      <div id="timer">00 يوم 00 : 00 : 00</div>
+/* دعم الوضع النهاري لغلاف */
+body.light-mode .header1 {
+  background: linear-gradient(1deg, #C3AED4 0%, #3F2552 50%);
+}
 
-      <button id="playBtn" style="display: block; margin: 0 auto 30px; padding: 10px 20px; font-size: 1.3rem; font-weight: bold; border: none; border-radius: 12px; background: #ff9800; color: #111; cursor: pointer;">
-        🎮 العب الآن
-      </button>
+    /* زر التبديل */
+    #mode-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 40px;
+      transition: transform 0.3s ease;
+      color: #d1a5f7;
+      user-select: none;
+    }
 
-      <div id="gamesSection" style="display: none;">
-        <div class="tabs">
-          <div class="tab active" data-target="xoGame">XO ذكي</div>
-          <div class="tab" data-target="memoryGame">لعبة الذاكرة</div>
-          <div class="tab" data-target="catchGameContainer">اضغط المربع</div>
-          <div class="tab" data-target="dinoGameContainer">لعبة الديناصور</div>
-        </div>
+    #mode-toggle:hover {
+      transform: rotate(20deg);
+    }
 
-        <!-- XO Game -->
-        <div class="game active" id="xoGame">
-          <div id="xoStatus">دورك: X</div>
-          <div id="xoBoard"></div>
-          <button id="xoResetBtn">إعادة تشغيل XO</button>
-        </div>
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 600px);
+  gap: 80px; /* يقلل المسافة بين البطاقات العمودية */
+  justify-content: center;
+}
 
-        <!-- Memory Game -->
-        <div class="game" id="memoryGame">
-          <div id="memoryStatus"></div>
-          <div id="memoryBoard"></div>
-          <button id="memoryResetBtn">إعادة تشغيل الذاكرة</button>
-        </div>
+    .card {
+      width: 600px;
+      height: 550px;
+      background-color: #C3AED4;
+      box-shadow: 0px 0px 0px #fff, -10px -10px 30px #A564DE;
+      transition: border-radius 1s cubic-bezier(0.075, 0.82, 0.165, 1),
+                  transform 1s cubic-bezier(0.075, 0.82, 0.165, 1),
+                  background-color 0.5s ease, box-shadow 0.5s ease;
+      color: white;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 20px;
+    }
 
-        <!-- Catch Game -->
-        <div class="game" id="catchGameContainer" style="text-align:center;">
-          <div id="catchGame">
-            <div id="catchBox"></div>
-          </div>
-          <div id="catchScore">النقاط: 0</div>
-          <button id="catchResetBtn">إعادة تشغيل اضغط المربع</button>
-        </div>
+    /* الوضع النهاري للبطاقات */
+    body.light-mode .card {
+      background-color: #6D3687;
+      box-shadow: 1px 2px 20px #222, -15px 15px 20px #222;
+      color: #222;
+    }
 
-        <!-- Dinosaur Game -->
-        <div class="game" id="dinoGameContainer" style="text-align:center;">
-          <canvas id="dinoCanvas" width="500" height="150" tabindex="0"></canvas>
-          <button id="dinoResetBtn">إعادة تشغيل الديناصور</button>
-        </div>
-      </div>
+    .card:hover {
+      border-bottom-right-radius: 90px;
+      border-top-left-radius: 80px;
+      transform: scale(1.05);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .title {
+      font-weight: bold;
+      color: #fff;
+       line-height: 1.5;
+      margin-right: 15px; /* ← يحرك النص لليسار */
+      font-size: 40px;
+    }
+    
+    body.light-mode .title {
+  color: black;
+}
+
+    .price {
+       width: 200px;
+       height: 60px;
+       display: inline-flex;
+       align-items: center;
+       gap: 5px;
+       font-size: 35px;
+       margin-left: -30px;
+       line-height: 1.9;
+       color: #fff;
+       border-top-left-radius: 30px;
+       border-bottom-right-radius: 10px;
+
+
+      font-weight: bold;
+    }
+
+
+.details p {
+  margin: 10px 0;
+  font-size: 24px;
+  color: #fff;
+  background: linear-gradient(90deg, #5a2483, #9b4dad);
+  padding: 7px 20px;
+  font-weight: bold;
+  border-radius: 15px;
+  margin: 30px 50; /* ← تباعد مخصص لمفوتر بيسك فقط */
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease;
+}
+        body.light-mode .title {
+  color: black;
+}
+    body.light-mode .details p {
+      background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
+  color: black;
+}
+
+    
+    
+    .basic-plan .details p {
+        padding: 10px 20px;
+  margin: 60px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
+}
+    .max-plan .details p {
+        margin: 20px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
+
+}
+
+    .discounts {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 25px;
+      margin-top: -170px;
+      flex-wrap: wrap;
+    }
+
+    .discount-circle {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: 5px solid #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000000;
+      transition: 0.9s ease;
+    }
+
+    .discount-circle:hover {
+      background-color: #000000;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .discount-circle.active {
+      background-color: #fff;
+      color: red;
+      border-color: #FF0D00;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(128, 0, 255, 0.5);
+    }
+
+    /* الوضع النهاري للدوائر */
+    body.light-mode .discount-circle {
+      border-color: #000000;
+      color: #000000;
+    }
+
+    body.light-mode .discount-circle:hover {
+      background-color: #fff;
+      color: #000000;
+    }
+
+    body.light-mode .discount-circle.active {
+      background-color: #fff;
+      border-color: #000000;
+      box-shadow: 0 0 10px rgba(90, 34, 183, 0.5);
+    }
+    
+    body.light-mode .price {
+      color: #000000;
+    }
+
+   body h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 50px;
+      font-size: 40px;
+      transition: color 0.5s ease;
+    }
+    body.light-mode h1 {
+      color: #fff;
+    }
+    select {
+  background-color: #6D3687;  /* لون الخلفية */
+  color: white;               /* لون النص */
+  border: 2px solid #E68D10; /* لون الحدود */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* ظل بسيط */
+  transition: background-color 0.3s ease;
+}
+
+select:hover {
+  background-color: #7b3fa6; /* لون الخلفية عند المرور بالفأرة */
+}
+
+.custom-select {
+  position: relative;
+  width: 300px;
+  border-radius: 300px;
+  border: 3px solid #E68D10;
+  font-size: 25px;
+}
+
+.select-selected {
+  background: linear-gradient(135deg,#9b4dad,#6a1b9a);  padding: 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  color: black;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+    body.light-mode .select-selected {
+  color: white; /* ← لون الخط في الوضع النهاري */
+}
+
+.select-items {
+  position: absolute;
+  background: #fff;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.select-items .option {
+  padding: 15px;
+  cursor: pointer;
+  color: black;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.select-items .option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+
+.select-hide { display: none; }
+
+            .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        .package-comparison {
+            display: flex;
+            justify-content: space-between;
+        }
+        .package {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            text-align: center;
+        }
+        .package h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .package select {
+            width: 80%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        .package button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 80%;
+        }
+        .package button:hover {
+            background-color: #45a049;
+        }
+        .comparison-footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+    
+        .footer-package {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            text-align: center;
+        }
+        .footer-package button {
+            width: 80%;
+        }
+
+    /* تنسيق الجدول */
+#comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 240px;
+  border-radius: 150px;
+  text-align: center;
+  margin-top: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+/* رأس الجدول */
+#comparison-table thead tr {
+  background: linear-gradient(135deg, #6A1B9A, #6A1B9A);
+  color: white;
+  border-radius: 150px;
+}
+
+#comparison-table thead th {
+  padding: 30px;
+  font-size: 28px;
+  border-radius: 150px;
+  font-weight: bold;
+}
+
+
+body.light-mode #comparison-table thead th {
+  padding: 20px;
+  font-size: 28px;
+  color: black;
+  border-radius: 150px;
+  border-bottom: 2px solid #3F2552;
+}
+
+/* الصفوف */
+body.light-mode #comparison-table tbody tr {
+  background: linear-gradient(90deg, #5a2483, #9b4dad);
+  padding: 20px;
+  font-size: 25px;
+  color: black;
+  border-bottom: 2px solid #111;
+
+  transition: background 0.3s ease;
+}
+
+#comparison-table tbody tr:hover {
+  background: linear-gradient(90deg, #7b3fa6, #c084d7);
+  border-radius: 150px;
+  font-weight: bold;
+}
+
+/* خلايا الجدول */
+#comparison-table td {
+  padding: 18px;
+  border-radius: 150px;
+  font-weight: bold;
+  font-size: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: linear-gradient(90deg, #3F2552, #3F2552);
+}
+
+/* الوضع النهاري */
+body.light-mode #comparison-table thead tr {
+  background: linear-gradient(90deg, #EDDD53, #BE57C7, #DB800F);
+  color: black;
+}
+
+body.light-mode #comparison-table tbody tr:hover {
+  background: linear-gradient(90deg, #ffe5a0, #f6d0ff);
+  font-weight: bold;
+  color: black;
+}
+
+body.light-mode #comparison-table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 150px;
+  padding: 18px;
+  color: #B19DC2;
+  font-weight: bold;
+}
+
+    .watermark {
+  pointer-events: none; /* لمنع التفاعل */
+  user-select: none; /* لمنع التحديد */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  opacity: 0.06; /* شفاف */
+  transform: rotate(-45deg);
+  font-size: 40px;
+  color: black;
+  z-index: 9999; /* فوق كل شيء */
+  overflow: hidden;
+}
+
+.watermark span {
+  margin: 60px 120px;
+  white-space: nowrap;
+}
+
+  </style>
+<div class="watermark">
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+  <span>khaled.55783</span>
+</div>
+
+  <!-- زر التبديل -->
+  <button id="mode-toggle" aria-label="تبديل الوضع">
+    🌙
+  </button>
+
+ <!-- أزرار التنقل -->
+<div style="text-align:center; margin-bottom: 30px;">
+<button id="show-plans-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #E68D10; color: white; border: none; border-radius: 10px;">باقات المفوتر</button>
+<button id="show-comparison-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">مقارنة الباقات</button>
+  </div>
+
+<!-- قسم الباقات -->
+<div id="plans-section">
+<h1 style="visibility: hidden;">باقات مفوتر</h1>
+
+  <div class="cards-container" id="plans-container"></div>
+</div>
+
+<!-- قسم المقارنة -->
+  
+<div id="comparison-section" style="display: none;">
+  <div style="text-align: center; font-size: 24px;">
+        
+
+  <!-- الباقة الأولى -->
+    <div id="comparison-selects" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
+<div id="custom-plan1" class="custom-select">
+  <div class="select-selected">اختر الباقة الأولى</div>
+  <div class="select-items select-hide">
+      <div class="option" data-price="90.5" data-index="0" style="background: linear-gradient(135deg,#9b4dad,#6a1b9a);">مفوتر بيسك+</div>
+      <div class="option" data-price="138" data-index="1" style="background: linear-gradient(135deg,#6a1b9a,#5a2483);">مفوتر 2</div>
+      <div class="option" data-price="172.5" data-index="2" style="background: linear-gradient(135deg,#5a2483,#ab85c9);">مفوتر 2 بلس</div>
+      <div class="option" data-price="264.5" data-index="3" style="background: linear-gradient(135deg,#ab85c9,#e68d10);">مفوتر 3 بلس</div>
+      <div class="option" data-price="517.5" data-index="4" style="background: linear-gradient(135deg,#e68d10,#ff6347);">مفوتر 4</div>
+      <div class="option" data-price="920" data-index="5" style="background: linear-gradient(135deg,#ff6347,#6D3687);">مفوتر ماكس</div>
     </div>
+  </div>
 
-    <script>
-      // ******************
-      // عداد الوقت للتطوير
-      // ******************
-      const targetDate = new Date("2025-10-05T12:00:00").getTime();
-      const timerEl = document.getElementById("timer");
+  <!-- الباقة الثانية -->
+<div id="custom-plan2" class="custom-select">
+  <div class="select-selected">اختر الباقة الثانية</div>
+  <div class="select-items select-hide">
+      <div class="option" data-price="90.5" data-index="0" style="background: linear-gradient(135deg,#9b4dad,#6a1b9a);">مفوتر بيسك+</div>
+      <div class="option" data-price="138" data-index="1" style="background: linear-gradient(135deg,#6a1b9a,#5a2483);">مفوتر 2</div>
+      <div class="option" data-price="172.5" data-index="2" style="background: linear-gradient(135deg,#5a2483,#ab85c9);">مفوتر 2 بلس</div>
+      <div class="option" data-price="264.5" data-index="3" style="background: linear-gradient(135deg,#ab85c9,#e68d10);">مفوتر 3 بلس</div>
+      <div class="option" data-price="517.5" data-index="4" style="background: linear-gradient(135deg,#e68d10,#ff6347);">مفوتر 4</div>
+      <div class="option" data-price="920" data-index="5" style="background: linear-gradient(135deg,#ff6347,#6D3687);">مفوتر ماكس</div>
+    </div>
+      </div>
 
-      function updateTimer() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
 
-        if (distance <= 0) {
-          timerEl.textContent = "انتهى التحديث!";
-          clearInterval(interval);
-          return;
-        }
+    <!-- جدول المقارنة -->
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  <!-- الشعار الذي يظهر تحت المقارنة -->
+  <div id="under-development" style="display: none; text-align: center; margin-top: 20px;">
+    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار تحت التطوير" style="width: 150px; height: auto; margin-bottom: 10px;">
+    <p style="font-size: 24px; font-weight: bold; color: #ff6347;">تحت التطوير</p>
+  </div>
+</div>
+    
+    <div id="comparison-table" style="margin-top: 20px;"></div>
 
-        timerEl.textContent = `${days} يوم ${hours
-          .toString()
-          .padStart(2, "0")} : ${minutes.toString().padStart(2, "0")} : ${seconds
-          .toString()
-          .padStart(2, "0")}`;
+  <script>
+    const plansData = [
+      {
+        name: "مفوتر بيسك+",
+        price: 90.5,
+        details: ["أنترنت 10 قيقا", "تواصل اجتماعي 10 قيقا بايت", "مكالمات داخل الشبكة 300 دقيقة"]
+      },
+      {
+        name: "مفوتر 2",
+        price: 138,
+        details: ["إنترنت 15 قيقا", "تواصل اجتماعي 15 قيقا", "خدمة لا يوقف 8 قيقا بسرعة 256 كيلوبايت", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة 200 دقيقة", "رسائل داخل الشبكة لا محدود", "رسائل خارج الشبكة 200 رسالة"]
+      },
+      {
+        name: "مفوتر 2 بلس",
+        price: 172.5,
+        details: ["إنترنت 40 قيقا", "تواصل اجتماعي 40 قيقا", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة 400 دقيقة", "رسائل داخل الشبكة 150 رسالة", "رسائل خارج الشبكة 150 رسالة"]
+      },
+      {
+        name: "مفوتر 3 بلس",
+        price: 264.5,
+        details: ["إنترنت 110 قيقا", "تواصل اجتماعي لا محدود", "واي فاي 110 قيقا", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة لا محدود", "رسائل داخل الشبكة لا محدود", "رسائل خارج الشبكة 1000 رسالة"]
+      },
+      {
+        name: "مفوتر 4",
+        price: 517.5,
+        details: ["إنترنت لا محدود", "تجوال 5 قيقا", "واي فاي لا محدود", "استخدام عادل للشرائح المتعددة", "دقائق تجوال 100 دقيقة", "STC TV مجانا", "مكالمات ورسائل لكل الشبكات لا محدود",]
+      },
+      {
+        name: "مفوتر ماكس",
+        price: 920,
+        details: ["إنترنت لا محدود بدون سياسة استخدام عادل", "تجوال لا محدود (5 قيقا يوميًا)", "مكالمات ورسائل لجميع الشبكات لا محدود", "مكالمات دولية 200 دقيقة", "تقسيط أجهزة حتى 8280 ريال", "استقبال مكالمات تجوال لا محدود"]
       }
+    ];
 
-      const interval = setInterval(updateTimer, 1000);
-      updateTimer();
+    const discounts = [0, 10, 20, 30, 40, 50];
+    const plansContainer = document.getElementById("plans-container");
 
-      // ******************
-      // زر تشغيل الألعاب
-      // ******************
-      const playBtn = document.getElementById("playBtn");
-      const gamesSection = document.getElementById("gamesSection");
+    plansData.forEach((plan, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
 
-      playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        gamesSection.style.display = "block";
+      card.innerHTML = `
+        <div class="header">
+          <span class="title">${plan.name}</span>
+          <span class="price" id="price-${index}">${plan.price} ريال</span>
+          
+        </div>
+        <div class="details">
+          ${plan.details.map(d => `<p>• ${d}</p>`).join("")}
+        </div>
+        <div class="discounts" id="discounts-${index}"></div>
+      `;
+
+      plansContainer.appendChild(card);
+if (plan.name === "مفوتر بيسك+") {
+  card.classList.add("basic-plan");
+}
+
+if (plan.name === "مفوتر ماكس") {
+  card.classList.add("max-plan");
+}
+
+
+      const discountContainer = document.getElementById(`discounts-${index}`);
+      discounts.forEach(discount => {
+        const btn = document.createElement("div");
+        btn.className = "discount-circle";
+        btn.textContent = `${discount}%`;
+        btn.onclick = () => applyDiscount(index, plan.price, discount, btn);
+        discountContainer.appendChild(btn);
       });
+    });
 
-      // ******************
-      // نظام التبويبات
-      // ******************
-      const tabs = document.querySelectorAll(".tab");
-      const games = document.querySelectorAll(".game");
+    function applyDiscount(index, originalPrice, discountPercent, clickedBtn) {
+      const finalPrice = (originalPrice - (originalPrice * discountPercent / 100)).toFixed(2);
+      document.getElementById(`price-${index}`).textContent = `${finalPrice} ريال`;
 
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          tabs.forEach((t) => t.classList.remove("active"));
-          games.forEach((g) => g.classList.remove("active"));
+      const buttons = document.getElementById(`discounts-${index}`).querySelectorAll('.discount-circle');
+      buttons.forEach(btn => btn.classList.remove("active"));
+      clickedBtn.classList.add("active");
+    }
 
-          tab.classList.add("active");
-          const target = document.getElementById(tab.dataset.target);
-          target.classList.add("active");
+    // تبديل الوضع الليلي / النهاري
+    const modeToggleBtn = document.getElementById('mode-toggle');
+    const body = document.body;
 
-          // إعادة تشغيل اللعبة المختارة تلقائياً
-          switch (tab.dataset.target) {
-            case "xoGame":
-              resetXO();
-              break;
-            case "memoryGame":
-              resetMemory();
-              break;
-            case "catchGameContainer":
-              resetCatch();
-              break;
-            case "dinoGameContainer":
-              resetDino();
-              break;
-          }
-        });
-      });
+    modeToggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
 
-      // ******************
-      // لعبة XO ذكي
-      // ******************
-      const xoBoard = document.getElementById("xoBoard");
-      const xoStatus = document.getElementById("xoStatus");
-      const xoResetBtn = document.getElementById("xoResetBtn");
-
-      let xoBoardState = Array(9).fill(null);
-      let xoTurn = "X"; // المستخدم يبدأ بـ X
-      let xoGameOver = false;
-
-      function checkXOWinner(board) {
-        const lines = [
-          [0, 1, 2],
-          [3, 4, 5],
-          [6, 7, 8],
-          [0, 3, 6],
-          [1, 4, 7],
-          [2, 5, 8],
-          [0, 4, 8],
-          [2, 4, 6],
-        ];
-        for (let line of lines) {
-          const [a, b, c] = line;
-          if (
-            board[a] &&
-            board[a] === board[b] &&
-            board[a] === board[c]
-          ) {
-            return board[a];
-          }
-        }
-        if (board.every((cell) => cell !== null)) return "tie";
-        return null;
+      // تغيير الأيقونة مع حركة بسيطة
+      if (body.classList.contains('light-mode')) {
+        modeToggleBtn.textContent = '🌞';
+        modeToggleBtn.style.color = '#f39c12'; // لون أصفر للشمس
+      } else {
+        modeToggleBtn.textContent = '🌙';
+        modeToggleBtn.style.color = '#d1a5f7'; // لون القمر الأرجواني
       }
+    });
 
-      function xoMakeMove(index, player) {
-        if (xoBoardState[index] || xoGameOver) return false;
-        xoBoardState[index] = player;
-        renderXO();
-        return true;
-      }
+  </script>
+<script>
+  // إظهار أو إخفاء قسم المقارنة
 
-      function xoComputerMove() {
-        // استخدام Minimax لخوارزمية ذكية
-        function minimax(board, player) {
-          const winner = checkXOWinner(board);
-          if (winner === "X") return { score: -10 };
-          if (winner === "O") return { score: 10 };
-          if (winner === "tie") return { score: 0 };
+  // تعبئة القوائم المنسدلة عند تحميل الصفحة
+// تخصيص القوائم المخصصة الجديدة
+const selected1 = document.querySelector("#custom-plan1 .select-selected");
+const optionsContainer1 = document.querySelector("#custom-plan1 .select-items");
+const options1 = document.querySelectorAll("#custom-plan1 .option");
 
-          let moves = [];
+selected1.addEventListener("click", () => {
+  optionsContainer1.classList.toggle("select-hide");
+});
 
-          for (let i = 0; i < board.length; i++) {
-            if (!board[i]) {
-              let newBoard = board.slice();
-              newBoard[i] = player;
-              let result = minimax(newBoard, player === "O" ? "X" : "O");
-              moves.push({ index: i, score: result.score });
-            }
-          }
+options1.forEach((option) => {
+  option.addEventListener("click", () => {
+    selected1.textContent = option.textContent;
+    selected1.dataset.index = option.dataset.index;
+    optionsContainer1.classList.add("select-hide");
+    updateComparisonFromCustom();
+  });
+});
 
-          if (player === "O") {
-            // Maximize
-            let maxMove = moves.reduce(
-              (max, move) => (move.score > max.score ? move : max),
-              moves[0]
-            );
-            return maxMove;
-          } else {
-            // Minimize
-            let minMove = moves.reduce(
-              (min, move) => (move.score < min.score ? move : min),
-              moves[0]
-            );
-            return minMove;
-          }
-        }
+const selected2 = document.querySelector("#custom-plan2 .select-selected");
+const optionsContainer2 = document.querySelector("#custom-plan2 .select-items");
+const options2 = document.querySelectorAll("#custom-plan2 .option");
 
-        if (xoGameOver) return;
+selected2.addEventListener("click", () => {
+  optionsContainer2.classList.toggle("select-hide");
+});
 
-        const move = minimax(xoBoardState, "O");
-        if (move && move.index !== undefined) {
-          xoMakeMove(move.index, "O");
-          xoTurn = "X";
-          xoStatus.textContent = "دورك: X";
-          checkXOGameStatus();
-        }
-      }
+options2.forEach((option) => {
+  option.addEventListener("click", () => {
+    selected2.textContent = option.textContent;
+    selected2.dataset.index = option.dataset.index;
+    optionsContainer2.classList.add("select-hide");
+    updateComparisonFromCustom();
+  });
+});
 
-      function checkXOGameStatus() {
-        const winner = checkXOWinner(xoBoardState);
-        if (winner === "X") {
-          xoStatus.textContent = "تهانينا! فزت! 🎉";
-          xoGameOver = true;
-        } else if (winner === "O") {
-          xoStatus.textContent = "خسرت! الكمبيوتر فاز.";
-          xoGameOver = true;
-        } else if (winner === "tie") {
-          xoStatus.textContent = "تعادل!";
-          xoGameOver = true;
-        }
-      }
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".custom-select")) {
+    optionsContainer1.classList.add("select-hide");
+    optionsContainer2.classList.add("select-hide");
+  }
+});
 
-      function renderXO() {
-        xoBoard.innerHTML = "";
-        xoBoardState.forEach((cell, idx) => {
-          const div = document.createElement("div");
-          div.classList.add("xoCell");
-          div.textContent = cell ? cell : "";
-          div.addEventListener("click", () => {
-            if (xoGameOver || xoTurn !== "X" || xoBoardState[idx]) return;
-            xoMakeMove(idx, "X");
-            xoTurn = "O";
-            xoStatus.textContent = "دور الكمبيوتر...";
-            checkXOGameStatus();
-            if (!xoGameOver) {
-              setTimeout(() => {
-                xoComputerMove();
-              }, 500);
-            }
-          });
-          xoBoard.appendChild(div);
-        });
-      }
+// تحديث المقارنة
+function updateComparisonFromCustom() {
+  const index1 = parseInt(selected1.dataset.index);
+  const index2 = parseInt(selected2.dataset.index);
 
-      function resetXO() {
-        xoBoardState = Array(9).fill(null);
-        xoTurn = "X";
-        xoGameOver = false;
-        xoStatus.textContent = "دورك: X";
-        renderXO();
-      }
+  if (isNaN(index1) || isNaN(index2) || index1 === index2) return;
 
-      xoResetBtn.addEventListener("click", resetXO);
-      resetXO();
+  const p1 = plansData[index1];
+  const p2 = plansData[index2];
+  const allFeatures = Array.from(new Set([...p1.details, ...p2.details]));
 
-      // ******************
-      // لعبة الذاكرة
-      // ******************
-      const memoryBoard = document.getElementById("memoryBoard");
-      const memoryStatus = document.getElementById("memoryStatus");
-      const memoryResetBtn = document.getElementById("memoryResetBtn");
+  let table = `<table style="width: 100%; border-collapse: collapse; font-size: 24px; text-align: center;">
+    <thead>
+      <tr style="background-color: #5a2483; color: white;">
+        <th style="padding: 15px;">الميزة</th>
+        <th style="padding: 15px;">${p1.name}<br><span style="font-size: 25px;">${p1.price} ريال</span></th>
+        <th style="padding: 15px;">${p2.name}<br><span style="font-size: 25px;">${p2.price} ريال</span></th>
+      </tr>
+    </thead>
+      <tbody>`
+  allFeatures.forEach(f => {
+    const has1 = p1.details.includes(f);
+    const has2 = p2.details.includes(f);
+table += `<tr style="background: linear-gradient(90deg, #5a2483, #9b4dad); color: white;">
+  <td style="padding: 12px;">${f}</td>
+  <td style="padding: 12px;">${has1 ? '✔️' : '❌'}</td>
+  <td style="padding: 12px;">${has2 ? '✔️' : '❌'}</td>
+</tr>`;
+});
+table += `</tbody></table>`;
+  document.getElementById('comparison-table').innerHTML = table;
+}
 
-      const memorySymbols = ["🍎", "🍌", "🍇", "🍓", "🍒", "🥝"];
-      let memoryCards = [];
-      let flippedCards = [];
-      let matchedCards = [];
-      let memoryBusy = false;
+  // عند اختيار باقتين
 
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          let j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-      }
 
-      function createMemoryBoard() {
-        memoryCards = [...memorySymbols, ...memorySymbols];
-        shuffle(memoryCards);
-        memoryBoard.innerHTML = "";
-        memoryCards.forEach((symbol, idx) => {
-          const card = document.createElement("div");
-          card.classList.add("memoryCard");
-          card.dataset.symbol = symbol;
-          card.textContent = "";
-          card.addEventListener("click", () => {
-            if (memoryBusy) return;
-            if (flippedCards.includes(card) || matchedCards.includes(card)) return;
-            flipCard(card);
-          });
-          memoryBoard.appendChild(card);
-        });
-      }
+  const plansSection = document.getElementById('plans-section');
+const comparisonSection = document.getElementById('comparison-section');
 
-      function flipCard(card) {
-        card.textContent = card.dataset.symbol;
-        card.classList.add("flipped");
-        flippedCards.push(card);
-        if (flippedCards.length === 2) {
-          memoryBusy = true;
-          setTimeout(() => {
-            checkMemoryMatch();
-          }, 1000);
-        }
-      }
+const showPlansBtn = document.getElementById('show-plans-btn');
+const showComparisonBtn = document.getElementById('show-comparison-btn');
 
-      function checkMemoryMatch() {
-        const [c1, c2] = flippedCards;
-        if (c1.dataset.symbol === c2.dataset.symbol) {
-          matchedCards.push(c1, c2);
-          memoryStatus.textContent = `مبروك! وجدت زوجًا من ${c1.dataset.symbol}`;
-          if (matchedCards.length === memoryCards.length) {
-            memoryStatus.textContent = "لقد أكملت لعبة الذاكرة!";
-          }
-        } else {
-          c1.textContent = "";
-          c2.textContent = "";
-          c1.classList.remove("flipped");
-          c2.classList.remove("flipped");
-          memoryStatus.textContent = "حاول مرة أخرى.";
-        }
-        flippedCards = [];
-        memoryBusy = false;
-      }
+showPlansBtn.addEventListener('click', () => {
+  plansSection.style.display = 'block';
+  comparisonSection.style.display = 'none';
 
-      function resetMemory() {
-        flippedCards = [];
-        matchedCards = [];
-        memoryBusy = false;
-        memoryStatus.textContent = "";
-        createMemoryBoard();
-      }
+  // تغيير ألوان الأزرار
+  showPlansBtn.style.backgroundColor = '#E68D10';  // برتقالي
+  showComparisonBtn.style.backgroundColor = '#6D3687'; // بنفسجي
+});
 
-      memoryResetBtn.addEventListener("click", resetMemory);
-      resetMemory();
+showComparisonBtn.addEventListener('click', () => {
+  plansSection.style.display = 'none';
+  comparisonSection.style.display = 'block';
 
-      // ******************
-      // لعبة اضغط المربع
-      // ******************
-      const catchGame = document.getElementById("catchGame");
-      const catchBox = document.getElementById("catchBox");
-      const catchScoreEl = document.getElementById("catchScore");
-      const catchResetBtn = document.getElementById("catchResetBtn");
+  // تغيير ألوان الأزرار
+  showComparisonBtn.style.backgroundColor = '#E68D10';  // برتقالي
+  showPlansBtn.style.backgroundColor = '#6D3687'; // بنفسجي
+});
 
-      let catchScore = 0;
-
-      function randomPosition() {
-        const maxX = catchGame.clientWidth - catchBox.clientWidth;
-        const maxY = catchGame.clientHeight - catchBox.clientHeight;
-        const x = Math.floor(Math.random() * maxX);
-        const y = Math.floor(Math.random() * maxY);
-        return { x, y };
-      }
-
-      function moveCatchBox() {
-        const pos = randomPosition();
-        catchBox.style.left = pos.x + "px";
-        catchBox.style.top = pos.y + "px";
-      }
-
-      catchBox.addEventListener("click", () => {
-        if (catchScore >= 30) return; // حد نقاط
-        catchScore++;
-        catchScoreEl.textContent = `النقاط: ${catchScore}`;
-        moveCatchBox();
-      });
-
-      function resetCatch() {
-        catchScore = 0;
-        catchScoreEl.textContent = "النقاط: 0";
-        moveCatchBox();
-      }
-
-      catchResetBtn.addEventListener("click", resetCatch);
-      resetCatch();
-
-      // ******************
-      // لعبة الديناصور مع مراحل
-      // ******************
-
-      const canvas = document.getElementById("dinoCanvas");
-      const ctx = canvas.getContext("2d");
-
-      const dino = {
-        x: 50,
-        y: 0,
-        width: 40,
-        height: 40,
-        yVelocity: 0,
-        gravity: 0.7,
-        jumpStrength: -14,
-        isJumping: false,
-      };
-
-      let obstacles = [];
-      let dinoGameOver = false;
-      let dinoScore = 0;
-      let dinoSpeed = 6;
-      let dinoFrameCount = 0;
-      let dinoLevel = 1;
-
-      const levelBackgrounds = [
-        "#1a1a1a",
-        "#2a2a72",
-        "#3a6ea5",
-        "#5a9bd4",
-        "#7ab8ff",
-      ];
-
-      function resetDino() {
-        dino.y = canvas.height - dino.height - 10;
-        dino.yVelocity = 0;
-        dino.isJumping = false;
-        obstacles = [];
-        dinoGameOver = false;
-        dinoScore = 0;
-        dinoSpeed = 6;
-        dinoFrameCount = 0;
-        dinoLevel = 1;
-        canvas.style.backgroundColor = levelBackgrounds[0];
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.focus();
-        animateDino();
-      }
-
-      function drawDino() {
-        ctx.fillStyle = "#ff9800";
-        ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
-      }
-
-      function drawObstacle(obs) {
-        ctx.fillStyle = "#ff5722";
-        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-      }
-
-      function updateBackground() {
-        const bgColor =
-          levelBackgrounds[Math.min(dinoLevel - 1, levelBackgrounds.length - 1)];
-        canvas.style.backgroundColor = bgColor;
-      }
-
-      function gameOverDino() {
-        dinoGameOver = true;
-        ctx.font = "30px Tajawal, sans-serif";
-        ctx.fillStyle = "#eee";
-        ctx.textAlign = "center";
-        ctx.fillText("انتهت اللعبة! اضغط إعادة اللعب.", canvas.width / 2, canvas.height / 2);
-      }
-
-      function animateDino() {
-        if (dinoGameOver) return;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        updateBackground();
-
-        // Dino physics
-        dino.yVelocity += dino.gravity;
-        dino.y += dino.yVelocity;
-
-        if (dino.y > canvas.height - dino.height - 10) {
-          dino.y = canvas.height - dino.height - 10;
-          dino.yVelocity = 0;
-          dino.isJumping = false;
-        }
-
-        drawDino();
-
-        // Handle obstacles
-        if (dinoFrameCount % 90 === 0) {
-          // كل 90 إطار يظهر عائق جديد
-          let obsHeight = 30 + Math.random() * 30;
-          obstacles.push({
-            x: canvas.width,
-            y: canvas.height - obsHeight - 10,
-            width: 20,
-            height: obsHeight,
-          });
-        }
-
-        obstacles.forEach((obs, idx) => {
-          obs.x -= dinoSpeed;
-          drawObstacle(obs);
-
-          // تصادم
-          if (
-            dino.x < obs.x + obs.width &&
-            dino.x + dino.width > obs.x &&
-            dino.y < obs.y + obs.height &&
-            dino.y + dino.height > obs.y
-          ) {
-            gameOverDino();
-          }
-
-          // إزالة العوائق بعد خروجها من الشاشة
-          if (obs.x + obs.width < 0) {
-            obstacles.splice(idx, 1);
-            dinoScore++;
-            if (dinoScore % 10 === 0) {
-              dinoLevel++;
-              dinoSpeed += 1;
-              updateBackground();
-            }
-          }
-        });
-
-        // عرض النقاط والمستوى
-        ctx.font = "18px Tajawal, sans-serif";
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "left";
-        ctx.fillText(`النقاط: ${dinoScore}`, 10, 25);
-        ctx.fillText(`المستوى: ${dinoLevel}`, 10, 50);
-
-        dinoFrameCount++;
-        requestAnimationFrame(animateDino);
-      }
-
-      // القفز
-      canvas.addEventListener("keydown", (e) => {
-        if ((e.code === "Space" || e.code === "ArrowUp") && !dino.isJumping && !dinoGameOver) {
-          dino.yVelocity = dino.jumpStrength;
-          dino.isJumping = true;
-        }
-      });
-
-      document.getElementById("dinoResetBtn").addEventListener("click", resetDino);
-
-      resetDino();
-    </script>
-  </body>
+</script>
+</body>
 </html>
