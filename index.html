@@ -10,788 +10,217 @@
   <link rel="icon" href="images/favicon.png" type="image/png" />
 </head>
 <body>
-  <header class="header1">
-    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار الموقع" style="height: 100px;">
   </header>
   <div style="text-align:center; margin-top: 40px; font-size: 24px; color: white;">
   </div>
-
-  <title>باقات المفوتر</title>
-  <style>
-    /* الوضع الليلي الافتراضي */
+<style>
 body {
-  background: linear-gradient(135deg, #6a1b9a, #8b57c9);
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 50px;
-  transition: background 0.5s ease, color 0.5s ease;
+    background-image: url('https://e.top4top.io/p_3569lv4og1.png'); /* رابط الصورة */
+    background-size: 100% 100%;  /* تجعل الصورة بحجم ثابت */
+    background-position: center;  /* تجعل الصورة في وسط الشاشة */
+    background-attachment: fixed;  /* تجعل الصورة ثابتة عند التمرير */
+    background-repeat: no-repeat;  /* لا تكرر الصورة */
+    height: 100vh; /* استخدام ارتفاع ثابت */
+    margin: 0;  /* إزالة الهوامش الافتراضية */
+    overflow: hidden; /* منع التمرير الأفقي أو العمودي */
 }
-    
-    /* تغيير اللون عند اختيار زر */
-button.selected {
-  background-color: #4caf50; /* اللون عند الاختيار */
-  color: white;
-  border: none;
-}
-
-button:hover {
-  opacity: 0.8; /* تأثير عند التمرير */
-}
-select {
-  border-radius: 25px;
+  .form_details {
+    font-size: 25px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    color: #DB2D16; /* تغيير اللون إلى اللون البرتقالي */
+    font-family: 'Arial', sans-serif; /* تغيير الخط إلى Arial */
 }
 
-
-body.light-mode {
-  background: linear-gradient(135deg, #3F2552 0%, #6a1b9a 100%);
-  color: #222;
-  transition: background 0.5s ease, color 0.5s ease;
-}
-    .header {
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(1deg, #C3AED4 10%, #5a2483 60%);
-  display: flex;
-  overflow: visible;
-  text-overflow: unset;
-  align-items: center;
-  justify-content: center;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 30px;
-  color: #fff;
-  font-size: 30px;
-  font-weight: bold;
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 12px 140px rgba(255, 255, 255, 1);
-  margin-bottom: -190px;
-  transition: background 0.5s ease, color 0.5s ease;
+  .text-red-300 {
+    color: #DB2D16; /* تغيير اللون إلى الأزرق */
+    font-size: 20px;
+    text: bold;
+    font-family: 'Arial', sans-serif; /* تغيير الخط إلى Helvetica */
 }
 
-/* دعم الوضع النهاري لغلاف */
-body.light-mode .header {
- background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
-  color: #222;
-  box-shadow: 10 40px 150px rgba(180, 150, 220, 0.5);
+
+.container {
+    width: 340px;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    position: absolute;
+    top: 60%;  /* يمكنك تعديل هذه القيمة حسب مكان المربع الذي تريده */
+    left: 50%; /* يحدد أن يكون في منتصف الصفحة أفقيًا */
+    transform: translateX(-50%);  /* يضبط المربع ليكون في المنتصف بدقة */
 }
 
-    .header1 {
-  max-width: 500%;
-  height: 180px;
-  justify-content: flex-start;
-  background: linear-gradient(1deg, #C3AED4 10%, #5a2483 60%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 40px;
-  color: #fff;
-  font-size: 36px;
-  font-weight: bold;
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 12px 140px rgba(255, 255, 255, 1);
-  margin-bottom: 40px;
-  transition: background 0.5s ease, color 0.5s ease;
-}
-.header1 {
-  justify-content: center; /* وهذا موجود بالفعل */
-}
-
-/* دعم الوضع النهاري لغلاف */
-body.light-mode .header1 {
-  background: linear-gradient(1deg, #C3AED4 0%, #3F2552 50%);
-}
-
-    /* زر التبديل */
-    #mode-toggle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 40px;
-      transition: transform 0.3s ease;
-      color: #d1a5f7;
-      user-select: none;
-    }
-
-    #mode-toggle:hover {
-      transform: rotate(20deg);
-    }
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(2, 600px);
-  gap: 80px; /* يقلل المسافة بين البطاقات العمودية */
-  justify-content: center;
-}
-
-    .card {
-      width: 600px;
-      height: 550px;
-      background-color: #C3AED4;
-      box-shadow: 0px 0px 0px #fff, -10px -10px 30px #A564DE;
-      transition: border-radius 1s cubic-bezier(0.075, 0.82, 0.165, 1),
-                  transform 1s cubic-bezier(0.075, 0.82, 0.165, 1),
-                  background-color 0.5s ease, box-shadow 0.5s ease;
-      color: white;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-radius: 20px;
-    }
-
-    /* الوضع النهاري للبطاقات */
-    body.light-mode .card {
-      background-color: #6D3687;
-      box-shadow: 1px 2px 20px #222, -15px 15px 20px #222;
-      color: #222;
-    }
-
-    .card:hover {
-      border-bottom-right-radius: 90px;
-      border-top-left-radius: 80px;
-      transform: scale(1.05);
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .title {
-      font-weight: bold;
-      color: #fff;
-       line-height: 1.5;
-      margin-right: 15px; /* ← يحرك النص لليسار */
-      font-size: 40px;
-    }
-    
-    body.light-mode .title {
-  color: black;
-}
-
-    .price {
-       width: 200px;
-       height: 60px;
-       display: inline-flex;
-       align-items: center;
-       gap: 5px;
-       font-size: 35px;
-       margin-left: -30px;
-       line-height: 1.9;
-       color: #fff;
-       border-top-left-radius: 30px;
-       border-bottom-right-radius: 10px;
-
-
-      font-weight: bold;
-    }
-
-
-.details p {
-  margin: 10px 0;
-  font-size: 24px;
-  color: #fff;
-  background: linear-gradient(90deg, #5a2483, #9b4dad);
-  padding: 7px 20px;
-  font-weight: bold;
-  border-radius: 15px;
-  margin: 30px 50; /* ← تباعد مخصص لمفوتر بيسك فقط */
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
-  transition: background 0.3s ease;
-}
-        body.light-mode .title {
-  color: black;
-}
-    body.light-mode .details p {
-      background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
-  color: black;
-}
-
-    
-    
-    .basic-plan .details p {
-        padding: 10px 20px;
-  margin: 60px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
-}
-    .max-plan .details p {
-        margin: 20px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
-
-}
-
-    .discounts {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      font-size: 25px;
-      margin-top: -170px;
-      flex-wrap: wrap;
-    }
-
-    .discount-circle {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: 5px solid #000000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: bold;
-      color: #000000;
-      transition: 0.9s ease;
-    }
-
-    .discount-circle:hover {
-      background-color: #000000;
-      color: white;
-      transform: scale(1.1);
-    }
-
-    .discount-circle.active {
-      background-color: #fff;
-      color: red;
-      border-color: #FF0D00;
-      transform: scale(1.1);
-      box-shadow: 0 0 10px rgba(128, 0, 255, 0.5);
-    }
-
-    /* الوضع النهاري للدوائر */
-    body.light-mode .discount-circle {
-      border-color: #000000;
-      color: #000000;
-    }
-
-    body.light-mode .discount-circle:hover {
-      background-color: #fff;
-      color: #000000;
-    }
-
-    body.light-mode .discount-circle.active {
-      background-color: #fff;
-      border-color: #000000;
-      box-shadow: 0 0 10px rgba(90, 34, 183, 0.5);
-    }
-    
-    body.light-mode .price {
-      color: #000000;
-    }
-
-   body h1 {
-      text-align: center;
-      color: #fff;
-      margin-bottom: 50px;
-      font-size: 40px;
-      transition: color 0.5s ease;
-    }
-    body.light-mode h1 {
-      color: #fff;
-    }
-    select {
-  background-color: #6D3687;  /* لون الخلفية */
-  color: white;               /* لون النص */
-  border: 2px solid #E68D10; /* لون الحدود */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* ظل بسيط */
-  transition: background-color 0.3s ease;
-}
-
-select:hover {
-  background-color: #7b3fa6; /* لون الخلفية عند المرور بالفأرة */
-}
-
-.custom-select {
-  position: relative;
-  width: 300px;
-  border-radius: 300px;
-  border: 3px solid #E68D10;
-  font-size: 25px;
-}
-
-.select-selected {
-  background: linear-gradient(135deg,#9b4dad,#6a1b9a);  padding: 15px;
-  border-radius: 30px;
-  cursor: pointer;
-  text-align: center;
-  font-weight: bold;
-  color: black;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-}
-    body.light-mode .select-selected {
-  color: white; /* ← لون الخط في الوضع النهاري */
-}
-
-.select-items {
-  position: absolute;
-  background: #fff;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 99;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.select-items .option {
-  padding: 15px;
-  cursor: pointer;
-  color: black;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.select-items .option:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-}
-
-.select-hide { display: none; }
-
-            .container {
-            width: 80%;
-            margin: 50px auto;
-        }
-        .package-comparison {
+        .form {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            transition: all 1s ease;
+            position: relative;
         }
-        .package {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 45%;
-            text-align: center;
+
+        .form .form_front,
+        .form .form_back {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            backface-visibility: hidden;
+            padding: 65px 45px;
+            border-radius: 15px;
+            box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 1),
+                        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
         }
-        .package h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+
+        .form .form_front {
+            position: absolute;
         }
-        .package select {
-            width: 80%;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
+
+        .form .form_back {
+            transform: rotateY(-180deg);
         }
-        .package button {
-            background-color: #4CAF50;
+
+        .form_details {
+            font-size: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        }
+
+        .input {
+            width: 245px;
+            min-height: 45px;
+            color: #fff;
+            outline: none;
+            transition: 0.35s;
+            padding: 0px 7px;
+            background-color: #212121;
+            border-radius: 6px;
+            border: 2px solid #212121;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                        1px 1px 10px rgba(255, 255, 255, 0.6);
+        }
+
+        .input::placeholder {
+            color: #999;
+        }
+
+        .input:focus {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                        1px 1px 10px rgba(255, 255, 255, 0.6),
+                        inset 2px 2px 10px rgba(0, 0, 0, 1),
+                        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            padding: 10px 35px;
             cursor: pointer;
-            font-size: 1em;
-            width: 80%;
-        }
-        .package button:hover {
-            background-color: #45a049;
-        }
-        .comparison-footer {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-        }
-    
-        .footer-package {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 45%;
-            text-align: center;
-        }
-        .footer-package button {
-            width: 80%;
+            background-color: #212121;
+            border-radius: 6px;
+            border: 2px solid #212121;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                        1px 1px 10px rgba(255, 255, 255, 0.6);
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.35s;
         }
 
-    /* تنسيق الجدول */
-#comparison-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 240px;
-  border-radius: 150px;
-  text-align: center;
-  margin-top: 20px;
-  border-radius: 15px;
-  overflow: hidden;
-}
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                        1px 1px 10px rgba(255, 255, 255, 0.6),
+                        inset 2px 2px 10px rgba(0, 0, 0, 1),
+                        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
 
-/* رأس الجدول */
-#comparison-table thead tr {
-  background: linear-gradient(135deg, #6A1B9A, #6A1B9A);
-  color: white;
-  border-radius: 150px;
-}
+        .btn:focus {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 1),
+                        1px 1px 10px rgba(255, 255, 255, 0.6),
+                        inset 2px 2px 10px rgba(0, 0, 0, 1),
+                        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        }
 
-#comparison-table thead th {
-  padding: 30px;
-  font-size: 28px;
-  border-radius: 150px;
-  font-weight: bold;
-}
+        .form .switch {
+            font-size: 13px;
+            color: white;
+        }
 
+        .form .switch .signup_tog {
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
 
-body.light-mode #comparison-table thead th {
-  padding: 20px;
-  font-size: 28px;
-  color: black;
-  border-radius: 150px;
-  border-bottom: 2px solid #3F2552;
-}
+        .container #signup_toggle {
+            display: none;
+        }
 
-/* الصفوف */
-body.light-mode #comparison-table tbody tr {
-  background: linear-gradient(90deg, #5a2483, #9b4dad);
-  padding: 20px;
-  font-size: 25px;
-  color: black;
-  border-bottom: 2px solid #111;
+        .container #signup_toggle:checked + .form {
+            transform: rotateY(-180deg);
+        }
 
-  transition: background 0.3s ease;
-}
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-#comparison-table tbody tr:hover {
-  background: linear-gradient(90deg, #7b3fa6, #c084d7);
-  border-radius: 150px;
-  font-weight: bold;
-}
+    <!-- From Uiverse.io by Rohankumar620 -->
+    <div class="container">
+        <input id="signup_toggle" type="checkbox">
+        <form class="form">
+            <!-- Front form for login -->
+            <div class="form_front">
+<div class="form_details" style="color: #FF5733; font-family: 'Arial', sans-serif;">Upsource</div>
+            <p class="text-red-300 mt-2 font-bold">يرجى أخذ الأذن من صاحب الموقع</p>
+                <input type="text" class="input" placeholder="اسم المستخدم" id="username">
+                <input type="password" class="input" placeholder="كلمة المرور" id="password">
+                <button type="button" class="btn" onclick="validateLogin()">دخول</button>
+                      <div class="bg-clear-800 px-6 py-4 text-center">
+            <p class="text-gray-400 text-sm">2025 . جميع الحقوق محفوظة ©</p>
 
-/* خلايا الجدول */
-#comparison-table td {
-  padding: 18px;
-  border-radius: 150px;
-  font-weight: bold;
-  font-size: 25px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background: linear-gradient(90deg, #3F2552, #3F2552);
-}
+                </span>
+            </div>
+        </form>
+    </div>
 
-/* الوضع النهاري */
-body.light-mode #comparison-table thead tr {
-  background: linear-gradient(90deg, #EDDD53, #BE57C7, #DB800F);
-  color: black;
-}
-
-body.light-mode #comparison-table tbody tr:hover {
-  background: linear-gradient(90deg, #ffe5a0, #f6d0ff);
-  font-weight: bold;
-  color: black;
-}
-
-body.light-mode #comparison-table td {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 150px;
-  padding: 18px;
-  color: #B19DC2;
-  font-weight: bold;
-}
-
-    .watermark {
-  pointer-events: none; /* لمنع التفاعل */
-  user-select: none; /* لمنع التحديد */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding: 1000px;
-  display: flex;
-  margin: -880px;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  opacity: 0.06; /* شفاف */
-  transform: rotate(-45deg);
-  font-size: 40px;
-  color: black;
-  z-index: 9999; /* فوق كل شيء */
-  overflow: hidden;
-}
-
-.watermark span {
-  margin: 100px 120px;
-  white-space: nowrap;
-}
-
-  </style>
-<div class="watermark">
-  <span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span>
-</div>
-
-  <!-- زر التبديل -->
-  <button id="mode-toggle" aria-label="تبديل الوضع">
-    🌙
-  </button>
-
- <!-- أزرار التنقل -->
-<div style="text-align:center; margin-bottom: 30px;">
-<button id="show-plans-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #E68D10; color: white; border: none; border-radius: 10px;">باقات المفوتر</button>
-<button id="show-comparison-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">مقارنة الباقات</button>
-  </div>
-
-<!-- قسم الباقات -->
-<div id="plans-section">
-<h1 style="visibility: hidden;">باقات مفوتر</h1>
-
-  <div class="cards-container" id="plans-container"></div>
-</div>
-
-<!-- قسم المقارنة -->
-  
-<div id="comparison-section" style="display: none;">
-  <div style="text-align: center; font-size: 24px;">
+    <script>
+        function validateLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Validate credentials (55783 for both username and password)
+            if (username === '55783' && password === '55783') {
+                // Success - redirect or do something
+                window.location.href = "https://technologyresources.github.io/UP/";
+            } else {
+                // Show error
+                alert("اسم المستخدم أو كلمة المرور غير صحيحة. الرجاء المحاولة مرة أخرى.");
+            }
+        }
         
+        // Auto focus on username field
+        document.getElementById('username').focus();
 
-  <!-- الباقة الأولى -->
-    <div id="comparison-selects" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
-<div id="custom-plan1" class="custom-select">
-  <div class="select-selected">اختر الباقة الأولى</div>
-  <div class="select-items select-hide">
-      <div class="option" data-price="90.5" data-index="0" style="background: linear-gradient(135deg,#9b4dad,#6a1b9a);">مفوتر بيسك+</div>
-      <div class="option" data-price="138" data-index="1" style="background: linear-gradient(135deg,#6a1b9a,#5a2483);">مفوتر 2</div>
-      <div class="option" data-price="172.5" data-index="2" style="background: linear-gradient(135deg,#5a2483,#ab85c9);">مفوتر 2 بلس</div>
-      <div class="option" data-price="264.5" data-index="3" style="background: linear-gradient(135deg,#ab85c9,#e68d10);">مفوتر 3 بلس</div>
-      <div class="option" data-price="517.5" data-index="4" style="background: linear-gradient(135deg,#e68d10,#ff6347);">مفوتر 4</div>
-      <div class="option" data-price="920" data-index="5" style="background: linear-gradient(135deg,#ff6347,#6D3687);">مفوتر ماكس</div>
-    </div>
-  </div>
+        // Add "Enter" key event listener
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent form from submitting
+                document.getElementById('password').focus(); // Move focus to password field
+            }
+        });
 
-  <!-- الباقة الثانية -->
-<div id="custom-plan2" class="custom-select">
-  <div class="select-selected">اختر الباقة الثانية</div>
-  <div class="select-items select-hide">
-      <div class="option" data-price="90.5" data-index="0" style="background: linear-gradient(135deg,#9b4dad,#6a1b9a);">مفوتر بيسك+</div>
-      <div class="option" data-price="138" data-index="1" style="background: linear-gradient(135deg,#6a1b9a,#5a2483);">مفوتر 2</div>
-      <div class="option" data-price="172.5" data-index="2" style="background: linear-gradient(135deg,#5a2483,#ab85c9);">مفوتر 2 بلس</div>
-      <div class="option" data-price="264.5" data-index="3" style="background: linear-gradient(135deg,#ab85c9,#e68d10);">مفوتر 3 بلس</div>
-      <div class="option" data-price="517.5" data-index="4" style="background: linear-gradient(135deg,#e68d10,#ff6347);">مفوتر 4</div>
-      <div class="option" data-price="920" data-index="5" style="background: linear-gradient(135deg,#ff6347,#6D3687);">مفوتر ماكس</div>
-    </div>
-      </div>
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent form from submitting
+                validateLogin(); // Trigger the login validation
+            }
+        });
+    </script>
 
-
-    <!-- جدول المقارنة -->
-
-  <!-- الشعار الذي يظهر تحت المقارنة -->
-  <div id="under-development" style="display: none; text-align: center; margin-top: 20px;">
-    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار تحت التطوير" style="width: 150px; height: auto; margin-bottom: 10px;">
-    <p style="font-size: 24px; font-weight: bold; color: #ff6347;">تحت التطوير</p>
-  </div>
-</div>
-    
-    <div id="comparison-table" style="margin-top: 20px;"></div>
-
-  <script>
-    const plansData = [
-      {
-        name: "مفوتر بيسك+",
-        price: 90.5,
-        details: ["أنترنت 10 قيقا", "تواصل اجتماعي 10 قيقا بايت", "مكالمات داخل الشبكة 300 دقيقة"]
-      },
-      {
-        name: "مفوتر 2",
-        price: 138,
-        details: ["إنترنت 15 قيقا", "تواصل اجتماعي 15 قيقا", "خدمة لا يوقف 8 قيقا بسرعة 256 كيلوبايت", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة 200 دقيقة", "رسائل داخل الشبكة لا محدود", "رسائل خارج الشبكة 200 رسالة"]
-      },
-      {
-        name: "مفوتر 2 بلس",
-        price: 172.5,
-        details: ["إنترنت 40 قيقا", "تواصل اجتماعي 40 قيقا", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة 400 دقيقة", "رسائل داخل الشبكة 150 رسالة", "رسائل خارج الشبكة 150 رسالة"]
-      },
-      {
-        name: "مفوتر 3 بلس",
-        price: 264.5,
-        details: ["إنترنت 110 قيقا", "تواصل اجتماعي لا محدود", "واي فاي 110 قيقا", "مكالمات داخل الشبكة لا محدود", "مكالمات خارج الشبكة لا محدود", "رسائل داخل الشبكة لا محدود", "رسائل خارج الشبكة 1000 رسالة"]
-      },
-      {
-        name: "مفوتر 4",
-        price: 517.5,
-        details: ["إنترنت لا محدود", "تجوال 5 قيقا", "واي فاي لا محدود", "استخدام عادل للشرائح المتعددة", "دقائق تجوال 100 دقيقة", "STC TV مجانا", "مكالمات ورسائل لكل الشبكات لا محدود",]
-      },
-      {
-        name: "مفوتر ماكس",
-        price: 920,
-        details: ["إنترنت لا محدود بدون سياسة استخدام عادل", "تجوال لا محدود (5 قيقا يوميًا)", "مكالمات ورسائل لجميع الشبكات لا محدود", "مكالمات دولية 200 دقيقة", "تقسيط أجهزة حتى 8280 ريال", "استقبال مكالمات تجوال لا محدود"]
-      }
-    ];
-
-    const discounts = [0, 10, 20, 30, 40, 50];
-    const plansContainer = document.getElementById("plans-container");
-
-    plansData.forEach((plan, index) => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.innerHTML = `
-        <div class="header">
-          <span class="title">${plan.name}</span>
-          <span class="price" id="price-${index}">${plan.price} ريال</span>
-          
-        </div>
-        <div class="details">
-          ${plan.details.map(d => `<p>• ${d}</p>`).join("")}
-        </div>
-        <div class="discounts" id="discounts-${index}"></div>
-      `;
-
-      plansContainer.appendChild(card);
-if (plan.name === "مفوتر بيسك+") {
-  card.classList.add("basic-plan");
-}
-
-if (plan.name === "مفوتر ماكس") {
-  card.classList.add("max-plan");
-}
-
-
-      const discountContainer = document.getElementById(`discounts-${index}`);
-      discounts.forEach(discount => {
-        const btn = document.createElement("div");
-        btn.className = "discount-circle";
-        btn.textContent = `${discount}%`;
-        btn.onclick = () => applyDiscount(index, plan.price, discount, btn);
-        discountContainer.appendChild(btn);
-      });
-    });
-
-    function applyDiscount(index, originalPrice, discountPercent, clickedBtn) {
-      const finalPrice = (originalPrice - (originalPrice * discountPercent / 100)).toFixed(2);
-      document.getElementById(`price-${index}`).textContent = `${finalPrice} ريال`;
-
-      const buttons = document.getElementById(`discounts-${index}`).querySelectorAll('.discount-circle');
-      buttons.forEach(btn => btn.classList.remove("active"));
-      clickedBtn.classList.add("active");
-    }
-
-    // تبديل الوضع الليلي / النهاري
-    const modeToggleBtn = document.getElementById('mode-toggle');
-    const body = document.body;
-
-    modeToggleBtn.addEventListener('click', () => {
-      body.classList.toggle('light-mode');
-
-      // تغيير الأيقونة مع حركة بسيطة
-      if (body.classList.contains('light-mode')) {
-        modeToggleBtn.textContent = '🌞';
-        modeToggleBtn.style.color = '#f39c12'; // لون أصفر للشمس
-      } else {
-        modeToggleBtn.textContent = '🌙';
-        modeToggleBtn.style.color = '#d1a5f7'; // لون القمر الأرجواني
-      }
-    });
-
-  </script>
-<script>
-  // إظهار أو إخفاء قسم المقارنة
-
-  // تعبئة القوائم المنسدلة عند تحميل الصفحة
-// تخصيص القوائم المخصصة الجديدة
-const selected1 = document.querySelector("#custom-plan1 .select-selected");
-const optionsContainer1 = document.querySelector("#custom-plan1 .select-items");
-const options1 = document.querySelectorAll("#custom-plan1 .option");
-
-selected1.addEventListener("click", () => {
-  optionsContainer1.classList.toggle("select-hide");
-});
-
-options1.forEach((option) => {
-  option.addEventListener("click", () => {
-    selected1.textContent = option.textContent;
-    selected1.dataset.index = option.dataset.index;
-    optionsContainer1.classList.add("select-hide");
-    updateComparisonFromCustom();
-  });
-});
-
-const selected2 = document.querySelector("#custom-plan2 .select-selected");
-const optionsContainer2 = document.querySelector("#custom-plan2 .select-items");
-const options2 = document.querySelectorAll("#custom-plan2 .option");
-
-selected2.addEventListener("click", () => {
-  optionsContainer2.classList.toggle("select-hide");
-});
-
-options2.forEach((option) => {
-  option.addEventListener("click", () => {
-    selected2.textContent = option.textContent;
-    selected2.dataset.index = option.dataset.index;
-    optionsContainer2.classList.add("select-hide");
-    updateComparisonFromCustom();
-  });
-});
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".custom-select")) {
-    optionsContainer1.classList.add("select-hide");
-    optionsContainer2.classList.add("select-hide");
-  }
-});
-
-// تحديث المقارنة
-function updateComparisonFromCustom() {
-  const index1 = parseInt(selected1.dataset.index);
-  const index2 = parseInt(selected2.dataset.index);
-
-  if (isNaN(index1) || isNaN(index2) || index1 === index2) return;
-
-  const p1 = plansData[index1];
-  const p2 = plansData[index2];
-  const allFeatures = Array.from(new Set([...p1.details, ...p2.details]));
-
-  let table = `<table style="width: 100%; border-collapse: collapse; font-size: 24px; text-align: center;">
-    <thead>
-      <tr style="background-color: #5a2483; color: white;">
-        <th style="padding: 15px;">الميزة</th>
-        <th style="padding: 15px;">${p1.name}<br><span style="font-size: 25px;">${p1.price} ريال</span></th>
-        <th style="padding: 15px;">${p2.name}<br><span style="font-size: 25px;">${p2.price} ريال</span></th>
-      </tr>
-    </thead>
-      <tbody>`
-  allFeatures.forEach(f => {
-    const has1 = p1.details.includes(f);
-    const has2 = p2.details.includes(f);
-table += `<tr style="background: linear-gradient(90deg, #5a2483, #9b4dad); color: white;">
-  <td style="padding: 12px;">${f}</td>
-  <td style="padding: 12px;">${has1 ? '✔️' : '❌'}</td>
-  <td style="padding: 12px;">${has2 ? '✔️' : '❌'}</td>
-</tr>`;
-});
-table += `</tbody></table>`;
-  document.getElementById('comparison-table').innerHTML = table;
-}
-
-  // عند اختيار باقتين
-
-
-  const plansSection = document.getElementById('plans-section');
-const comparisonSection = document.getElementById('comparison-section');
-
-const showPlansBtn = document.getElementById('show-plans-btn');
-const showComparisonBtn = document.getElementById('show-comparison-btn');
-
-showPlansBtn.addEventListener('click', () => {
-  plansSection.style.display = 'block';
-  comparisonSection.style.display = 'none';
-
-  // تغيير ألوان الأزرار
-  showPlansBtn.style.backgroundColor = '#E68D10';  // برتقالي
-  showComparisonBtn.style.backgroundColor = '#6D3687'; // بنفسجي
-});
-
-showComparisonBtn.addEventListener('click', () => {
-  plansSection.style.display = 'none';
-  comparisonSection.style.display = 'block';
-
-  // تغيير ألوان الأزرار
-  showComparisonBtn.style.backgroundColor = '#E68D10';  // برتقالي
-  showPlansBtn.style.backgroundColor = '#6D3687'; // بنفسجي
-});
-
-</script>
 </body>
 </html>
