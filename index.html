@@ -10,14 +10,121 @@
   <link rel="icon" href="images/favicon.png" type="image/png" />
 </head>
 <body>
-  <header class="header1">
-    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار الموقع" style="height: 100px;">
-  </header>
-  <div style="text-align:center; margin-top: 40px; font-size: 24px; color: white;">
-  </div>
-
-  <title>باقات المفوتر</title>
   <style>
+    /* From Uiverse.io by Rohankumar620 - Modified for Arabic/Login only */
+    /* ------------------------------------------------------------------ */
+    #login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #212121; /* خلفية شاشة الدخول */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 10000; /* للتأكد من أنها تغطي كل شيء */
+        flex-direction: column;
+        direction: rtl; /* دعم الاتجاه */
+    }
+
+    .form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-style: preserve-3d;
+        transition: all 1s ease;
+    }
+
+    .form .form_front {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        position: absolute;
+        backface-visibility: hidden;
+        padding: 65px 45px;
+        border-radius: 15px;
+        box-shadow: inset 2px 2px 10px rgba(0,0,0,1),
+        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+        background-color: #333; /* لون خلفية بطاقة الدخول */
+    }
+
+    .form_details {
+        font-size: 25px;
+        font-weight: 300;
+        padding-bottom: 10px;
+        color: white;
+    }
+
+    .form_text {
+        font-size: 18px;
+        font-weight: 60;
+        padding-bottom: 10px;
+        color: yellow;
+        font-family: 'Arial', sans-serif; /* تغيير الخط إلى Arial */
+
+
+      
+    }
+    .input {
+        width: 245px;
+        min-height: 45px;
+        color: #fff;
+        outline: none;
+        transition: 0.35s;
+        padding: 0px 7px;
+        background-color: #212121;
+        border-radius: 6px;
+        border: 2px solid #212121;
+        box-shadow: 6px 6px 10px rgba(0,0,0,1),
+        1px 1px 10px rgba(255, 255, 255, 0.6);
+        text-align: right;
+    }
+
+    .input::placeholder {
+        color: #999;
+        text-align: right;
+    }
+
+    .input:focus.input::placeholder {
+        transition: 0.3s;
+        opacity: 0;
+    }
+
+    .input:focus {
+        transform: scale(1.05);
+        box-shadow: 6px 6px 10px rgba(0,0,0,1),
+        1px 1px 10px rgba(255, 255, 255, 0.6),
+        inset 2px 2px 10px rgba(0,0,0,1),
+        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+        padding: 10px 35px;
+        cursor: pointer;
+        background-color: #B87D2C; /* لون زر الدخول (برتقالي) */
+        border-radius: 6px;
+        border: 2px solid #E68D10;
+        box-shadow: 6px 6px 10px rgba(0,0,0,1),
+        1px 1px 10px rgba(255, 255, 255, 0.6);
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.35s;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 6px 6px 10px rgba(0,0,0,1),
+        1px 1px 10px rgba(255, 255, 255, 0.6),
+        inset 2px 2px 10px rgba(0,0,0,1),
+        inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+    }
+
+    /* ------------------------------------------------------------------ */
+
     /* الوضع الليلي الافتراضي */
 body {
   background: linear-gradient(135deg, #6a1b9a, #8b57c9);
@@ -27,7 +134,7 @@ body {
   padding: 50px;
   transition: background 0.5s ease, color 0.5s ease;
 }
-    
+
     /* تغيير اللون عند اختيار زر */
 button.selected {
   background-color: #4caf50; /* اللون عند الاختيار */
@@ -169,7 +276,7 @@ body.light-mode .header1 {
       margin-right: 15px; /* ← يحرك النص لليسار */
       font-size: 40px;
     }
-    
+
     body.light-mode .title {
   color: black;
 }
@@ -212,8 +319,7 @@ body.light-mode .header1 {
   color: black;
 }
 
-    
-    
+
     .basic-plan .details p {
         padding: 10px 20px;
   margin: 60px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
@@ -276,7 +382,7 @@ body.light-mode .header1 {
       border-color: #000000;
       box-shadow: 0 0 10px rgba(90, 34, 183, 0.5);
     }
-    
+
     body.light-mode .price {
       color: #000000;
     }
@@ -396,7 +502,7 @@ select:hover {
             display: flex;
             justify-content: space-between;
         }
-    
+
         .footer-package {
             background-color: #fff;
             padding: 20px;
@@ -519,8 +625,36 @@ body.light-mode #comparison-table td {
 }
 
   </style>
+
+  <!-- شاشة تسجيل الدخول -->
+<div id="login-container">
+  <div class="form">
+    <div class="form_front" style="position: relative;">
+      <div class="form_details">تسجيل الدخول</div>
+            <div class="form_text">يرجى أخذ الأذن من صاحب الموقع</div>
+      <input type="text" id="login-username" class="input" placeholder="أدخل اسم المستخدم" dir="rtl">
+      <input type="password" id="login-password" class="input" placeholder="أدخل كلمة المرور" dir="rtl">
+      <button id="login-btn" class="btn">دخول</button>
+      <div id="login-error" style="color: #ff6347; font-weight: bold; margin-top: 10px; display: none;">اسم المستخدم أو كلمة المرور غير صحيحة.</div>
+    </div>
+  </div>
+</div>
+<!-- نهاية شاشة تسجيل الدخول -->
+
+
+<div id="app-content" style="display: none;">
+  <!-- محتوى التطبيق بالكامل يبدأ من هنا -->
+
+  <header class="header1">
+    <img src="https://f.top4top.io/p_3543u83kc1.png" alt="شعار الموقع" style="height: 100px;">
+  </header>
+  <div style="text-align:center; margin-top: 40px; font-size: 24px; color: white;">
+  </div>
+
+  <title>باقات المفوتر</title>
+
 <div class="watermark">
-  <span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span>
+  <span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span><span>khaled.55783</span>
 </div>
 
   <!-- زر التبديل -->
@@ -542,10 +676,10 @@ body.light-mode #comparison-table td {
 </div>
 
 <!-- قسم المقارنة -->
-  
+
 <div id="comparison-section" style="display: none;">
   <div style="text-align: center; font-size: 24px;">
-        
+
 
   <!-- الباقة الأولى -->
     <div id="comparison-selects" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
@@ -583,10 +717,115 @@ body.light-mode #comparison-table td {
     <p style="font-size: 24px; font-weight: bold; color: #ff6347;">تحت التطوير</p>
   </div>
 </div>
-    
+
     <div id="comparison-table" style="margin-top: 20px;"></div>
 
+</div>
+<!-- محتوى التطبيق بالكامل ينتهي هنا -->
+
   <script>
+    
+    // متغيرات ومؤقت الجلسة (10 دقائق)
+    let sessionTimeoutTimer;
+    const TIMEOUT_DURATION = 10 * 60 * 1000; // 600,000 مللي ثانية = 10 دقائق
+
+    // -----------------------------------------------------------------
+    // وظيفة تسجيل الخروج التلقائي وإعادة ضبط المؤقت
+    // -----------------------------------------------------------------
+
+    // وظيفة إعادة تعيين المؤقت - يتم استدعاؤها عند أي تفاعل من المستخدم
+    function resetTimer() {
+        clearTimeout(sessionTimeoutTimer);
+        // تعيين مؤقت جديد لتسجيل الخروج بعد 10 دقائق
+        sessionTimeoutTimer = setTimeout(logout, TIMEOUT_DURATION);
+    }
+
+    // وظيفة تسجيل الخروج الفعلي - يتم استدعاؤها بعد انتهاء المؤقت
+    function logout() {
+        // إخفاء محتوى التطبيق وإظهار شاشة الدخول
+        document.getElementById('app-content').style.display = 'none';
+        document.getElementById('login-container').style.display = 'flex';
+        
+        // مسح بيانات الدخول السابقة في الحقول
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+        
+        // التركيز على حقل اسم المستخدم لسهولة الدخول مجدداً
+        document.getElementById('login-username').focus();
+        
+        // إزالة مستمعي الأحداث لمنع إعادة تشغيل المؤقت أثناء شاشة الدخول
+        document.removeEventListener('mousemove', resetTimer);
+        document.removeEventListener('keypress', resetTimer);
+        document.removeEventListener('click', resetTimer);
+        
+        console.log("Session timed out. User logged out.");
+    }
+
+    // وظيفة بدء مؤقت الجلسة بعد تسجيل الدخول بنجاح
+    function startSessionTimer() {
+        // بدء المؤقت لأول مرة
+        resetTimer();
+
+        // إضافة مستمعي الأحداث لأي تفاعل من المستخدم داخل الصفحة
+        document.addEventListener('mousemove', resetTimer);
+        document.addEventListener('keypress', resetTimer);
+        document.addEventListener('click', resetTimer);
+    }
+    
+    // -----------------------------------------------------------------
+    // منطق تسجيل الدخول
+    // -----------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginBtn = document.getElementById('login-btn');
+      const usernameInput = document.getElementById('login-username');
+      const passwordInput = document.getElementById('login-password');
+      const loginError = document.getElementById('login-error');
+      const loginContainer = document.getElementById('login-container');
+      const appContent = document.getElementById('app-content');
+
+      const CORRECT_USERNAME = '55783';
+      const CORRECT_PASSWORD = '55783';
+
+      const handleLogin = () => {
+        const enteredUsername = usernameInput.value.trim();
+        const enteredPassword = passwordInput.value.trim();
+
+        if (enteredUsername === CORRECT_USERNAME && enteredPassword === CORRECT_PASSWORD) {
+          // نجاح تسجيل الدخول: إخفاء شاشة الدخول وعرض المحتوى
+          loginContainer.style.display = 'none';
+          appContent.style.display = 'block';
+          loginError.style.display = 'none';
+          
+          // *** جديد: بدء مؤقت الجلسة بعد الدخول بنجاح ***
+          startSessionTimer();
+
+        } else {
+          // فشل تسجيل الدخول: عرض رسالة خطأ
+          loginError.style.display = 'block';
+        }
+      };
+
+      // ربط زر الدخول بوظيفة الدخول
+      loginBtn.addEventListener('click', handleLogin);
+
+      // ربط مفتاح Enter في حقلي الإدخال بوظيفة الدخول
+      usernameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+      });
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+      });
+
+      // إظهار شاشة الدخول أولاً
+      loginContainer.style.display = 'flex';
+      appContent.style.display = 'none';
+
+      // التركيز على حقل اسم المستخدم بعد تحميل الصفحة
+      usernameInput.focus();
+    // -----------------------------------------------------------------
+    // منطق التطبيق الأصلي
+    // -----------------------------------------------------------------
+
     const plansData = [
       {
         name: "مفوتر بيسك+",
@@ -631,7 +870,7 @@ body.light-mode #comparison-table td {
         <div class="header">
           <span class="title">${plan.name}</span>
           <span class="price" id="price-${index}">${plan.price} ريال</span>
-          
+
         </div>
         <div class="details">
           ${plan.details.map(d => `<p>• ${d}</p>`).join("")}
@@ -670,7 +909,8 @@ if (plan.name === "مفوتر ماكس") {
 
     // تبديل الوضع الليلي / النهاري
     const modeToggleBtn = document.getElementById('mode-toggle');
-    const body = document.body;
+      const body = document.body;
+    // const body = document.body; // body already defined at the top of the script scope
 
     modeToggleBtn.addEventListener('click', () => {
       body.classList.toggle('light-mode');
@@ -685,113 +925,112 @@ if (plan.name === "مفوتر ماكس") {
       }
     });
 
-  </script>
-<script>
-  // إظهار أو إخفاء قسم المقارنة
 
-  // تعبئة القوائم المنسدلة عند تحميل الصفحة
-// تخصيص القوائم المخصصة الجديدة
-const selected1 = document.querySelector("#custom-plan1 .select-selected");
-const optionsContainer1 = document.querySelector("#custom-plan1 .select-items");
-const options1 = document.querySelectorAll("#custom-plan1 .option");
+  // تخصيص القوائم المخصصة الجديدة
+  const selected1 = document.querySelector("#custom-plan1 .select-selected");
+  const optionsContainer1 = document.querySelector("#custom-plan1 .select-items");
+  const options1 = document.querySelectorAll("#custom-plan1 .option");
 
-selected1.addEventListener("click", () => {
-  optionsContainer1.classList.toggle("select-hide");
-});
-
-options1.forEach((option) => {
-  option.addEventListener("click", () => {
-    selected1.textContent = option.textContent;
-    selected1.dataset.index = option.dataset.index;
-    optionsContainer1.classList.add("select-hide");
-    updateComparisonFromCustom();
+  selected1.addEventListener("click", () => {
+    optionsContainer1.classList.toggle("select-hide");
   });
-});
 
-const selected2 = document.querySelector("#custom-plan2 .select-selected");
-const optionsContainer2 = document.querySelector("#custom-plan2 .select-items");
-const options2 = document.querySelectorAll("#custom-plan2 .option");
-
-selected2.addEventListener("click", () => {
-  optionsContainer2.classList.toggle("select-hide");
-});
-
-options2.forEach((option) => {
-  option.addEventListener("click", () => {
-    selected2.textContent = option.textContent;
-    selected2.dataset.index = option.dataset.index;
-    optionsContainer2.classList.add("select-hide");
-    updateComparisonFromCustom();
+  options1.forEach((option) => {
+    option.addEventListener("click", () => {
+      selected1.textContent = option.textContent;
+      selected1.dataset.index = option.dataset.index;
+      optionsContainer1.classList.add("select-hide");
+      updateComparisonFromCustom();
+    });
   });
-});
 
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".custom-select")) {
-    optionsContainer1.classList.add("select-hide");
-    optionsContainer2.classList.add("select-hide");
+  const selected2 = document.querySelector("#custom-plan2 .select-selected");
+  const optionsContainer2 = document.querySelector("#custom-plan2 .select-items");
+  const options2 = document.querySelectorAll("#custom-plan2 .option");
+
+  selected2.addEventListener("click", () => {
+    optionsContainer2.classList.toggle("select-hide");
+  });
+
+  options2.forEach((option) => {
+    option.addEventListener("click", () => {
+      selected2.textContent = option.textContent;
+      selected2.dataset.index = option.dataset.index;
+      optionsContainer2.classList.add("select-hide");
+      updateComparisonFromCustom();
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-select")) {
+      optionsContainer1.classList.add("select-hide");
+      optionsContainer2.classList.add("select-hide");
+    }
+  });
+
+  // تحديث المقارنة
+  function updateComparisonFromCustom() {
+    const index1 = parseInt(selected1.dataset.index);
+    const index2 = parseInt(selected2.dataset.index);
+
+    // إذا لم يتم اختيار باقتين أو تم اختيار نفس الباقة
+    if (isNaN(index1) || isNaN(index2) || index1 === index2) {
+        document.getElementById('comparison-table').innerHTML = '';
+        return;
+    }
+
+    const p1 = plansData[index1];
+    const p2 = plansData[index2];
+    const allFeatures = Array.from(new Set([...p1.details, ...p2.details]));
+
+    let table = `<table style="width: 100%; border-collapse: collapse; font-size: 24px; text-align: center;">
+      <thead>
+        <tr style="background-color: #5a2483; color: white;">
+          <th style="padding: 15px;">الميزة</th>
+          <th style="padding: 15px;">${p1.name}<br><span style="font-size: 25px;">${p1.price} ريال</span></th>
+          <th style="padding: 15px;">${p2.name}<br><span style="font-size: 25px;">${p2.price} ريال</span></th>
+        </tr>
+      </thead>
+        <tbody>`
+    allFeatures.forEach(f => {
+      const has1 = p1.details.includes(f);
+      const has2 = p2.details.includes(f);
+  table += `<tr style="background: linear-gradient(90deg, #5a2483, #9b4dad); color: white;">
+    <td style="padding: 12px;">${f}</td>
+    <td style="padding: 12px;">${has1 ? '✔️' : '❌'}</td>
+    <td style="padding: 12px;">${has2 ? '✔️' : '❌'}</td>
+  </tr>`;
+  });
+  table += `</tbody></table>`;
+    document.getElementById('comparison-table').innerHTML = table;
   }
-});
 
-// تحديث المقارنة
-function updateComparisonFromCustom() {
-  const index1 = parseInt(selected1.dataset.index);
-  const index2 = parseInt(selected2.dataset.index);
+    // إظهار أو إخفاء قسم المقارنة
+    const plansSection = document.getElementById('plans-section');
+    const comparisonSection = document.getElementById('comparison-section');
 
-  if (isNaN(index1) || isNaN(index2) || index1 === index2) return;
+    const showPlansBtn = document.getElementById('show-plans-btn');
+    const showComparisonBtn = document.getElementById('show-comparison-btn');
 
-  const p1 = plansData[index1];
-  const p2 = plansData[index2];
-  const allFeatures = Array.from(new Set([...p1.details, ...p2.details]));
+    showPlansBtn.addEventListener('click', () => {
+      plansSection.style.display = 'block';
+      comparisonSection.style.display = 'none';
 
-  let table = `<table style="width: 100%; border-collapse: collapse; font-size: 24px; text-align: center;">
-    <thead>
-      <tr style="background-color: #5a2483; color: white;">
-        <th style="padding: 15px;">الميزة</th>
-        <th style="padding: 15px;">${p1.name}<br><span style="font-size: 25px;">${p1.price} ريال</span></th>
-        <th style="padding: 15px;">${p2.name}<br><span style="font-size: 25px;">${p2.price} ريال</span></th>
-      </tr>
-    </thead>
-      <tbody>`
-  allFeatures.forEach(f => {
-    const has1 = p1.details.includes(f);
-    const has2 = p2.details.includes(f);
-table += `<tr style="background: linear-gradient(90deg, #5a2483, #9b4dad); color: white;">
-  <td style="padding: 12px;">${f}</td>
-  <td style="padding: 12px;">${has1 ? '✔️' : '❌'}</td>
-  <td style="padding: 12px;">${has2 ? '✔️' : '❌'}</td>
-</tr>`;
-});
-table += `</tbody></table>`;
-  document.getElementById('comparison-table').innerHTML = table;
-}
+      // تغيير ألوان الأزرار
+      showPlansBtn.style.backgroundColor = '#E68D10';  // برتقالي
+      showComparisonBtn.style.backgroundColor = '#6D3687'; // بنفسجي
+    });
 
-  // عند اختيار باقتين
+    showComparisonBtn.addEventListener('click', () => {
+      plansSection.style.display = 'none';
+      comparisonSection.style.display = 'block';
 
+      // تغيير ألوان الأزرار
+      showComparisonBtn.style.backgroundColor = '#E68D10';  // برتقالي
+      showPlansBtn.style.backgroundColor = '#6D3687'; // بنفسجي
+    });
+    });
 
-  const plansSection = document.getElementById('plans-section');
-const comparisonSection = document.getElementById('comparison-section');
-
-const showPlansBtn = document.getElementById('show-plans-btn');
-const showComparisonBtn = document.getElementById('show-comparison-btn');
-
-showPlansBtn.addEventListener('click', () => {
-  plansSection.style.display = 'block';
-  comparisonSection.style.display = 'none';
-
-  // تغيير ألوان الأزرار
-  showPlansBtn.style.backgroundColor = '#E68D10';  // برتقالي
-  showComparisonBtn.style.backgroundColor = '#6D3687'; // بنفسجي
-});
-
-showComparisonBtn.addEventListener('click', () => {
-  plansSection.style.display = 'none';
-  comparisonSection.style.display = 'block';
-
-  // تغيير ألوان الأزرار
-  showComparisonBtn.style.backgroundColor = '#E68D10';  // برتقالي
-  showPlansBtn.style.backgroundColor = '#6D3687'; // بنفسجي
-});
-
-</script>
+  </script>
 </body>
 </html>
