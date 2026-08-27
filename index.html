@@ -753,11 +753,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (splash) {
             splash.classList.add('hidden');
         }
-
-        document.body.style.overflow = 'auto';
-    }, 500); // ثانية ونصف
-
-});
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+                splash.style.display = 'none';
+            }, 1200);
+        }, 1300); // عرض الشاشة لمدة 3.5 ثانية
+    });
 </script>
 
     <div id="login-container">
