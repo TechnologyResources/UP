@@ -744,20 +744,20 @@
 </style>
 
 <script>
-   document.addEventListener('DOMContentLoaded', function() {
-        // منع التمرير مؤقتاً
-        document.body.style.overflow = 'hidden';
+document.addEventListener('DOMContentLoaded', function() {
 
-        setTimeout(function() {
-            const splash = document.getElementById('splash-screen');
-            splash.classList.add('hide-splash');
-            
-            setTimeout(() => {
-                document.body.style.overflow = 'auto';
-                splash.style.display = 'none';
-            }, 1200);
-        }, 50); // عرض الشاشة لمدة 3.5 ثانية
-    });
+    setTimeout(function() {
+        document.body.classList.add('loaded');
+
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.classList.add('hidden');
+        }
+
+        document.body.style.overflow = 'auto';
+    }, 1500); // ثانية ونصف
+
+});
 </script>
 
     <div id="login-container">
