@@ -1535,7 +1535,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="sawa-wrapper">
                 <div class="sawa-tree" id="sawa-tree"></div>
                 <div class="sawa-content" id="sawa-content">
-                    <div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها 🌳</div>
+                    <div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها </div>
                 </div>
             </div>
         </div>
@@ -2015,7 +2015,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             function sawaEmptyMessage() {
-                return `<div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها 🌳</div>`;
+                return `<div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها </div>`;
             }
 
             function showSawaContent(nodeId) {
@@ -2028,7 +2028,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             function renderSawaTree() {
                 const treeContainer = document.getElementById('sawa-tree');
-                treeContainer.innerHTML = '<div class="sawa-tree-root">🌳 باقات سوا</div>' +
+                treeContainer.innerHTML = '<div class="sawa-tree-root"> باقات سوا</div>' +
                     sawaTreeData.map((node, i) => `
                         <div class="sawa-branch" style="animation-delay:${i * 0.06}s">
                             <button class="sawa-node-btn" data-node="${node.id}">
