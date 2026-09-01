@@ -181,7 +181,7 @@
 
         .header1 {
             max-width: 500%;
-            height: 180px;
+            height: 260px;
             justify-content: flex-start;
             background: linear-gradient(1deg, #C3AED4 10%, #5a2483 60%);
             display: flex;
@@ -199,6 +199,19 @@
         }
         .header1 {
             justify-content: center; /* وهذا موجود بالفعل */
+        }
+
+        .site-logo {
+            height: 220px;
+            width: auto;
+            max-width: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(0, 0, 0, 0.3));
+            transition: transform 0.35s ease, filter 0.35s ease;
+        }
+
+        .site-logo:hover {
+            transform: scale(1.04);
         }
 
         /* دعم الوضع النهاري لغلاف */
@@ -227,17 +240,26 @@
         .cards-container {
             display: grid;
             grid-template-columns: repeat(2, 600px);
-            gap: 80px; /* يقلل المسافة بين البطاقات العمودية */
+            gap: 110px 90px; /* مسافة أكبر بين البطاقات لمنع تداخل تأثير التكبير عند المرور بالماوس */
             justify-content: center;
         }
 
-        .card {
+        .card-wrapper {
             width: 600px;
             height: 550px;
+            /* الحجم الثابت هنا هو ما يحدد منطقة التفاعل مع الماوس،
+               بينما البطاقة بداخله تكبر بصريًا فقط دون أن تغيّر منطقة الحدث،
+               وهذا يمنع تكرار ظهور/اختفاء التأثير عند الوقوف بين بطاقتين */
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
             background-color: #C3AED4;
             box-shadow: 0px 0px 0px #fff, -10px -10px 30px #A564DE;
-            transition: border-radius 1s cubic-bezier(0.075, 0.82, 0.165, 1),
-            transform 1s cubic-bezier(0.075, 0.82, 0.165, 1),
+            transition: border-radius 0.6s cubic-bezier(0.075, 0.82, 0.165, 1),
+            transform 0.6s cubic-bezier(0.075, 0.82, 0.165, 1),
             background-color 0.5s ease, box-shadow 0.5s ease;
             color: white;
             padding: 15px;
@@ -245,6 +267,7 @@
             flex-direction: column;
             justify-content: space-between;
             border-radius: 20px;
+            box-sizing: content-box;
         }
 
         /* الوضع النهاري للبطاقات */
@@ -254,10 +277,10 @@
             color: #222;
         }
 
-        .card:hover {
+        .card-wrapper:hover .card {
             border-bottom-right-radius: 90px;
             border-top-left-radius: 80px;
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .header {
@@ -372,6 +395,263 @@
         body.light-mode .discount-circle:hover {
             background-color: #fff;
             color: #000000;
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* قسم "باقات سوا" - شجرة الفروع + عرض المحتوى (تصميم تفاعلي)          */
+        /* ------------------------------------------------------------------ */
+        .sawa-wrapper {
+            display: flex;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sawa-tree {
+            min-width: 300px;
+            max-width: 360px;
+            background: linear-gradient(165deg, rgba(106, 27, 154, 0.55), rgba(139, 87, 201, 0.28));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 28px;
+            padding: 26px 20px;
+            box-shadow: 0 25px 50px rgba(30, 8, 55, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            position: sticky;
+            top: 20px;
+        }
+
+        body.light-mode .sawa-tree {
+            background: linear-gradient(165deg, rgba(237, 221, 83, 0.18), rgba(190, 87, 199, 0.18));
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .sawa-tree-root {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 21px;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        body.light-mode .sawa-tree-root {
+            color: #2b0b40;
+            text-shadow: none;
+            border-bottom-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .sawa-branch {
+            position: relative;
+            margin: 10px 0;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: sawaBranchIn 0.5s ease forwards;
+        }
+
+        @keyframes sawaBranchIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sawa-node-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            text-align: right;
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 17px;
+            padding: 12px 14px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            position: relative;
+        }
+
+        .sawa-node-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #9b4dad, #5a2483);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.25s ease;
+        }
+
+        .sawa-node-label {
+            flex: 1;
+            line-height: 1.3;
+        }
+
+        .sawa-node-pin-mark {
+            font-size: 13px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .sawa-node-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(237, 221, 83, 0.55);
+            transform: translateX(-4px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+        }
+
+        .sawa-node-btn.pinned {
+            background: linear-gradient(90deg, rgba(230, 141, 16, 0.95), rgba(184, 125, 44, 0.95));
+            border-color: #EDDD53;
+            box-shadow: 0 0 0 2px rgba(237, 221, 83, 0.45), 0 12px 26px rgba(230, 141, 16, 0.4);
+        }
+
+        .sawa-node-btn.pinned .sawa-node-icon {
+            background: linear-gradient(135deg, #EDDD53, #E68D10);
+        }
+
+        .sawa-node-btn.pinned .sawa-node-pin-mark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        body.light-mode .sawa-node-btn {
+            background: rgba(255, 255, 255, 0.35);
+            color: #2b0b40;
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .sawa-node-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .sawa-content {
+            flex: 1;
+            min-width: 320px;
+            max-width: 820px;
+        }
+
+        .sawa-fade-in {
+            animation: sawaFadeIn 0.35s ease;
+        }
+
+        @keyframes sawaFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sawa-placeholder {
+            text-align: center;
+            font-size: 20px;
+            color: #d1a5f7;
+            padding: 60px 20px;
+            border: 2px dashed rgba(165, 100, 222, 0.5);
+            border-radius: 20px;
+        }
+
+        .sawa-highlight {
+            animation: sawaHighlightPulse 1.6s ease 2;
+            outline: 3px solid #EDDD53;
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        @keyframes sawaHighlightPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(237, 221, 83, 0.35); }
+        }
+
+        .sawa-plan-card {
+            background: rgba(195, 174, 212, 0.12);
+            border: 2px solid #A564DE;
+            border-radius: 18px;
+            padding: 18px 20px;
+            margin-bottom: 22px;
+            box-shadow: -8px -8px 20px rgba(165, 100, 222, 0.25);
+        }
+
+        body.light-mode .sawa-plan-card {
+            background: rgba(255,255,255,0.07);
+            border-color: #EDDD53;
+        }
+
+        .sawa-plan-card h3 {
+            color: #EDDD53;
+            font-size: 22px;
+            margin: 0 0 12px 0;
+            border-bottom: 2px dashed rgba(165, 100, 222, 0.6);
+            padding-bottom: 8px;
+        }
+
+        .sawa-meta-line {
+            font-size: 15px;
+            color: #d1a5f7;
+            margin-bottom: 10px;
+        }
+
+        .sawa-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 14px 0;
+            font-size: 15px;
+        }
+
+        .sawa-table th, .sawa-table td {
+            border: 1px solid rgba(165, 100, 222, 0.5);
+            padding: 8px 10px;
+            text-align: center;
+            color: #fff;
+        }
+
+        body.light-mode .sawa-table th, body.light-mode .sawa-table td {
+            color: #222;
+        }
+
+        .sawa-table th {
+            background: linear-gradient(90deg, #5a2483, #9b4dad);
+            color: #fff;
+        }
+
+        .sawa-notes {
+            list-style: none;
+            padding-right: 0;
+            margin: 8px 0 0 0;
+        }
+
+        .sawa-notes li {
+            font-size: 14px;
+            background: linear-gradient(90deg, #5a2483, #9b4dad);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 10px;
+            margin: 6px 0;
+        }
+
+        body.light-mode .sawa-notes li {
+            background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
+            color: #222;
+        }
+
+        .sawa-note-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #EDDD53;
+            margin-top: 8px;
         }
 
         body.light-mode .discount-circle.active {
@@ -587,6 +867,7 @@
         .badge-postpaid { background: #E68D10; color: #fff; }
         .badge-mobile { background: #3498db; color: #fff; }
         .badge-quicknet { background: #ff4757; color: #fff; }
+        .badge-sawa { background: #2ed573; color: #fff; }
 
         .search-no-results {
             padding: 18px;
@@ -975,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div id="app-content" style="display: none;">
         <header class="header1">
-            <img src="images/logo.png" alt="شعار الموقع" style="height: 250px; width: auto; max-width: 90%; object-fit: contain;">
+            <img src="images/logo.png" alt="شعار الموقع" class="site-logo">
         </header>
         <div style="text-align:center; margin-top: 40px; font-size: 24px; color: white;">
         </div>
@@ -991,7 +1272,8 @@ document.addEventListener('DOMContentLoaded', function() {
         </button>
 
         <div style="text-align:center; margin-bottom: 30px;">
-            <button id="show-plans-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #E68D10; color: white; border: none; border-radius: 10px;">باقات الجوال المفوتر</button>
+            <button id="show-sawa-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">باقات سوا</button>
+            <button id="show-plans-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">باقات الجوال المفوتر</button>
             <button id="show-mobile-plans-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">باقات الهاتف المفوترة</button>
             <button id="show-quick-net-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">كويك نت المفوترة</button>
             <button id="show-comparison-btn" style="font-size: 26px; padding: 10px 30px; margin: 10px; background-color: #6D3687; color: white; border: none; border-radius: 10px;">مقارنة الباقات</button>
@@ -1007,7 +1289,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
 
-        <div id="plans-section">
+        <div id="welcome-section" style="text-align:center; padding: 80px 20px;">
+            <div style="font-size: 30px; font-weight: bold; color: #EDDD53; margin-bottom: 15px;">أهلاً بك 👋</div>
+            <div style="font-size: 20px; color: #d1a5f7;">اختر قسمًا من الأعلى لعرض الباقات، أو استخدم شريط البحث لإيجاد باقة معينة مباشرة</div>
+        </div>
+
+        <div id="plans-section" style="display: none;">
             <h1 style="visibility: hidden;">باقات الجوال المفوترة</h1>
             <div class="cards-container" id="plans-container"></div>
         </div>
@@ -1020,6 +1307,16 @@ document.addEventListener('DOMContentLoaded', function() {
         <div id="quick-net-section" style="display: none;">
             <h1 style="visibility: hidden;">كويك نت المفوترة</h1>
             <div class="cards-container" id="quick-net-container"></div>
+        </div>
+
+        <div id="sawa-section" style="display: none;">
+            <h1 style="visibility: hidden;">باقات سوا</h1>
+            <div class="sawa-wrapper">
+                <div class="sawa-tree" id="sawa-tree"></div>
+                <div class="sawa-content" id="sawa-content">
+                    <div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها 🌳</div>
+                </div>
+            </div>
         </div>
 
         <div id="comparison-section" style="display: none;">
@@ -1271,6 +1568,317 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             ];
 
+            // ***************************************************************
+            // بيانات قسم "باقات سوا" (بدون نظام الخصم)
+            // ***************************************************************
+            const sawaTreeData = [
+                { id: "sawa-plus", title: "باقات سوا - سوا بلس" },
+                { id: "sawa-90", title: "باقات سوا 90 يوم" },
+                { id: "sawa-flex-basic", title: "سوا فليكس بيسك" },
+                { id: "sawa-hero", title: "عرض باقة سوا هيرو الجديدة" },
+                { id: "sawa-flex-new", title: "باقات سوا فليكس الجديدة" }
+            ];
+
+            const sawaData = {
+                "sawa-plus": `
+                    <div class="sawa-plan-card">
+                        <h3>باقات سوا (الصلاحية: 4 أسابيع - أي 28 يوم)</h3>
+                        <table class="sawa-table">
+                            <tr><th>الباقة</th><th>المكالمات</th><th>البيانات</th><th>سوشيال</th><th>الرصيد المسترد</th><th>واي فاي</th><th>الرمز</th></tr>
+                            <tr><td>ستار (220 ريال)</td><td>لامحدود داخل الشبكة</td><td>100 جيجا / 110 جيجا</td><td>لامحدود</td><td>11 ريال</td><td>-</td><td>7220</td></tr>
+                            <tr><td>بوست (160 ريال)</td><td>لامحدود داخل الشبكة</td><td>65 جيجا / 64 جيجا</td><td>لامحدود</td><td>8 ريال</td><td>20 جيجا</td><td>7160</td></tr>
+                            <tr><td>شير (110 ريال)</td><td>لامحدود داخل الشبكة</td><td>20 جيجا / 30 جيجا</td><td>30 جيجا / 20 جيجا</td><td>5.50 ريال</td><td>5 جيجا</td><td>7110</td></tr>
+                            <tr><td>فليكس (90 ريال)</td><td>200 دقيقة محلية ودولية</td><td>10 جيجا</td><td>-</td><td>-</td><td>-</td><td>7090</td></tr>
+                            <tr><td>لايك (65 ريال)</td><td>500 دقيقة داخل الشبكة</td><td>5 جيجا</td><td>5 جيجا</td><td>3.25 ريال</td><td>2 جيجا</td><td>7065</td></tr>
+                            <tr><td>بيسك (30 ريال)</td><td>100 دقيقة داخل وخارج الشبكة</td><td>1 جيجا</td><td>1 جيجا</td><td>-</td><td>-</td><td>7030</td></tr>
+                        </table>
+                        <ul class="sawa-notes">
+                            <li>برامج التواصل الاجتماعي المدعومة تشمل: واتساب، انستقرام، سناب شات، فيسبوك، إكس، يوتيوب، تويتش، جاكو (حسب الباقة)</li>
+                            <li>سيتم إيقاف باقة سوا شير نهائيًا ابتداءً من 15 مارس 2025</li>
+                            <li>عروض باقات سوا وسوا بلس للعملاء الحاليين والجدد تنتهي بتاريخ 25 مارس 2025</li>
+                        </ul>
+                    </div>
+
+                    <div class="sawa-plan-card">
+                        <h3>باقات سوا بلس (الصلاحية: 4 أسابيع - أي 28 يوم)</h3>
+                        <table class="sawa-table">
+                            <tr><th>الباقة</th><th>المكالمات</th><th>البيانات</th><th>سوشيال</th><th>الرمز</th></tr>
+                            <tr><td>ستار بلس+ (240 ريال)</td><td>لامحدود / 1200 دقيقة</td><td>100 جيجا / 130 جيجا</td><td>لامحدود</td><td>7240</td></tr>
+                            <tr><td>بوست بلس+ (170 ريال)</td><td>لامحدود داخل الشبكة و 1000/500 دقيقة خارج الشبكة</td><td>75 جيجا / 74 جيجا</td><td>لامحدود</td><td>7170</td></tr>
+                            <tr><td>شير بلس+ (115 ريال)</td><td>لامحدود داخل الشبكة و 500 دقيقة خارج الشبكة</td><td>30 جيجا / 25 جيجا</td><td>30 جيجا / 35 جيجا</td><td>7115</td></tr>
+                            <tr><td>لايك بلس+ (75 ريال)</td><td>500 دقيقة داخل وخارج الشبكة</td><td>10 جيجا / 11 جيجا</td><td>10 جيجا</td><td>7175</td></tr>
+                            <tr><td>30+ (35 ريال)</td><td>100 دقيقة داخل وخارج الشبكة</td><td>1 جيجا</td><td>1 جيجا</td><td>7135</td></tr>
+                        </table>
+                        <ul class="sawa-notes">
+                            <li>عروض باقات سوا وسوا بلس للعملاء الحاليين والجدد تنتهي بتاريخ 25 مارس 2025</li>
+                        </ul>
+                    </div>
+
+                    <div class="sawa-plan-card">
+                        <h3>باقات سوا الأسبوعية واليومية</h3>
+                        <table class="sawa-table">
+                            <tr><th>الباقة</th><th>السعر</th><th>الدقائق والرسائل</th><th>البيانات</th><th>سوشيال</th><th>الرمز</th></tr>
+                            <tr><td>15 يومية</td><td>15 ريال</td><td>400 دقيقة داخل الشبكة</td><td>1 جيجا</td><td>-</td><td>7015</td></tr>
+                            <tr><td>10 يومية</td><td>10 ريال</td><td>200 دقيقة داخل الشبكة + 200 رسالة</td><td>200 ميجابايت</td><td>-</td><td>8111</td></tr>
+                            <tr><td>سوا الأسبوعية</td><td>25 ريال</td><td>200 دقيقة داخل وخارج الشبكة</td><td>2 جيجا</td><td>2 جيجا</td><td>7025</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="sawa-plan-card">
+                        <h3>الخطة التسعيرية بدون باقة</h3>
+                        <table class="sawa-table">
+                            <tr><th>المكالمات داخل وخارج الشبكة</th><th>البيانات</th><th>الرسائل داخل الشبكة</th><th>الرسائل خارج الشبكة</th></tr>
+                            <tr><td>55 هللة لكل دقيقة</td><td>2 ريال لكل ميجابايت</td><td>25 هللة للرسالة</td><td>35 هللة للرسالة</td></tr>
+                        </table>
+                        <p class="sawa-note-title">معلومات مهمة</p>
+                        <ul class="sawa-notes">
+                            <li>الأسعار لا تشمل ضريبة القيمة المضافة 15%، حيث تم تحصيلها مسبقًا عند شحن الرصيد</li>
+                            <li>الدول المشمولة لباقة سوا فليكس: اليمن، السودان، الفلبين، مصر، بنغلاديش، قطر، الهند، الكويت، باكستان، إثيوبيا، أفغانستان، الإمارات، سيريلانكا، نيبال، عمان، البحرين، إندونيسيا، سوريا، الأردن، لبنان</li>
+                        </ul>
+                    </div>
+                `,
+                "sawa-90": `
+                    <div class="sawa-plan-card">
+                        <h3>باقات سوا 90 يوم</h3>
+                        <div class="sawa-meta-line">المستهدفين: العملاء الجدد والحاليين &nbsp;|&nbsp; تاريخ الانتهاء: دائمة</div>
+                        <p style="font-size:15px;">يستمتع عملاء سوا لايك بلس وبيسك 90 يوم بمزايا باقاتهم، ويتم الاشتراك من خلال تطبيق mystc أو كود التفعيل الموضح أدناه.</p>
+                        <table class="sawa-table">
+                            <tr><th>الباقة</th><th>الدقائق داخل وخارج الشبكة</th><th>البيانات</th><th>السوشال</th><th>التفعيل</th><th>السعر بدون ضريبة</th></tr>
+                            <tr><td>لايك بلس 3 أشهر</td><td>1500 دقيقة</td><td>25 جيجابايت</td><td>25 جيجابايت</td><td>mystc أو إرسال 37065 إلى 900</td><td>225 ريال</td></tr>
+                            <tr><td>سوا بيسك 3 أشهر</td><td>300 دقيقة</td><td>3 جيجابايت</td><td>3 جيجابايت</td><td>mystc أو إرسال 37030 إلى 900</td><td>90 ريال</td></tr>
+                        </table>
+                        <ul class="sawa-notes">
+                            <li>الصلاحية: 90 يوم</li>
+                        </ul>
+                    </div>
+                `,
+                "sawa-flex-basic": `
+                    <div class="sawa-plan-card">
+                        <h3>سوا فليكس بيسك</h3>
+                        <p style="font-size:15px;">تم تغيير مسمى باقة سوا 30 بلس الدولية إلى سوا فليكس بيسك</p>
+                        <table class="sawa-table">
+                            <tr><th>السعر</th><th>السعر مع الضريبة</th><th>الدقائق</th><th>العرض</th><th>البيانات</th></tr>
+                            <tr><td>35 ريال</td><td>40.25 ريال</td><td>60 دقيقة دولية ومحلية</td><td>دائم</td><td>1 جيجا</td></tr>
+                        </table>
+                        <table class="sawa-table">
+                            <tr><th>تواصل اجتماعي</th><th>مدة الاشتراك</th><th>طريقة الاشتراك</th></tr>
+                            <tr><td>1 جيجا</td><td>4 أسابيع</td><td>إرسال 8116 إلى 900 أو من خلال mystc</td></tr>
+                        </table>
+                        <p class="sawa-note-title">الدول المشمولة</p>
+                        <ul class="sawa-notes">
+                            <li>اليمن - السودان - الفلبين - مصر - بنجلاديش - الهند - باكستان - اندونيسيا</li>
+                        </ul>
+                        <p class="sawa-note-title">شبكات التواصل الاجتماعي</p>
+                        <ul class="sawa-notes">
+                            <li>يوتيوب - سناب شات - واتساب - تويتر - انستقرام - فيسبوك</li>
+                        </ul>
+                    </div>
+                `,
+                "sawa-hero": `
+                    <div class="sawa-plan-card">
+                        <h3>عرض باقة سوا هيرو الجديدة</h3>
+                        <div class="sawa-meta-line">الفئة المستهدفة: العملاء الحاليين والجدد &nbsp;|&nbsp; تاريخ الانتهاء: دائمة</div>
+                        <p style="font-size:15px;">يستمتع عملاء سوا بمميزات باقة سوا هيرو.</p>
+                        <table class="sawa-table">
+                            <tr><th>اسم الباقة</th><th>الدقائق المحلية</th><th>مدة الباقة</th><th>السعر بدون ضريبة</th><th>السعر مع الضريبة</th></tr>
+                            <tr><td>سوا هيرو</td><td>لامحدود</td><td>30 يوم</td><td>360 ريال</td><td>414 ريال</td></tr>
+                        </table>
+                        <p class="sawa-note-title">التفعيل</p>
+                        <ul class="sawa-notes">
+                            <li>عبر الفروع ومتاجر بيع الجوالات، أو تطبيق mystc، أو إرسال رمز 7360 إلى 900</li>
+                        </ul>
+                    </div>
+                `,
+                "sawa-flex-new": `
+                    <div class="sawa-plan-card">
+                        <h3>باقات سوا فليكس الجديدة</h3>
+                        <div class="sawa-meta-line">الفئة المستهدفة: عملاء سوا الحاليين والجدد</div>
+                        <table class="sawa-table">
+                            <tr><th>اسم الباقة</th><th>الدقائق</th><th>بيانات</th><th>سوشيال</th><th>السعر بدون ضريبة</th><th>السعر مع الضريبة</th><th>رسالة التفعيل</th></tr>
+                            <tr><td>سوا فليكس 65</td><td>350 دقيقة محلية ودولية</td><td>10 جيجا / 9 جيجا</td><td>5 جيجا / 6 جيجا + 5</td><td>65 ريال</td><td>74.75 ريال</td><td>7066 إلى 900</td></tr>
+                            <tr><td>سوا فليكس 100</td><td>1000 دقيقة محلية ودولية</td><td>35 جيجا / 36 جيجا</td><td>25 جيجا + 5</td><td>100 ريال</td><td>115 ريال</td><td>7095 إلى 900</td></tr>
+                            <tr><td>سوا فليكس 150 مدمجة</td><td>1500 دقيقة محلية ودولية</td><td>50 جيجا / 55 جيجا</td><td>لامحدود</td><td>150 ريال</td><td>172.50 ريال</td><td>الاشتراك والتجديد من mystc</td></tr>
+                            <tr><td>سوا فليكس 150 عادية</td><td>1500 دقيقة محلية ودولية</td><td>50 جيجا / 55 جيجا</td><td>لامحدود</td><td>150 ريال</td><td>172.50 ريال</td><td>7243 إلى 900 / mystc</td></tr>
+                            <tr><td>سوا فليكس 240</td><td>2000 دقيقة محلية ودولية</td><td>115 جيجا + 5</td><td>لامحدود</td><td>240 ريال</td><td>276 ريال</td><td>7241 إلى 900</td></tr>
+                            <tr><td>سوا فليكس 340</td><td>1000 / 1500 دقيقة محلية ودولية</td><td>110/100/100/110 جيجا</td><td>-</td><td>340 ريال</td><td>391 ريال</td><td>mystc أو 7242 إلى 900</td></tr>
+                        </table>
+
+                        <p class="sawa-note-title">سوا فليكس 65</p>
+                        <ul class="sawa-notes">
+                            <li>سقف يومي للرسائل النصية 50 رسالة للشرائح الجديدة (تأسيس، تغيير شريحة، بدل فاقد) لأول 12 شهر من تاريخ التأسيس</li>
+                            <li>أصبحت باقة دائمة اعتبارًا من 2024/6/30</li>
+                            <li>عرض سوا فليكس 65 للعملاء الحاليين والجدد ينتهي بتاريخ 3 مارس 2026</li>
+                            <li>عرض mystc (5 جيجا بيانات إضافية + 5% رصيد إضافي للشحن المباشر) ينتهي بتاريخ 31 مارس 2026</li>
+                        </ul>
+
+                        <p class="sawa-note-title">سوا فليكس 100</p>
+                        <ul class="sawa-notes">
+                            <li>سقف يومي 50 رسالة للشرائح الجديدة لأول 12 شهر من تاريخ التأسيس</li>
+                            <li>عرض للعملاء الحاليين والجدد من 9 ديسمبر 2025 حتى 4 مارس 2026 (البيانات تصبح 36 جيجا)، متاح عبر جميع القنوات، ويمكن الاشتراك أو التجديد أكثر من مرة خلال فترة العرض</li>
+                            <li>عرض mystc ينتهي بتاريخ 31 مارس 2026</li>
+                        </ul>
+
+                        <p class="sawa-note-title">سوا فليكس 150 (مدمجة وعادية)</p>
+                        <ul class="sawa-notes">
+                            <li>سقف يومي 50 رسالة للشرائح الجديدة لأول 12 شهر من تاريخ التأسيس</li>
+                            <li>عرض باقة سوا فليكس 150 للعملاء الجدد والحاليين ينتهي بتاريخ 21 أبريل 2026</li>
+                        </ul>
+
+                        <p class="sawa-note-title">سوا فليكس 240</p>
+                        <ul class="sawa-notes">
+                            <li>سقف يومي 50 رسالة للشرائح الجديدة لأول 12 شهر من تاريخ التأسيس</li>
+                            <li>عرض mystc (5 جيجا إضافية + 5% رصيد إضافي للشحن المباشر) ينتهي بتاريخ 31 مارس 2026</li>
+                        </ul>
+
+                        <p class="sawa-note-title">سوا فليكس 340</p>
+                        <ul class="sawa-notes">
+                            <li>سقف يومي 50 رسالة للشرائح الجديدة لأول 12 شهر من تاريخ التأسيس</li>
+                            <li>عرض سوا فليكس 340 للعملاء الحاليين والجدد ينتهي بتاريخ 3 مارس 2026</li>
+                        </ul>
+                    </div>
+                `
+            };
+
+            // ***************************************************************
+            // فهرس بحث باقات سوا (اسم الباقة + كلمات مفتاحية + الفرع + النص المطابق للتظليل)
+            // ***************************************************************
+            const sawaSearchItems = [
+                { name: "سوا ستار (220 ريال)", node: "sawa-plus", price: 220, matchText: "ستار (220 ريال)", details: ["لامحدود داخل الشبكة", "100 جيجا", "110 جيجا", "سوشيال لامحدود", "7220"] },
+                { name: "سوا بوست (160 ريال)", node: "sawa-plus", price: 160, matchText: "بوست (160 ريال)", details: ["65 جيجا", "64 جيجا", "20 جيجا واي فاي", "7160"] },
+                { name: "سوا شير (110 ريال)", node: "sawa-plus", price: 110, matchText: "شير (110 ريال)", details: ["20 جيجا", "30 جيجا", "5 جيجا واي فاي", "7110"] },
+                { name: "سوا فليكس (90 ريال)", node: "sawa-plus", price: 90, matchText: "فليكس (90 ريال)", details: ["200 دقيقة", "10 جيجا", "7090"] },
+                { name: "سوا لايك (65 ريال)", node: "sawa-plus", price: 65, matchText: "لايك (65 ريال)", details: ["500 دقيقة", "5 جيجا", "2 جيجا واي فاي", "7065"] },
+                { name: "سوا بيسك (30 ريال)", node: "sawa-plus", price: 30, matchText: "بيسك (30 ريال)", details: ["100 دقيقة", "1 جيجا", "7030"] },
+                { name: "سوا ستار بلس+ (240 ريال)", node: "sawa-plus", price: 240, matchText: "ستار بلس+ (240 ريال)", details: ["100 جيجا", "130 جيجا", "1200 دقيقة", "7240"] },
+                { name: "سوا بوست بلس+ (170 ريال)", node: "sawa-plus", price: 170, matchText: "بوست بلس+ (170 ريال)", details: ["75 جيجا", "74 جيجا", "7170"] },
+                { name: "سوا شير بلس+ (115 ريال)", node: "sawa-plus", price: 115, matchText: "شير بلس+ (115 ريال)", details: ["30 جيجا", "25 جيجا", "7115"] },
+                { name: "سوا لايك بلس+ (75 ريال)", node: "sawa-plus", price: 75, matchText: "لايك بلس+ (75 ريال)", details: ["10 جيجا", "11 جيجا", "7175"] },
+                { name: "سوا 30+ (35 ريال)", node: "sawa-plus", price: 35, matchText: "30+ (35 ريال)", details: ["1 جيجا", "7135"] },
+                { name: "باقة 15 يومية", node: "sawa-plus", price: 15, matchText: "15 يومية", details: ["400 دقيقة", "1 جيجا", "7015"] },
+                { name: "باقة 10 يومية", node: "sawa-plus", price: 10, matchText: "10 يومية", details: ["200 دقيقة", "200 ميجابايت", "8111"] },
+                { name: "سوا الأسبوعية", node: "sawa-plus", price: 25, matchText: "سوا الأسبوعية", details: ["200 دقيقة", "2 جيجا", "7025"] },
+                { name: "سوا لايك بلس 3 أشهر (90 يوم)", node: "sawa-90", price: 225, matchText: "لايك بلس 3 أشهر", details: ["1500 دقيقة", "25 جيجابايت", "37065", "90 يوم"] },
+                { name: "سوا بيسك 3 أشهر (90 يوم)", node: "sawa-90", price: 90, matchText: "سوا بيسك 3 أشهر", details: ["300 دقيقة", "3 جيجابايت", "37030", "90 يوم"] },
+                { name: "سوا فليكس بيسك", node: "sawa-flex-basic", price: 35, matchText: "سوا فليكس بيسك", details: ["60 دقيقة", "1 جيجا", "8116", "30 بلس الدولية"] },
+                { name: "سوا هيرو", node: "sawa-hero", price: 360, matchText: "سوا هيرو", details: ["لامحدود", "30 يوم", "7360"] },
+                { name: "سوا فليكس 65", node: "sawa-flex-new", price: 65, matchText: "سوا فليكس 65", details: ["350 دقيقة", "10 جيجا", "9 جيجا", "7066"] },
+                { name: "سوا فليكس 100", node: "sawa-flex-new", price: 100, matchText: "سوا فليكس 100", details: ["1000 دقيقة", "35 جيجا", "36 جيجا", "7095"] },
+                { name: "سوا فليكس 150 مدمجة", node: "sawa-flex-new", price: 150, matchText: "سوا فليكس 150 مدمجة", details: ["1500 دقيقة", "50 جيجا", "55 جيجا", "mystc"] },
+                { name: "سوا فليكس 150 عادية", node: "sawa-flex-new", price: 150, matchText: "سوا فليكس 150 عادية", details: ["1500 دقيقة", "50 جيجا", "55 جيجا", "7243"] },
+                { name: "سوا فليكس 240", node: "sawa-flex-new", price: 240, matchText: "سوا فليكس 240", details: ["2000 دقيقة", "115 جيجا", "7241"] },
+                { name: "سوا فليكس 340", node: "sawa-flex-new", price: 340, matchText: "سوا فليكس 340", details: ["1000 دقيقة", "1500 دقيقة", "110 جيجا", "7242"] }
+            ];
+
+            // ***************************************************************
+            // منطق شجرة "باقات سوا": معاينة عند التمرير، وتثبيت عند الضغط
+            // ***************************************************************
+            let sawaPinnedNode = null;
+            let sawaTreeRendered = false;
+
+            const sawaIcons = {
+                "sawa-plus": "🔗",
+                "sawa-90": "📅",
+                "sawa-flex-basic": "🧩",
+                "sawa-hero": "🦸",
+                "sawa-flex-new": "⚡"
+            };
+
+            function sawaEmptyMessage() {
+                return `<div class="sawa-placeholder">مرّر الماوس على باقة لمعاينتها بسرعة، أو اضغط عليها لتثبيتها 🌳</div>`;
+            }
+
+            function showSawaContent(nodeId) {
+                const contentEl = document.getElementById('sawa-content');
+                contentEl.classList.remove('sawa-fade-in');
+                contentEl.innerHTML = sawaData[nodeId] || sawaEmptyMessage();
+                void contentEl.offsetWidth; // إعادة تشغيل حركة الظهور
+                contentEl.classList.add('sawa-fade-in');
+            }
+
+            function renderSawaTree() {
+                const treeContainer = document.getElementById('sawa-tree');
+                treeContainer.innerHTML = '<div class="sawa-tree-root">🌳 باقات سوا</div>' +
+                    sawaTreeData.map((node, i) => `
+                        <div class="sawa-branch" style="animation-delay:${i * 0.06}s">
+                            <button class="sawa-node-btn" data-node="${node.id}">
+                                <span class="sawa-node-icon">${sawaIcons[node.id] || '📶'}</span>
+                                <span class="sawa-node-label">${node.title}</span>
+                                <span class="sawa-node-pin-mark">📌</span>
+                            </button>
+                        </div>
+                    `).join('');
+
+                const buttons = treeContainer.querySelectorAll('.sawa-node-btn');
+
+                buttons.forEach(btn => {
+                    const nodeId = btn.dataset.node;
+
+                    // معاينة سريعة عند تمرير الماوس
+                    btn.addEventListener('mouseenter', () => {
+                        showSawaContent(nodeId);
+                    });
+
+                    // العودة للباقة المثبتة (أو رسالة فارغة) عند إبعاد الماوس
+                    btn.addEventListener('mouseleave', () => {
+                        if (sawaPinnedNode) {
+                            showSawaContent(sawaPinnedNode);
+                        } else {
+                            const contentEl = document.getElementById('sawa-content');
+                            contentEl.innerHTML = sawaEmptyMessage();
+                        }
+                    });
+
+                    // تثبيت/إلغاء تثبيت الباقة عند الضغط
+                    btn.addEventListener('click', () => {
+                        if (sawaPinnedNode === nodeId) {
+                            sawaPinnedNode = null;
+                            btn.classList.remove('pinned');
+                            document.getElementById('sawa-content').innerHTML = sawaEmptyMessage();
+                        } else {
+                            buttons.forEach(b => b.classList.remove('pinned'));
+                            sawaPinnedNode = nodeId;
+                            btn.classList.add('pinned');
+                            showSawaContent(nodeId);
+                        }
+                    });
+                });
+            }
+
+            // فتح فرع معيّن من نتائج البحث وتظليل الباقة المطلوبة بداخله
+            function openSawaNode(nodeId, matchText) {
+                if (!sawaTreeRendered) {
+                    renderSawaTree();
+                    sawaTreeRendered = true;
+                }
+
+                showSection(sawaSection, showSawaBtn);
+
+                const treeContainer = document.getElementById('sawa-tree');
+                const targetBtn = treeContainer.querySelector(`.sawa-node-btn[data-node="${nodeId}"]`);
+                if (targetBtn) {
+                    treeContainer.querySelectorAll('.sawa-node-btn').forEach(b => b.classList.remove('pinned'));
+                    sawaPinnedNode = nodeId;
+                    targetBtn.classList.add('pinned');
+                    showSawaContent(nodeId);
+                }
+
+                if (matchText) {
+                    setTimeout(() => {
+                        const contentEl = document.getElementById('sawa-content');
+                        const cells = contentEl.querySelectorAll('td, h3');
+                        for (const cell of cells) {
+                            if (cell.textContent.trim() === matchText) {
+                                const target = cell.closest('tr') || cell.closest('.sawa-plan-card') || cell;
+                                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                target.classList.add('sawa-highlight');
+                                setTimeout(() => target.classList.remove('sawa-highlight'), 3500);
+                                break;
+                            }
+                        }
+                    }, 200);
+                }
+            }
+
             const discounts = [0, 10, 20, 30, 40, 50];
 
 
@@ -1283,6 +1891,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 plansContainer.innerHTML = ''; // مسح المحتوى القديم
 
                 plans.forEach((plan, index) => {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "card-wrapper";
+
                     const card = document.createElement("div");
                     card.className = "card";
 
@@ -1297,7 +1908,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="discounts" id="discounts-${type}-${index}"></div>
                     `;
 
-                    plansContainer.appendChild(card);
+                    wrapper.appendChild(card);
+                    plansContainer.appendChild(wrapper);
                     if (plan.name.includes("بيسك+")) { card.classList.add("basic-plan"); }
                     if (plan.name.includes("ماكس")) { card.classList.add("max-plan"); }
 
@@ -1621,25 +2233,30 @@ document.addEventListener('DOMContentLoaded', function() {
             const mobilePlansSection = document.getElementById('mobile-plans-section');
             const comparisonSection = document.getElementById('comparison-section');
             const quickNetSection = document.getElementById('quick-net-section'); // القسم الجديد
+            const sawaSection = document.getElementById('sawa-section'); // قسم باقات سوا
+            const welcomeSection = document.getElementById('welcome-section'); // شاشة الترحيب
 
             const showPlansBtn = document.getElementById('show-plans-btn');
             const showMobilePlansBtn = document.getElementById('show-mobile-plans-btn');
             const showComparisonBtn = document.getElementById('show-comparison-btn');
             const showQuickNetBtn = document.getElementById('show-quick-net-btn'); // الزر الجديد
+            const showSawaBtn = document.getElementById('show-sawa-btn'); // زر باقات سوا
 
             // وظيفة إخفاء جميع الأقسام وتلوين زر واحد
             function showSection(sectionToShow, activeBtn) {
                 // إخفاء الكل
+                welcomeSection.style.display = 'none'; // إخفاء شاشة الترحيب
                 plansSection.style.display = 'none';
                 mobilePlansSection.style.display = 'none';
                 comparisonSection.style.display = 'none';
                 quickNetSection.style.display = 'none'; // إخفاء القسم الجديد
+                sawaSection.style.display = 'none'; // إخفاء قسم باقات سوا
 
                 // إظهار المطلوب
                 sectionToShow.style.display = 'block';
 
                 // إعادة تعيين ألوان الأزرار (تحديث قائمة الأزرار)
-                [showPlansBtn, showMobilePlansBtn, showComparisonBtn, showQuickNetBtn].forEach(btn => {
+                [showPlansBtn, showMobilePlansBtn, showComparisonBtn, showQuickNetBtn, showSawaBtn].forEach(btn => {
                     btn.style.backgroundColor = '#6D3687'; // اللون الافتراضي (بنفسجي)
                 });
 
@@ -1673,6 +2290,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSection(quickNetSection, showQuickNetBtn);
             });
 
+            // ربط زر باقات سوا
+            showSawaBtn.addEventListener('click', () => {
+                if (!sawaTreeRendered) {
+                    renderSawaTree();
+                    sawaTreeRendered = true;
+                }
+                showSection(sawaSection, showSawaBtn);
+            });
+
             // ***************************************************************
             // شريط البحث الديناميكي عن الباقات
             // ***************************************************************
@@ -1683,14 +2309,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const searchSourceMeta = {
                 postpaid: { label: 'باقات الجوال المفوترة', badgeClass: 'badge-postpaid', containerId: 'plans-container', btn: () => showPlansBtn },
                 mobile: { label: 'باقات الهاتف المفوترة', badgeClass: 'badge-mobile', containerId: 'mobile-plans-container', btn: () => showMobilePlansBtn },
-                quicknet: { label: 'كويك نت المفوترة', badgeClass: 'badge-quicknet', containerId: 'quick-net-container', btn: () => showQuickNetBtn }
+                quicknet: { label: 'كويك نت المفوترة', badgeClass: 'badge-quicknet', containerId: 'quick-net-container', btn: () => showQuickNetBtn },
+                sawa: { label: 'باقات سوا', badgeClass: 'badge-sawa', containerId: null, btn: () => showSawaBtn }
             };
 
             function buildSearchIndex() {
                 return [
                     ...postpaidPlansData.map((p, i) => ({ ...p, type: 'postpaid', index: i })),
                     ...mobilePlansData.map((p, i) => ({ ...p, type: 'mobile', index: i })),
-                    ...quickNetPlansData.map((p, i) => ({ ...p, type: 'quicknet', index: i }))
+                    ...quickNetPlansData.map((p, i) => ({ ...p, type: 'quicknet', index: i })),
+                    ...sawaSearchItems.map((p, i) => ({ ...p, type: 'sawa', index: i }))
                 ];
             }
 
@@ -1765,12 +2393,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 const meta = searchSourceMeta[type];
                 if (!meta) return;
 
-                // الانتقال للفصل المناسب
-                meta.btn().click();
-
                 // إغلاق نتائج البحث
                 searchResultsBox.classList.remove('active');
                 searchInput.value = '';
+
+                if (type === 'sawa') {
+                    const sawaItem = sawaSearchItems[idx];
+                    if (sawaItem) {
+                        openSawaNode(sawaItem.node, sawaItem.matchText);
+                    }
+                    return;
+                }
+
+                // الانتقال للفصل المناسب
+                meta.btn().click();
 
                 // التمرير للبطاقة وتمييزها
                 setTimeout(() => {
@@ -1784,8 +2420,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 150);
             });
 
-            // تفعيل قسم المفوتر افتراضيًا عند تحميل التطبيق بنجاح
-            showPlansBtn.click();
+            // ملاحظة: لم يعد يتم فتح أي قسم تلقائيًا بعد تسجيل الدخول، بل تظهر شاشة ترحيب فقط
         });
 
     </script>
