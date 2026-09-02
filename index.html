@@ -8,11 +8,14 @@
         crossorigin="anonymous"></script>
     <title>Up</title>
     <link rel="icon" href="images/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <style>
         /* ------------------------------------------------------------------ */
-        /* شاشة تسجيل الدخول - تصميم مقسوم (Split Screen)                     */
+        /* شاشة تسجيل الدخول - تصميم مقسوم (Split Screen) - نسخة محسّنة       */
         /* ------------------------------------------------------------------ */
         #login-container {
             position: fixed;
@@ -23,6 +26,7 @@
             z-index: 10000;
             direction: rtl;
             display: flex;
+            font-family: 'Cairo', 'Arial', sans-serif;
         }
 
         .login-split {
@@ -38,63 +42,129 @@
             align-items: center;
             justify-content: center;
             padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* فقاعات زخرفية خفيفة بنفس هوية اللون الأساسي */
+        .login-left::before,
+        .login-left::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(106, 27, 154, 0.10) 0%, rgba(106, 27, 154, 0) 70%);
+            animation: loginBlobFloat 10s ease-in-out infinite;
+        }
+
+        .login-left::before {
+            width: 420px;
+            height: 420px;
+            top: -160px;
+            right: -160px;
+        }
+
+        .login-left::after {
+            width: 320px;
+            height: 320px;
+            bottom: -140px;
+            left: -120px;
+            animation-delay: -5s;
+            background: radial-gradient(circle, rgba(79, 0, 141, 0.08) 0%, rgba(79, 0, 141, 0) 70%);
+        }
+
+        @keyframes loginBlobFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(25px) scale(1.06); }
         }
 
         .login-left-inner {
             width: 100%;
             max-width: 420px;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: loginCardIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.15s;
+        }
+
+        @keyframes loginCardIn {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-logo {
             height: 99px;
             width: auto;
-            margin-bottom: 45px;
+            margin-bottom: 40px;
             display: block;
+            filter: drop-shadow(0 8px 18px rgba(106, 27, 154, 0.18));
+            animation: loginLogoPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.05s;
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        @keyframes loginLogoPop {
+            to { opacity: 1; transform: scale(1); }
         }
 
         .login-title {
-            font-size: 30px;
-            font-weight: bold;
+            font-size: 31px;
+            font-weight: 800;
             color: #1a1a2e;
-            margin: 0 0 10px 0;
-            font-family: 'Arial', sans-serif;
+            margin: 0 0 8px 0;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            letter-spacing: -0.3px;
         }
 
         .login-subtitle {
             font-size: 15px;
             color: #8b8b9a;
-            margin: 0 0 35px 0;
-            font-family: 'Arial', sans-serif;
+            margin: 0 0 34px 0;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            font-weight: 500;
         }
 
         .login-field {
             position: relative;
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        .login-field:nth-of-type(1) { animation-delay: 0.28s; }
+        .login-field:nth-of-type(2) { animation-delay: 0.36s; }
 
         .login-field input {
             width: 100%;
             box-sizing: border-box;
-            padding: 15px 45px 15px 45px;
-            border: 1px solid #e2e2ea;
+            padding: 16px 45px 16px 45px;
+            border: 1.5px solid #e2e2ea;
             background: #f7f7fb;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 15px;
             color: #333;
             outline: none;
-            transition: 0.25s ease;
+            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
             text-align: right;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
         }
 
         .login-field input::placeholder {
             color: #a8a8b8;
+            transition: opacity 0.2s ease;
         }
 
         .login-field input:focus {
             border-color: #6a1b9a;
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.12);
+            box-shadow: 0 0 0 4px rgba(106, 27, 154, 0.12);
+        }
+
+        .login-field input:focus::placeholder {
+            opacity: 0.55;
         }
 
         .login-field-icon {
@@ -105,6 +175,12 @@
             color: #a8a8b8;
             font-size: 16px;
             pointer-events: none;
+            transition: color 0.25s ease, transform 0.25s ease;
+        }
+
+        .login-field input:focus ~ .login-field-icon {
+            color: #6a1b9a;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .login-eye-toggle {
@@ -116,6 +192,12 @@
             font-size: 17px;
             cursor: pointer;
             user-select: none;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .login-eye-toggle:hover {
+            color: #6a1b9a;
+            transform: translateY(-50%) scale(1.15);
         }
 
         .login-remember-row {
@@ -123,18 +205,25 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.42s;
         }
 
         .login-forgot-link {
             font-size: 14px;
             color: #6a1b9a;
             text-decoration: none;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            font-weight: 600;
             cursor: pointer;
+            transition: opacity 0.2s ease;
         }
 
         .login-forgot-link:hover {
             text-decoration: underline;
+            opacity: 0.8;
         }
 
         .login-remember-label {
@@ -145,7 +234,7 @@
             color: #555;
             cursor: pointer;
             user-select: none;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
         }
 
         .login-remember-label input[type="checkbox"] {
@@ -157,39 +246,78 @@
 
         .login-submit-btn {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: linear-gradient(135deg, #6a1b9a, #4a1275);
+            background-size: 160% 160%;
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            font-family: 'Arial', sans-serif;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.5s ease;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.48s;
+        }
+
+        .login-submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
 
         .login-submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(106, 27, 154, 0.35);
+            box-shadow: 0 12px 24px rgba(106, 27, 154, 0.38);
+            background-position: 100% 50%;
+        }
+
+        .login-submit-btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        .login-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-submit-btn:disabled {
+            cursor: default;
+            opacity: 0.85;
         }
 
         .login-error-msg {
             color: #e74c3c;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 14px;
             margin-top: 14px;
             text-align: center;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            animation: loginShake 0.45s ease;
+        }
+
+        @keyframes loginShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
         .login-info-msg {
             color: #2ecc71;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 14px;
             margin-top: 14px;
             text-align: center;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
         }
 
         .login-terms {
@@ -198,12 +326,19 @@
             font-size: 13px;
             margin-top: 26px;
             cursor: pointer;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            transition: color 0.2s ease;
+        }
+
+        .login-terms:hover {
+            color: #6a1b9a;
         }
 
         .login-right {
             flex: 1;
             background-color: #4F008D;
+            background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 0%, transparent 45%),
+                               radial-gradient(circle at 80% 75%, rgba(255,255,255,0.06) 0%, transparent 40%);
             position: relative;
             display: flex;
             align-items: center;
@@ -217,6 +352,12 @@
             height: 100%;
             object-fit: contain;
             display: block;
+            animation: loginRightFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes loginRightFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
         }
 
         @media (max-width: 900px) {
@@ -226,6 +367,164 @@
             .login-left {
                 flex: 1 1 100%;
             }
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* شاشة نجاح تسجيل الدخول - شعار يدور ثم يتحول إلى علامة صح            */
+        /* ------------------------------------------------------------------ */
+        #login-success-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f4eefb 100%);
+            opacity: 0;
+            transition: opacity 0.45s ease;
+            direction: rtl;
+        }
+
+        #login-success-overlay.show {
+            display: flex;
+        }
+
+        #login-success-overlay.visible {
+            opacity: 1;
+        }
+
+        .lso-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lso-logo-wrap {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lso-ring {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+            opacity: 1;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .lso-ring circle {
+            fill: none;
+            stroke: #6a1b9a;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 280;
+            stroke-dashoffset: 210;
+            transform-origin: center;
+            animation: lsoRingSpin 1s linear infinite;
+        }
+
+        @keyframes lsoRingSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .lso-logo {
+            width: 92px;
+            height: 92px;
+            object-fit: contain;
+            border-radius: 22px;
+            animation: lsoLogoPulse 1.4s ease-in-out infinite;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        @keyframes lsoLogoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+
+        .lso-logo-wrap.success .lso-ring {
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        .lso-logo-wrap.success .lso-logo {
+            opacity: 0;
+            transform: scale(0.7);
+            position: absolute;
+        }
+
+        .lso-check {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .lso-logo-wrap.success .lso-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .lso-check-circle {
+            fill: none;
+            stroke: #22c55e;
+            stroke-width: 3;
+            stroke-dasharray: 145;
+            stroke-dashoffset: 145;
+        }
+
+        .lso-check-mark {
+            fill: none;
+            stroke: #22c55e;
+            stroke-width: 4.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 34;
+            stroke-dashoffset: 34;
+        }
+
+        .lso-logo-wrap.success .lso-check-circle {
+            animation: lsoDrawCircle 0.5s ease-out forwards;
+        }
+
+        .lso-logo-wrap.success .lso-check-mark {
+            animation: lsoDrawCheck 0.35s 0.4s ease-out forwards;
+        }
+
+        @keyframes lsoDrawCircle {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes lsoDrawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .lso-text {
+            margin-top: 26px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #6a1b9a;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .lso-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .lso-text.success {
+            color: #16a34a;
         }
 
         /* ------------------------------------------------------------------ */
@@ -1795,6 +2094,24 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </div>
+
+    <!-- شاشة نجاح تسجيل الدخول: الشعار يدور ثم يتحول إلى علامة صح -->
+    <div id="login-success-overlay">
+        <div class="lso-inner">
+            <div class="lso-logo-wrap" id="lso-logo-wrap">
+                <svg class="lso-ring" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="44.5"></circle>
+                </svg>
+                <img src="images/logo.png" alt="UP" class="lso-logo">
+                <svg class="lso-check" viewBox="0 0 52 52">
+                    <circle class="lso-check-circle" cx="26" cy="26" r="23"></circle>
+                    <path class="lso-check-mark" d="M14 27l7.5 7.5L38 18"></path>
+                </svg>
+            </div>
+            <div class="lso-text" id="lso-text">جارِ التحقق من بياناتك...</div>
+        </div>
+    </div>
+
     <div id="app-content" style="display: none;">
         <header class="header1">
             <img src="images/logo.png" alt="شعار الموقع" class="site-logo">
@@ -1947,6 +2264,46 @@ document.addEventListener('DOMContentLoaded', function() {
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
 
+        // -----------------------------------------------------------------
+        // حركة نجاح تسجيل الدخول: شعار UP يدور، ثم يتحول لعلامة صح، ثم يختفي
+        // -----------------------------------------------------------------
+        function playLoginSuccessAnimation() {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('login-success-overlay');
+                const logoWrap = document.getElementById('lso-logo-wrap');
+                const text = document.getElementById('lso-text');
+                if (!overlay || !logoWrap || !text) { resolve(); return; }
+
+                // إعادة الحالة إلى البداية (في حال تكرار تسجيل الدخول)
+                logoWrap.classList.remove('success');
+                text.classList.remove('show', 'success');
+                text.textContent = 'جارِ التحقق من بياناتك...';
+
+                overlay.classList.add('show');
+                // إجبار إعادة رسم قبل بدء الفيدإن حتى يعمل الانتقال
+                requestAnimationFrame(() => {
+                    overlay.classList.add('visible');
+                    setTimeout(() => text.classList.add('show'), 120);
+                });
+
+                // بعد فترة دوران الشعار: التحول إلى علامة الصح
+                setTimeout(() => {
+                    logoWrap.classList.add('success');
+                    text.textContent = 'تم تسجيل الدخول بنجاح';
+                    text.classList.add('success');
+                }, 1200);
+
+                // إخفاء الشاشة بالكامل وكشف الموقع
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                    setTimeout(() => {
+                        overlay.classList.remove('show');
+                        resolve();
+                    }, 450);
+                }, 2200);
+            });
+        }
+
         // متغيرات ومؤقت الجلسة (10 دقائق)
         let sessionTimeoutTimer;
         const TIMEOUT_DURATION = 10 * 60 * 1000; // 600,000 مللي ثانية = 10 دقائق
@@ -2062,7 +2419,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         : browserSessionPersistence;
                     await setPersistence(auth, persistence);
                     await signInWithEmailAndPassword(auth, email, password);
-                    // onAuthStateChanged سيتكفل بعرض التطبيق بعد نجاح الدخول
+                    // onAuthStateChanged سيتكفل بعرض التطبيق في الخلفية،
+                    // وشاشة النجاح (الشعار يدور ثم يتحول لعلامة صح) تغطي الانتقال
+                    await playLoginSuccessAnimation();
                 } catch (error) {
                     let message = 'حدث خطأ أثناء تسجيل الدخول، حاول مرة أخرى.';
                     switch (error.code) {
