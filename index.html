@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <style>
@@ -1162,6 +1163,274 @@
 
         .cp-error { color: #e74c3c; }
         .cp-success { color: #2ecc71; }
+
+        /* ------------------------------------------------------------------ */
+        /* لوحة تحكم الأدمن                                                    */
+        /* ------------------------------------------------------------------ */
+        #admin-panel-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 3, 20, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 10500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+        }
+
+        #admin-panel-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.28s ease;
+        }
+
+        #admin-panel-modal {
+            position: relative;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 640px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            text-align: right;
+            transform: scale(0.92) translateY(14px);
+            opacity: 0;
+            transition: transform 0.32s cubic-bezier(.34, 1.56, .64, 1), opacity 0.26s ease;
+            font-family: 'Cairo', 'Arial', sans-serif;
+        }
+
+        #admin-panel-overlay.open #admin-panel-modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        #admin-panel-modal h2 {
+            margin: 0 0 20px 0;
+            color: #2b0b40;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        #admin-panel-modal h3 {
+            margin: 0 0 12px 0;
+            color: #6a1b9a;
+            font-size: 15px;
+        }
+
+        #admin-panel-close {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            cursor: pointer;
+            color: #999;
+            font-size: 16px;
+            transition: color 0.2s ease, transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        #admin-panel-close:hover {
+            color: #6a1b9a;
+            transform: rotate(90deg) scale(1.15);
+        }
+
+        #ap-add-section {
+            background: #f7f7fb;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 26px;
+        }
+
+        .ap-add-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ap-add-row input,
+        .ap-add-row select {
+            flex: 1 1 150px;
+            padding: 11px 12px;
+            border: 1px solid #e2e2ea;
+            background: #fff;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #333;
+            outline: none;
+            font-family: 'Cairo', 'Arial', sans-serif;
+        }
+
+        .ap-add-row input:focus,
+        .ap-add-row select:focus {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.12);
+        }
+
+        #ap-add-btn {
+            flex: 1 1 100px;
+            padding: 11px 14px;
+            background: linear-gradient(135deg, #6a1b9a, #4a1275);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            transition: transform 0.18s ease, box-shadow 0.3s ease;
+        }
+
+        #ap-add-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(106, 27, 154, 0.35); }
+        #ap-add-btn:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; }
+
+        #ap-import-section {
+            background: #f7f7fb;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 26px;
+        }
+
+        .ap-hint {
+            font-size: 12px;
+            color: #888;
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+        }
+
+        #ap-import-file {
+            flex: 1 1 150px;
+            font-size: 12px;
+            font-family: 'Cairo', 'Arial', sans-serif;
+        }
+
+        #ap-import-preview-btn,
+        #ap-import-confirm-btn {
+            padding: 11px 14px;
+            background: linear-gradient(135deg, #6a1b9a, #4a1275);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            transition: transform 0.18s ease, box-shadow 0.3s ease;
+        }
+
+        #ap-import-preview-btn:hover,
+        #ap-import-confirm-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(106, 27, 154, 0.35); }
+        #ap-import-preview-btn:disabled,
+        #ap-import-confirm-btn:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; }
+
+        #ap-import-confirm-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #ap-import-preview {
+            margin-top: 14px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #e2e2ea;
+        }
+
+        #ap-import-summary {
+            font-size: 13px;
+            font-weight: bold;
+            color: #2b0b40;
+            margin-bottom: 8px;
+        }
+
+        #ap-import-emails-list {
+            max-height: 140px;
+            overflow-y: auto;
+            font-size: 12px;
+            color: #555;
+            direction: ltr;
+            text-align: right;
+            line-height: 1.9;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+
+        #ap-import-emails-list .ap-bad-email { color: #c0392b; }
+
+        #ap-import-progress {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #6a1b9a;
+            font-weight: bold;
+        }
+
+        .ap-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ap-row:last-child { border-bottom: none; }
+
+        .ap-row-email {
+            flex: 1 1 180px;
+            font-size: 13px;
+            color: #2b0b40;
+            font-weight: bold;
+            direction: ltr;
+            text-align: right;
+            word-break: break-all;
+        }
+
+        .ap-badge {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .ap-badge-admin { background: #ede0fb; color: #6a1b9a; }
+        .ap-badge-user { background: #e8f0fe; color: #1a56c4; }
+        .ap-badge-active { background: #e3faf0; color: #17974a; }
+        .ap-badge-disabled { background: #fdeaea; color: #c0392b; }
+
+        .ap-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .ap-btn {
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #444;
+            cursor: pointer;
+            font-family: 'Cairo', 'Arial', sans-serif;
+            transition: background 0.2s ease, transform 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .ap-btn:hover { background: #f2f2f7; transform: translateY(-1px); }
+        .ap-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+        .ap-btn-danger { color: #c0392b; border-color: #f3caca; }
+        .ap-btn-danger:hover { background: #fdeaea; }
+        .ap-btn-success { color: #17974a; border-color: #bfe9d3; }
+        .ap-btn-success:hover { background: #e3faf0; }
+
+        @media (max-width: 560px) {
+            .ap-row { flex-direction: column; align-items: flex-start; }
+            .ap-row-email { text-align: right; }
+        }
 
         /* ------------------------------------------------------------------ */
 
@@ -2481,6 +2750,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </button>
             <div id="account-menu-dropdown">
+                <button id="open-admin-panel-btn" class="account-menu-item" style="display:none;">
+                    <span class="ami-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 010 7.75"></path>
+                        </svg>
+                    </span>
+                    <span>لوحة تحكم الأدمن</span>
+                </button>
                 <button id="open-change-password-btn" class="account-menu-item">
                     <span class="ami-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2529,6 +2809,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
                 <div id="cp-error" class="cp-msg cp-error" style="display: none;"></div>
                 <div id="cp-success" class="cp-msg cp-success" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- لوحة تحكم الأدمن -->
+        <div id="admin-panel-overlay">
+            <div id="admin-panel-modal">
+                <div id="admin-panel-close">✖</div>
+                <h2>لوحة تحكم الأدمن</h2>
+
+                <div id="ap-add-section">
+                    <h3>إضافة حساب جديد</h3>
+                    <div class="ap-add-row">
+                        <input type="email" id="ap-new-email" placeholder="البريد الإلكتروني" dir="ltr" autocomplete="off">
+                        <input type="text" id="ap-new-password" placeholder="كلمة سر مبدئية (٦ أحرف فأكثر)" dir="ltr" autocomplete="off">
+                        <select id="ap-new-role">
+                            <option value="user">مستخدم عادي</option>
+                            <option value="admin">أدمن</option>
+                        </select>
+                        <button id="ap-add-btn">إضافة</button>
+                    </div>
+                    <div id="ap-add-msg" class="cp-msg" style="display:none;"></div>
+                </div>
+
+                <div id="ap-import-section">
+                    <h3>استيراد جماعي من إكسل</h3>
+                    <p class="ap-hint">ملف يحتوي عمود بريد إلكتروني واحد لكل صف. كل الحسابات المستوردة تنضاف بنفس كلمة السر أدناه (كل مستخدم يقدر يغيّرها بنفسه لاحقًا من حسابه).</p>
+                    <div class="ap-add-row">
+                        <input type="file" id="ap-import-file" accept=".xlsx,.xls,.csv">
+                        <input type="text" id="ap-import-password" placeholder="كلمة السر المبدئية للجميع" dir="ltr" value="Welcome@123">
+                        <select id="ap-import-role">
+                            <option value="user">مستخدم عادي</option>
+                            <option value="admin">أدمن</option>
+                        </select>
+                        <button id="ap-import-preview-btn">معاينة الملف</button>
+                    </div>
+                    <div id="ap-import-preview" style="display:none;">
+                        <div id="ap-import-summary"></div>
+                        <div id="ap-import-emails-list"></div>
+                        <button id="ap-import-confirm-btn">تأكيد وإضافة الجميع</button>
+                    </div>
+                    <div id="ap-import-progress" style="display:none;"></div>
+                    <div id="ap-import-msg" class="cp-msg" style="display:none;"></div>
+                </div>
+
+                <div id="ap-users-section">
+                    <h3>كل الحسابات</h3>
+                    <div id="ap-users-list">
+                        <div id="ap-loading" style="text-align:center; color:#888; padding: 20px 0;">جارِ التحميل...</div>
+                    </div>
+                </div>
+
+                <div id="ap-global-msg" class="cp-msg" style="display:none;"></div>
             </div>
         </div>
 
@@ -2610,10 +2942,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // -----------------------------------------------------------------
         // Firebase: تهيئة تسجيل الدخول الآمن والمشفّر
         // -----------------------------------------------------------------
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
         import {
             getAuth,
             signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
             onAuthStateChanged,
             signOut,
             setPersistence,
@@ -2624,6 +2957,16 @@ document.addEventListener('DOMContentLoaded', function() {
             reauthenticateWithCredential,
             EmailAuthProvider
         } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            updateDoc,
+            collection,
+            getDocs,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCsfvvA-FWj-wwqz1oma6b6wqSs-ertHNs",
@@ -2635,8 +2978,22 @@ document.addEventListener('DOMContentLoaded', function() {
             measurementId: "G-FYPY2YETKH"
         };
 
+        // -----------------------------------------------------------------
+        // ضع هنا بريدك الإلكتروني (نفس بريد تسجيل الدخول الحالي) عشان أول
+        // مرة تدخل بعد هذا التحديث ينضبط حسابك تلقائيًا كـ "أدمن" بدون أي
+        // خطوة يدوية إضافية. تقدر تضيف أكثر من بريد لو تبي أكثر من أدمن أولي.
+        // -----------------------------------------------------------------
+        const ADMIN_BOOTSTRAP_EMAILS = [
+            "ضع-بريدك-هنا@example.com"
+        ].map(e => e.toLowerCase());
+
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
+        const db = getFirestore(firebaseApp);
+
+        // معلومات دور المستخدم الحالي (تُحدَّث بعد كل تسجيل دخول)
+        let currentUserRole = null;
+        let currentUserDisabled = false;
 
         // -----------------------------------------------------------------
         // حركة نجاح تسجيل الدخول: شعار UP يدور، ثم يتحول لعلامة صح، ثم يختفي
@@ -2773,8 +3130,48 @@ document.addEventListener('DOMContentLoaded', function() {
             // -----------------------------------------------------------------
             // مراقبة حالة الدخول: هذا هو المصدر الوحيد لإظهار/إخفاء التطبيق
             // -----------------------------------------------------------------
-            onAuthStateChanged(auth, (user) => {
+            onAuthStateChanged(auth, async (user) => {
                 if (user) {
+                    // --- التحقق من سجل المستخدم في Firestore (الدور + حالة التفعيل) ---
+                    let userData = null;
+                    try {
+                        const userDocRef = doc(db, 'users', user.uid);
+                        let userSnap = await getDoc(userDocRef);
+                        if (!userSnap.exists()) {
+                            // أول تسجيل دخول لهذا الحساب: ننشئ له سجل تلقائيًا
+                            const isBootstrapAdmin = ADMIN_BOOTSTRAP_EMAILS.includes((user.email || '').toLowerCase());
+                            await setDoc(userDocRef, {
+                                email: user.email || '',
+                                role: isBootstrapAdmin ? 'admin' : 'user',
+                                disabled: false,
+                                createdAt: serverTimestamp()
+                            });
+                            userSnap = await getDoc(userDocRef);
+                        }
+                        userData = userSnap.data();
+                    } catch (err) {
+                        console.error('تعذر جلب بيانات المستخدم من Firestore:', err);
+                    }
+
+                    // لو الحساب معطّل من الأدمن: نسجّل خروجه فورًا ونمنعه من الدخول
+                    if (userData && userData.disabled) {
+                        currentUserRole = null;
+                        currentUserDisabled = true;
+                        await signOut(auth);
+                        loginError.textContent = 'تم تعطيل هذا الحساب من قبل الأدمن، تواصل مع مسؤول النظام.';
+                        loginError.style.display = 'block';
+                        return;
+                    }
+
+                    currentUserRole = userData ? userData.role : 'user';
+                    currentUserDisabled = false;
+
+                    // إظهار/إخفاء زر لوحة تحكم الأدمن حسب الدور
+                    const adminPanelBtn = document.getElementById('open-admin-panel-btn');
+                    if (adminPanelBtn) {
+                        adminPanelBtn.style.display = (currentUserRole === 'admin') ? 'flex' : 'none';
+                    }
+
                     // مستخدم مسجّل دخوله: إخفاء شاشة الدخول وعرض التطبيق
                     loginContainer.style.display = 'none';
                     appContent.style.display = 'block';
@@ -3089,6 +3486,371 @@ document.addEventListener('DOMContentLoaded', function() {
                             cpSubmitLabel.textContent = 'تحديث كلمة السر';
                         }
                     }
+                });
+            }
+
+            // -----------------------------------------------------------------
+            // لوحة تحكم الأدمن: إضافة/عرض/تعطيل/تفعيل/تغيير دور/رابط كلمة سر
+            // -----------------------------------------------------------------
+            const openAdminPanelBtn = document.getElementById('open-admin-panel-btn');
+            const adminPanelOverlay = document.getElementById('admin-panel-overlay');
+            const adminPanelClose = document.getElementById('admin-panel-close');
+            const apUsersList = document.getElementById('ap-users-list');
+            const apNewEmail = document.getElementById('ap-new-email');
+            const apNewPassword = document.getElementById('ap-new-password');
+            const apNewRole = document.getElementById('ap-new-role');
+            const apAddBtn = document.getElementById('ap-add-btn');
+            const apAddMsg = document.getElementById('ap-add-msg');
+            const apGlobalMsg = document.getElementById('ap-global-msg');
+
+            function showApMsg(el, message, isError) {
+                el.textContent = message;
+                el.className = 'cp-msg ' + (isError ? 'cp-error' : 'cp-success');
+                el.style.display = 'block';
+                void el.offsetWidth;
+                el.classList.add('cp-anim');
+            }
+
+            function openAdminPanel() {
+                closeAccountMenu();
+                apAddMsg.style.display = 'none';
+                apGlobalMsg.style.display = 'none';
+                apNewEmail.value = '';
+                apNewPassword.value = '';
+                apNewRole.value = 'user';
+                adminPanelOverlay.classList.add('open');
+                loadUsersList();
+            }
+
+            function closeAdminPanel() {
+                adminPanelOverlay.classList.remove('open');
+            }
+
+            if (openAdminPanelBtn) openAdminPanelBtn.addEventListener('click', openAdminPanel);
+            if (adminPanelClose) adminPanelClose.addEventListener('click', closeAdminPanel);
+            if (adminPanelOverlay) {
+                adminPanelOverlay.addEventListener('click', (e) => {
+                    if (e.target === adminPanelOverlay) closeAdminPanel();
+                });
+            }
+
+            // تحميل/عرض كل الحسابات من Firestore
+            async function loadUsersList() {
+                apUsersList.innerHTML = '<div id="ap-loading" style="text-align:center; color:#888; padding: 20px 0;">جارِ التحميل...</div>';
+                try {
+                    const snap = await getDocs(collection(db, 'users'));
+                    const rows = [];
+                    snap.forEach((docSnap) => rows.push({ uid: docSnap.id, ...docSnap.data() }));
+
+                    if (rows.length === 0) {
+                        apUsersList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px 0;">لا توجد حسابات بعد.</div>';
+                        return;
+                    }
+
+                    apUsersList.innerHTML = '';
+                    rows.forEach((u) => {
+                        const isSelf = auth.currentUser && auth.currentUser.uid === u.uid;
+                        const row = document.createElement('div');
+                        row.className = 'ap-row';
+
+                        const roleBadgeClass = u.role === 'admin' ? 'ap-badge-admin' : 'ap-badge-user';
+                        const roleBadgeText = u.role === 'admin' ? 'أدمن' : 'مستخدم';
+                        const statusBadgeClass = u.disabled ? 'ap-badge-disabled' : 'ap-badge-active';
+                        const statusBadgeText = u.disabled ? 'معطّل' : 'مفعّل';
+
+                        row.innerHTML = `
+                            <div class="ap-row-email">${(u.email || '(بدون بريد)')}${isSelf ? ' <span style="color:#999; font-weight:normal;">(أنت)</span>' : ''}</div>
+                            <span class="ap-badge ${roleBadgeClass}">${roleBadgeText}</span>
+                            <span class="ap-badge ${statusBadgeClass}">${statusBadgeText}</span>
+                            <div class="ap-actions"></div>
+                        `;
+
+                        const actions = row.querySelector('.ap-actions');
+
+                        if (!isSelf) {
+                            // تعطيل / تفعيل
+                            const toggleDisableBtn = document.createElement('button');
+                            toggleDisableBtn.className = 'ap-btn ' + (u.disabled ? 'ap-btn-success' : 'ap-btn-danger');
+                            toggleDisableBtn.textContent = u.disabled ? 'تفعيل' : 'تعطيل (حذف)';
+                            toggleDisableBtn.addEventListener('click', async () => {
+                                toggleDisableBtn.disabled = true;
+                                try {
+                                    await updateDoc(doc(db, 'users', u.uid), { disabled: !u.disabled });
+                                    showApMsg(apGlobalMsg, u.disabled ? 'تم تفعيل الحساب.' : 'تم تعطيل الحساب، ما يقدر يسجل دخول بعد الآن.', false);
+                                    loadUsersList();
+                                } catch (err) {
+                                    showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
+                                    toggleDisableBtn.disabled = false;
+                                }
+                            });
+                            actions.appendChild(toggleDisableBtn);
+
+                            // ترقية / تنزيل الدور
+                            const toggleRoleBtn = document.createElement('button');
+                            toggleRoleBtn.className = 'ap-btn';
+                            toggleRoleBtn.textContent = u.role === 'admin' ? 'تنزيل لمستخدم' : 'ترقية لأدمن';
+                            toggleRoleBtn.addEventListener('click', async () => {
+                                toggleRoleBtn.disabled = true;
+                                try {
+                                    await updateDoc(doc(db, 'users', u.uid), { role: u.role === 'admin' ? 'user' : 'admin' });
+                                    showApMsg(apGlobalMsg, 'تم تحديث دور الحساب.', false);
+                                    loadUsersList();
+                                } catch (err) {
+                                    showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
+                                    toggleRoleBtn.disabled = false;
+                                }
+                            });
+                            actions.appendChild(toggleRoleBtn);
+                        }
+
+                        // إرسال رابط تغيير كلمة السر (متاح حتى للحساب نفسه)
+                        const resetBtn = document.createElement('button');
+                        resetBtn.className = 'ap-btn';
+                        resetBtn.textContent = 'رابط تغيير كلمة السر';
+                        resetBtn.addEventListener('click', async () => {
+                            resetBtn.disabled = true;
+                            const originalText = resetBtn.textContent;
+                            try {
+                                await sendPasswordResetEmail(auth, u.email);
+                                resetBtn.textContent = 'تم الإرسال ✓';
+                                setTimeout(() => { resetBtn.textContent = originalText; resetBtn.disabled = false; }, 2500);
+                            } catch (err) {
+                                showApMsg(apGlobalMsg, 'تعذر إرسال رابط تغيير كلمة السر.', true);
+                                resetBtn.disabled = false;
+                            }
+                        });
+                        actions.appendChild(resetBtn);
+
+                        apUsersList.appendChild(row);
+                    });
+                } catch (err) {
+                    console.error(err);
+                    apUsersList.innerHTML = '<div style="text-align:center; color:#c0392b; padding: 20px 0;">تعذر تحميل قائمة الحسابات. تأكد من قواعد Firestore.</div>';
+                }
+            }
+
+            // إنشاء حساب واحد (عبر نسخة ثانية من Firebase حتى لا يسجل خروج الأدمن الحالي)
+            // يُستخدم من زر الإضافة المفردة ومن الاستيراد الجماعي معًا
+            let bulkCreateCounter = 0;
+            async function createUserAccount(email, password, role) {
+                bulkCreateCounter++;
+                const secondaryApp = initializeApp(firebaseConfig, 'SecondaryAdminCreate_' + Date.now() + '_' + bulkCreateCounter);
+                const secondaryAuth = getAuth(secondaryApp);
+                try {
+                    const cred = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+                    const newUid = cred.user.uid;
+                    await setDoc(doc(db, 'users', newUid), {
+                        email: email,
+                        role: role,
+                        disabled: false,
+                        createdAt: serverTimestamp()
+                    });
+                    await signOut(secondaryAuth);
+                    await deleteApp(secondaryApp);
+                    return { ok: true };
+                } catch (err) {
+                    try { await deleteApp(secondaryApp); } catch (e) {}
+                    let message = 'حدث خطأ أثناء إنشاء الحساب.';
+                    if (err.code === 'auth/email-already-in-use') message = 'البريد مستخدم مسبقًا.';
+                    else if (err.code === 'auth/invalid-email') message = 'صيغة البريد غير صحيحة.';
+                    else if (err.code === 'auth/weak-password') message = 'كلمة السر ضعيفة جدًا.';
+                    return { ok: false, code: err.code, message };
+                }
+            }
+
+            // إضافة حساب جديد (مفردة)
+            if (apAddBtn) {
+                apAddBtn.addEventListener('click', async () => {
+                    const email = apNewEmail.value.trim();
+                    const password = apNewPassword.value.trim();
+                    const role = apNewRole.value;
+
+                    apAddMsg.style.display = 'none';
+
+                    if (!email || !password) {
+                        showApMsg(apAddMsg, 'الرجاء تعبئة البريد الإلكتروني وكلمة السر.', true);
+                        return;
+                    }
+                    if (password.length < 6) {
+                        showApMsg(apAddMsg, 'كلمة السر يجب أن تكون 6 أحرف على الأقل.', true);
+                        return;
+                    }
+
+                    apAddBtn.disabled = true;
+                    apAddBtn.textContent = 'جارِ الإضافة...';
+
+                    const result = await createUserAccount(email, password, role);
+
+                    if (result.ok) {
+                        showApMsg(apAddMsg, 'تم إنشاء الحساب بنجاح.', false);
+                        apNewEmail.value = '';
+                        apNewPassword.value = '';
+                        apNewRole.value = 'user';
+                        loadUsersList();
+                    } else {
+                        showApMsg(apAddMsg, result.message, true);
+                    }
+
+                    apAddBtn.disabled = false;
+                    apAddBtn.textContent = 'إضافة';
+                });
+            }
+
+            // -----------------------------------------------------------------
+            // استيراد جماعي من ملف إكسل (عمود بريد إلكتروني واحد، كلمة سر موحّدة)
+            // -----------------------------------------------------------------
+            const apImportFile = document.getElementById('ap-import-file');
+            const apImportPassword = document.getElementById('ap-import-password');
+            const apImportRole = document.getElementById('ap-import-role');
+            const apImportPreviewBtn = document.getElementById('ap-import-preview-btn');
+            const apImportPreview = document.getElementById('ap-import-preview');
+            const apImportSummary = document.getElementById('ap-import-summary');
+            const apImportEmailsList = document.getElementById('ap-import-emails-list');
+            const apImportConfirmBtn = document.getElementById('ap-import-confirm-btn');
+            const apImportProgress = document.getElementById('ap-import-progress');
+            const apImportMsg = document.getElementById('ap-import-msg');
+
+            const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let parsedImportEmails = [];
+
+            function readFileAsArrayBuffer(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            if (apImportPreviewBtn) {
+                apImportPreviewBtn.addEventListener('click', async () => {
+                    apImportMsg.style.display = 'none';
+                    apImportPreview.style.display = 'none';
+                    parsedImportEmails = [];
+
+                    const file = apImportFile.files && apImportFile.files[0];
+                    if (!file) {
+                        showApMsg(apImportMsg, 'الرجاء اختيار ملف إكسل أولًا.', true);
+                        return;
+                    }
+                    if (typeof XLSX === 'undefined') {
+                        showApMsg(apImportMsg, 'تعذر تحميل مكتبة قراءة الإكسل، تأكد من اتصالك بالإنترنت وحدّث الصفحة.', true);
+                        return;
+                    }
+
+                    apImportPreviewBtn.disabled = true;
+                    apImportPreviewBtn.textContent = 'جارِ القراءة...';
+
+                    try {
+                        const buffer = await readFileAsArrayBuffer(file);
+                        const workbook = XLSX.read(buffer, { type: 'array' });
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+
+                        // استخراج أول قيمة تشبه بريد إلكتروني من كل صف، وتجاهل صف العنوان إن وجد
+                        const rawValues = [];
+                        rows.forEach((row) => {
+                            row.forEach((cell) => {
+                                const val = String(cell || '').trim();
+                                if (val) rawValues.push(val);
+                            });
+                        });
+
+                        const seen = new Set();
+                        const valid = [];
+                        const invalid = [];
+                        rawValues.forEach((val) => {
+                            if (!EMAIL_RE.test(val)) {
+                                // تجاهل خلايا العناوين الشائعة مثل "البريد الإلكتروني" أو "email"
+                                if (val.includes('@')) invalid.push(val);
+                                return;
+                            }
+                            const lower = val.toLowerCase();
+                            if (seen.has(lower)) return;
+                            seen.add(lower);
+                            valid.push(val);
+                        });
+
+                        parsedImportEmails = valid;
+
+                        let summaryText = `تم العثور على ${valid.length} بريد إلكتروني صالح.`;
+                        if (invalid.length > 0) summaryText += ` (${invalid.length} قيمة تجاهلناها لأنها ما تشبه بريد صحيح)`;
+                        apImportSummary.textContent = summaryText;
+
+                        apImportEmailsList.innerHTML = valid.map(e => `<div>${e}</div>`).join('') +
+                            invalid.map(e => `<div class="ap-bad-email">${e} ✖</div>`).join('');
+
+                        apImportPreview.style.display = valid.length > 0 ? 'block' : 'none';
+                        if (valid.length === 0) {
+                            showApMsg(apImportMsg, 'ما لقينا أي بريد إلكتروني صالح في الملف.', true);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        showApMsg(apImportMsg, 'تعذر قراءة الملف، تأكد إنه بصيغة إكسل صحيحة.', true);
+                    } finally {
+                        apImportPreviewBtn.disabled = false;
+                        apImportPreviewBtn.textContent = 'معاينة الملف';
+                    }
+                });
+            }
+
+            if (apImportConfirmBtn) {
+                apImportConfirmBtn.addEventListener('click', async () => {
+                    if (parsedImportEmails.length === 0) return;
+
+                    const password = apImportPassword.value.trim();
+                    const role = apImportRole.value;
+
+                    if (!password || password.length < 6) {
+                        showApMsg(apImportMsg, 'كلمة السر يجب أن تكون 6 أحرف على الأقل.', true);
+                        return;
+                    }
+
+                    apImportConfirmBtn.disabled = true;
+                    apImportPreviewBtn.disabled = true;
+                    apImportMsg.style.display = 'none';
+                    apImportProgress.style.display = 'block';
+
+                    let successCount = 0;
+                    let skipCount = 0;
+                    let failCount = 0;
+                    const failedList = [];
+
+                    for (let i = 0; i < parsedImportEmails.length; i++) {
+                        const email = parsedImportEmails[i];
+                        apImportProgress.textContent = `جارِ الإضافة... (${i + 1} من ${parsedImportEmails.length}) — ${email}`;
+
+                        const result = await createUserAccount(email, password, role);
+                        if (result.ok) {
+                            successCount++;
+                        } else if (result.code === 'auth/email-already-in-use') {
+                            skipCount++;
+                        } else {
+                            failCount++;
+                            failedList.push(email + ' (' + result.message + ')');
+                        }
+
+                        // فاصل بسيط بين كل عملية إنشاء لتفادي إغراق Firebase بطلبات متتالية
+                        await new Promise(r => setTimeout(r, 250));
+                    }
+
+                    apImportProgress.style.display = 'none';
+
+                    let finalMsg = `تمت إضافة ${successCount} حساب بنجاح.`;
+                    if (skipCount > 0) finalMsg += ` تم تجاوز ${skipCount} حساب لأنه موجود مسبقًا.`;
+                    if (failCount > 0) finalMsg += ` فشل ${failCount} حساب.`;
+
+                    showApMsg(apImportMsg, finalMsg, failCount > 0 && successCount === 0);
+                    if (failedList.length > 0) console.warn('حسابات فشلت أثناء الاستيراد:', failedList);
+
+                    apImportPreview.style.display = 'none';
+                    apImportFile.value = '';
+                    parsedImportEmails = [];
+
+                    apImportConfirmBtn.disabled = false;
+                    apImportPreviewBtn.disabled = false;
+
+                    loadUsersList();
                 });
             }
 
