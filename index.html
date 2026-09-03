@@ -1401,6 +1401,102 @@
         .ap-badge-active { background: #e3faf0; color: #17974a; }
         .ap-badge-disabled { background: #fdeaea; color: #c0392b; }
 
+        /* ---------------- حالة الحضور (متصل / غير متصل) ---------------- */
+
+        .ap-group-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #6a1b9a;
+            padding: 10px 4px 8px;
+            margin-top: 6px;
+            border-bottom: 1px dashed #e4d4f4;
+        }
+
+        .ap-group-header:first-child { margin-top: 0; }
+
+        .ap-group-count {
+            background: #f2e9fb;
+            color: #6a1b9a;
+            border-radius: 20px;
+            padding: 1px 9px;
+            font-size: 11px;
+        }
+
+        .ap-group-empty {
+            font-size: 12px;
+            color: #aaa;
+            padding: 10px 4px 16px;
+            text-align: center;
+        }
+
+        .ap-status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ap-dot-online {
+            background: #2ecc71;
+            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6);
+            animation: ap-pulse 1.8s ease-in-out infinite;
+        }
+
+        .ap-dot-offline { background: #e74c3c; }
+
+        .ap-dot-never { background: #b7b7c2; }
+
+        @keyframes ap-pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.55); }
+            70%  { box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        .ap-row.ap-row-clickable {
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.15s ease;
+        }
+
+        .ap-row.ap-row-clickable:hover { background: #faf7fe; }
+
+        .ap-row-email-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 180px;
+        }
+
+        .ap-status-detail {
+            flex-basis: 100%;
+            width: 100%;
+            margin-top: 4px;
+            padding: 10px 12px;
+            background: #f7f3fb;
+            border: 1px solid #ede0fb;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #4a2a63;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: ap-detail-in 0.18s ease;
+        }
+
+        .ap-detail-exact {
+            color: #8a7a99;
+            font-size: 11px;
+        }
+
+        @keyframes ap-detail-in {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
         .ap-actions {
             display: flex;
             gap: 6px;
@@ -2854,7 +2950,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div id="ap-users-section">
-                    <h3>كل الحسابات</h3>
+                    <h3>كل الحسابات وحالة الاتصال</h3>
+                    <p class="ap-hint">اضغط على أي حساب لعرض تفاصيل حالته — منذ متى متصل، أو متى كان آخر ظهور له.</p>
                     <div id="ap-users-list">
                         <div id="ap-loading" style="text-align:center; color:#888; padding: 20px 0;">جارِ التحميل...</div>
                     </div>
@@ -2964,7 +3061,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setDoc,
             updateDoc,
             collection,
-            getDocs,
+            onSnapshot,
             serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
@@ -2994,6 +3091,48 @@ document.addEventListener('DOMContentLoaded', function() {
         // معلومات دور المستخدم الحالي (تُحدَّث بعد كل تسجيل دخول)
         let currentUserRole = null;
         let currentUserDisabled = false;
+
+        // -----------------------------------------------------------------
+        // نظام تتبّع الحضور (متصل الآن / آخر ظهور) لصفحة الأدمن
+        // يعتمد على نبضة دورية (heartbeat) تحدّث lastSeen في Firestore،
+        // وعلى فارق زمني (staleness) لاعتبار المستخدم غير متصل تلقائيًا
+        // حتى لو انقطع اتصاله بدون تسجيل خروج صريح (إغلاق التبويب مثلاً).
+        // -----------------------------------------------------------------
+        let presenceHeartbeatTimer = null;
+        const PRESENCE_HEARTBEAT_MS = 25 * 1000;   // نبضة كل ٢٥ ثانية
+        const PRESENCE_STALE_MS = 65 * 1000;       // بعد ٦٥ ثانية بدون نبضة = غير متصل
+
+        async function markUserOnline(uid, isFreshSession) {
+            if (!uid) return;
+            try {
+                const payload = { online: true, lastSeen: serverTimestamp() };
+                if (isFreshSession) payload.sessionStart = serverTimestamp();
+                await updateDoc(doc(db, 'users', uid), payload);
+            } catch (err) {
+                console.error('تعذر تحديث حالة الاتصال:', err);
+            }
+        }
+
+        async function markUserOffline(uid) {
+            if (!uid) return;
+            try {
+                await updateDoc(doc(db, 'users', uid), { online: false, lastSeen: serverTimestamp() });
+            } catch (err) {
+                console.error('تعذر تحديث حالة الخروج:', err);
+            }
+        }
+
+        function startPresenceHeartbeat(uid) {
+            stopPresenceHeartbeat();
+            presenceHeartbeatTimer = setInterval(() => markUserOnline(uid, false), PRESENCE_HEARTBEAT_MS);
+        }
+
+        function stopPresenceHeartbeat() {
+            if (presenceHeartbeatTimer) {
+                clearInterval(presenceHeartbeatTimer);
+                presenceHeartbeatTimer = null;
+            }
+        }
 
         // -----------------------------------------------------------------
         // حركة نجاح تسجيل الدخول: شعار UP يدور، ثم يتحول لعلامة صح، ثم يختفي
@@ -3093,6 +3232,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // وظيفة تسجيل الخروج الفعلي - يتم استدعاؤها بعد انتهاء المؤقت
         function logout() {
+            // تحديث حالة الحضور إلى "غير متصل" قبل إنهاء الجلسة
+            const loggedOutUid = auth.currentUser ? auth.currentUser.uid : null;
+            stopPresenceHeartbeat();
+            if (loggedOutUid) markUserOffline(loggedOutUid);
+
             // تسجيل الخروج من Firebase؛ onAuthStateChanged سيتكفل بإظهار شاشة الدخول
             signOut(auth).catch((error) => console.error('خطأ أثناء تسجيل الخروج:', error));
 
@@ -3157,6 +3301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (userData && userData.disabled) {
                         currentUserRole = null;
                         currentUserDisabled = true;
+                        await markUserOffline(user.uid);
                         await signOut(auth);
                         loginError.textContent = 'تم تعطيل هذا الحساب من قبل الأدمن، تواصل مع مسؤول النظام.';
                         loginError.style.display = 'block';
@@ -3178,6 +3323,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     loginError.style.display = 'none';
                     startSessionTimer();
 
+                    // تسجيل هذا المستخدم "متصل الآن" وبدء نبضة الحضور الدورية
+                    markUserOnline(user.uid, true);
+                    startPresenceHeartbeat(user.uid);
+
                     // طبع اسم المستخدم (الجزء قبل @ من بريده) كعلامة مائية شفافة
                     const usernamePart = (user.email || 'مستخدم').split('@')[0];
                     const watermarkContainer = document.getElementById('watermark-container');
@@ -3194,6 +3343,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 } else {
                     // لا يوجد مستخدم مسجّل دخوله: عرض شاشة الدخول
+                    stopPresenceHeartbeat();
                     clearTimeout(sessionTimeoutTimer);
                     document.removeEventListener('mousemove', resetTimer);
                     document.removeEventListener('keypress', resetTimer);
@@ -3360,10 +3510,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 accountLogoutBtn.addEventListener('click', async () => {
                     closeAccountMenu();
                     accountLogoutBtn.disabled = true;
+                    const loggedOutUid = auth.currentUser ? auth.currentUser.uid : null;
                     await playLogoutAnimation();
+                    stopPresenceHeartbeat();
+                    if (loggedOutUid) await markUserOffline(loggedOutUid);
                     signOut(auth).catch((error) => console.error('خطأ أثناء تسجيل الخروج:', error));
                 });
             }
+
+            // محاولة أخيرة (بأفضل جهد) لتحديث الحالة إلى "غير متصل" عند إغلاق
+            // التبويب أو المتصفح مباشرة بدون تسجيل خروج صريح. لو ما نجحت هذه
+            // المحاولة (المتصفح أغلق الاتصال بسرعة)، فآلية النبضة والـ staleness
+            // في لوحة الأدمن ستتكفل باعتباره غير متصل تلقائيًا خلال ثوانٍ قليلة.
+            window.addEventListener('pagehide', () => {
+                if (auth.currentUser) {
+                    markUserOffline(auth.currentUser.uid);
+                }
+            });
 
             // إظهار رسالة خطأ/نجاح مع حركة دخول بسيطة
             function showCpMessage(el, message) {
@@ -3511,6 +3674,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.classList.add('cp-anim');
             }
 
+            // كاش الحسابات الحيّ (يتحدّث تلقائيًا عبر onSnapshot)، والحساب المفتوح
+            // تفاصيله حاليًا، ومؤقّت تحديث نصوص "منذ كذا دقيقة" كل فترة
+            let apUsersCache = [];
+            let apUnsubscribeUsers = null;
+            let apExpandedUid = null;
+            let apTickTimer = null;
+
             function openAdminPanel() {
                 closeAccountMenu();
                 apAddMsg.style.display = 'none';
@@ -3524,6 +3694,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             function closeAdminPanel() {
                 adminPanelOverlay.classList.remove('open');
+                if (apUnsubscribeUsers) { apUnsubscribeUsers(); apUnsubscribeUsers = null; }
+                if (apTickTimer) { clearInterval(apTickTimer); apTickTimer = null; }
+                apExpandedUid = null;
             }
 
             if (openAdminPanelBtn) openAdminPanelBtn.addEventListener('click', openAdminPanel);
@@ -3534,99 +3707,206 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // تحميل/عرض كل الحسابات من Firestore
-            async function loadUsersList() {
+            // ---------------- أدوات مساعدة لصياغة الوقت بالعربي ----------------
+            const AP_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+            function ap_formatDuration(ms) {
+                if (!isFinite(ms) || ms < 0) ms = 0;
+                const sec = Math.floor(ms / 1000);
+                if (sec < 45) return 'لحظات';
+                const min = Math.round(sec / 60);
+                if (min < 60) return min === 1 ? 'دقيقة' : (min === 2 ? 'دقيقتين' : (min <= 10 ? `${min} دقائق` : `${min} دقيقة`));
+                const hr = Math.round(min / 60);
+                if (hr < 24) return hr === 1 ? 'ساعة' : (hr === 2 ? 'ساعتين' : (hr <= 10 ? `${hr} ساعات` : `${hr} ساعة`));
+                const day = Math.round(hr / 24);
+                return day === 1 ? 'يوم' : (day === 2 ? 'يومين' : (day <= 10 ? `${day} أيام` : `${day} يومًا`));
+            }
+
+            function ap_formatExact(ms) {
+                const date = new Date(ms);
+                const d = date.getDate();
+                const m = AP_MONTHS[date.getMonth()];
+                const y = date.getFullYear();
+                let h = date.getHours();
+                const mnt = String(date.getMinutes()).padStart(2, '0');
+                const ampm = h >= 12 ? 'م' : 'ص';
+                h = h % 12; if (h === 0) h = 12;
+                return `${d} ${m} ${y} - ${h}:${mnt} ${ampm}`;
+            }
+
+            // يحدّد حالة الحضور: online (نبضة حديثة + العلَم online)، offline (له
+            // نشاط سابق لكن مو متصل الآن)، never (ما سجّل الدخول للموقع أبدًا)
+            function ap_getStatus(u) {
+                const lastSeenMs = (u.lastSeen && typeof u.lastSeen.toMillis === 'function') ? u.lastSeen.toMillis() : null;
+                const sessionStartMs = (u.sessionStart && typeof u.sessionStart.toMillis === 'function') ? u.sessionStart.toMillis() : null;
+                const isOnline = u.online === true && lastSeenMs !== null && (Date.now() - lastSeenMs) < PRESENCE_STALE_MS;
+                if (isOnline) return { state: 'online', since: sessionStartMs || lastSeenMs };
+                if (lastSeenMs !== null) return { state: 'offline', since: lastSeenMs };
+                return { state: 'never', since: null };
+            }
+
+            function ap_dotClass(state) {
+                return state === 'online' ? 'ap-dot-online' : (state === 'offline' ? 'ap-dot-offline' : 'ap-dot-never');
+            }
+
+            function ap_detailHtml(status) {
+                if (status.state === 'online') {
+                    return `<span>🟢</span><span>متصل الآن — له متصل من <b>${ap_formatDuration(Date.now() - status.since)}</b></span>`;
+                }
+                if (status.state === 'offline') {
+                    return `<span>🔴</span><span>غير متصل — له طالع من <b>${ap_formatDuration(Date.now() - status.since)}</b> <span class="ap-detail-exact">(آخر ظهور: ${ap_formatExact(status.since)})</span></span>`;
+                }
+                return `<span>⚪</span><span>ما دخل الموقع أبدًا</span>`;
+            }
+
+            // يبني صف مستخدم واحد (نقطة الحالة + البريد + البادجات + التفاصيل + الأزرار)
+            function ap_buildUserRow(u, status) {
+                const isSelf = auth.currentUser && auth.currentUser.uid === u.uid;
+                const row = document.createElement('div');
+                row.className = 'ap-row ap-row-clickable';
+
+                const roleBadgeClass = u.role === 'admin' ? 'ap-badge-admin' : 'ap-badge-user';
+                const roleBadgeText = u.role === 'admin' ? 'أدمن' : 'مستخدم';
+                const statusBadgeClass = u.disabled ? 'ap-badge-disabled' : 'ap-badge-active';
+                const statusBadgeText = u.disabled ? 'معطّل' : 'مفعّل';
+                const isExpanded = apExpandedUid === u.uid;
+
+                row.innerHTML = `
+                    <div class="ap-row-email-wrap">
+                        <span class="ap-status-dot ${ap_dotClass(status.state)}" title="${status.state === 'online' ? 'متصل الآن' : (status.state === 'offline' ? 'غير متصل' : 'ما دخل الموقع')}"></span>
+                        <div class="ap-row-email">${(u.email || '(بدون بريد)')}${isSelf ? ' <span style="color:#999; font-weight:normal;">(أنت)</span>' : ''}</div>
+                    </div>
+                    <span class="ap-badge ${roleBadgeClass}">${roleBadgeText}</span>
+                    <span class="ap-badge ${statusBadgeClass}">${statusBadgeText}</span>
+                    <div class="ap-actions"></div>
+                    ${isExpanded ? `<div class="ap-status-detail">${ap_detailHtml(status)}</div>` : ''}
+                `;
+
+                // الضغط على الصف يفتح/يقفل تفاصيل حالة الاتصال لهذا الحساب
+                row.addEventListener('click', () => {
+                    apExpandedUid = (apExpandedUid === u.uid) ? null : u.uid;
+                    renderUsersList();
+                });
+
+                const actions = row.querySelector('.ap-actions');
+                // منع فتح/إغلاق التفاصيل عند الضغط على أزرار الإجراءات نفسها
+                actions.addEventListener('click', (e) => e.stopPropagation());
+
+                if (!isSelf) {
+                    // تعطيل / تفعيل
+                    const toggleDisableBtn = document.createElement('button');
+                    toggleDisableBtn.className = 'ap-btn ' + (u.disabled ? 'ap-btn-success' : 'ap-btn-danger');
+                    toggleDisableBtn.textContent = u.disabled ? 'تفعيل' : 'تعطيل (حذف)';
+                    toggleDisableBtn.addEventListener('click', async () => {
+                        toggleDisableBtn.disabled = true;
+                        try {
+                            await updateDoc(doc(db, 'users', u.uid), { disabled: !u.disabled });
+                            showApMsg(apGlobalMsg, u.disabled ? 'تم تفعيل الحساب.' : 'تم تعطيل الحساب، ما يقدر يسجل دخول بعد الآن.', false);
+                        } catch (err) {
+                            showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
+                            toggleDisableBtn.disabled = false;
+                        }
+                    });
+                    actions.appendChild(toggleDisableBtn);
+
+                    // ترقية / تنزيل الدور
+                    const toggleRoleBtn = document.createElement('button');
+                    toggleRoleBtn.className = 'ap-btn';
+                    toggleRoleBtn.textContent = u.role === 'admin' ? 'تنزيل لمستخدم' : 'ترقية لأدمن';
+                    toggleRoleBtn.addEventListener('click', async () => {
+                        toggleRoleBtn.disabled = true;
+                        try {
+                            await updateDoc(doc(db, 'users', u.uid), { role: u.role === 'admin' ? 'user' : 'admin' });
+                            showApMsg(apGlobalMsg, 'تم تحديث دور الحساب.', false);
+                        } catch (err) {
+                            showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
+                            toggleRoleBtn.disabled = false;
+                        }
+                    });
+                    actions.appendChild(toggleRoleBtn);
+                }
+
+                // إرسال رابط تغيير كلمة السر (متاح حتى للحساب نفسه)
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'ap-btn';
+                resetBtn.textContent = 'رابط تغيير كلمة السر';
+                resetBtn.addEventListener('click', async () => {
+                    resetBtn.disabled = true;
+                    const originalText = resetBtn.textContent;
+                    try {
+                        await sendPasswordResetEmail(auth, u.email);
+                        resetBtn.textContent = 'تم الإرسال ✓';
+                        setTimeout(() => { resetBtn.textContent = originalText; resetBtn.disabled = false; }, 2500);
+                    } catch (err) {
+                        showApMsg(apGlobalMsg, 'تعذر إرسال رابط تغيير كلمة السر.', true);
+                        resetBtn.disabled = false;
+                    }
+                });
+                actions.appendChild(resetBtn);
+
+                return row;
+            }
+
+            // إعادة رسم القائمة كاملة من الكاش الحالي: مجموعة "متصل الآن" أولًا
+            // (الأطول اتصالًا في الأعلى)، ثم مجموعة "غير متصل" (الأحدث ظهورًا
+            // أولًا، والحسابات اللي ما دخلت الموقع أبدًا في الأسفل)
+            function renderUsersList() {
+                if (!apUsersCache.length) {
+                    apUsersList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px 0;">لا توجد حسابات بعد.</div>';
+                    return;
+                }
+
+                const withStatus = apUsersCache.map((u) => ({ u, status: ap_getStatus(u) }));
+                const online = withStatus.filter((x) => x.status.state === 'online')
+                    .sort((a, b) => (a.status.since || 0) - (b.status.since || 0));
+                const offline = withStatus.filter((x) => x.status.state !== 'online')
+                    .sort((a, b) => (b.status.since || 0) - (a.status.since || 0));
+
+                apUsersList.innerHTML = '';
+
+                const onlineHeader = document.createElement('div');
+                onlineHeader.className = 'ap-group-header';
+                onlineHeader.innerHTML = `<span class="ap-status-dot ap-dot-online"></span> متصل الآن <span class="ap-group-count">${online.length}</span>`;
+                apUsersList.appendChild(onlineHeader);
+
+                if (online.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'ap-group-empty';
+                    empty.textContent = 'ما فيه أحد متصل حاليًا';
+                    apUsersList.appendChild(empty);
+                } else {
+                    online.forEach(({ u, status }) => apUsersList.appendChild(ap_buildUserRow(u, status)));
+                }
+
+                const offlineHeader = document.createElement('div');
+                offlineHeader.className = 'ap-group-header';
+                offlineHeader.innerHTML = `<span class="ap-status-dot ap-dot-offline"></span> غير متصل <span class="ap-group-count">${offline.length}</span>`;
+                apUsersList.appendChild(offlineHeader);
+
+                offline.forEach(({ u, status }) => apUsersList.appendChild(ap_buildUserRow(u, status)));
+            }
+
+            // تحميل/عرض كل الحسابات من Firestore ببث حي (onSnapshot)، بحيث
+            // تنعكس أي تغييرات — تسجيل دخول/خروج حساب، نبضة حضور جديدة، إلخ —
+            // فورًا بدون الحاجة لإعادة فتح لوحة الأدمن
+            function loadUsersList() {
+                if (apUnsubscribeUsers) return; // المستمع شغّال بالفعل
+
                 apUsersList.innerHTML = '<div id="ap-loading" style="text-align:center; color:#888; padding: 20px 0;">جارِ التحميل...</div>';
-                try {
-                    const snap = await getDocs(collection(db, 'users'));
+
+                apUnsubscribeUsers = onSnapshot(collection(db, 'users'), (snap) => {
                     const rows = [];
                     snap.forEach((docSnap) => rows.push({ uid: docSnap.id, ...docSnap.data() }));
-
-                    if (rows.length === 0) {
-                        apUsersList.innerHTML = '<div style="text-align:center; color:#888; padding: 20px 0;">لا توجد حسابات بعد.</div>';
-                        return;
-                    }
-
-                    apUsersList.innerHTML = '';
-                    rows.forEach((u) => {
-                        const isSelf = auth.currentUser && auth.currentUser.uid === u.uid;
-                        const row = document.createElement('div');
-                        row.className = 'ap-row';
-
-                        const roleBadgeClass = u.role === 'admin' ? 'ap-badge-admin' : 'ap-badge-user';
-                        const roleBadgeText = u.role === 'admin' ? 'أدمن' : 'مستخدم';
-                        const statusBadgeClass = u.disabled ? 'ap-badge-disabled' : 'ap-badge-active';
-                        const statusBadgeText = u.disabled ? 'معطّل' : 'مفعّل';
-
-                        row.innerHTML = `
-                            <div class="ap-row-email">${(u.email || '(بدون بريد)')}${isSelf ? ' <span style="color:#999; font-weight:normal;">(أنت)</span>' : ''}</div>
-                            <span class="ap-badge ${roleBadgeClass}">${roleBadgeText}</span>
-                            <span class="ap-badge ${statusBadgeClass}">${statusBadgeText}</span>
-                            <div class="ap-actions"></div>
-                        `;
-
-                        const actions = row.querySelector('.ap-actions');
-
-                        if (!isSelf) {
-                            // تعطيل / تفعيل
-                            const toggleDisableBtn = document.createElement('button');
-                            toggleDisableBtn.className = 'ap-btn ' + (u.disabled ? 'ap-btn-success' : 'ap-btn-danger');
-                            toggleDisableBtn.textContent = u.disabled ? 'تفعيل' : 'تعطيل (حذف)';
-                            toggleDisableBtn.addEventListener('click', async () => {
-                                toggleDisableBtn.disabled = true;
-                                try {
-                                    await updateDoc(doc(db, 'users', u.uid), { disabled: !u.disabled });
-                                    showApMsg(apGlobalMsg, u.disabled ? 'تم تفعيل الحساب.' : 'تم تعطيل الحساب، ما يقدر يسجل دخول بعد الآن.', false);
-                                    loadUsersList();
-                                } catch (err) {
-                                    showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
-                                    toggleDisableBtn.disabled = false;
-                                }
-                            });
-                            actions.appendChild(toggleDisableBtn);
-
-                            // ترقية / تنزيل الدور
-                            const toggleRoleBtn = document.createElement('button');
-                            toggleRoleBtn.className = 'ap-btn';
-                            toggleRoleBtn.textContent = u.role === 'admin' ? 'تنزيل لمستخدم' : 'ترقية لأدمن';
-                            toggleRoleBtn.addEventListener('click', async () => {
-                                toggleRoleBtn.disabled = true;
-                                try {
-                                    await updateDoc(doc(db, 'users', u.uid), { role: u.role === 'admin' ? 'user' : 'admin' });
-                                    showApMsg(apGlobalMsg, 'تم تحديث دور الحساب.', false);
-                                    loadUsersList();
-                                } catch (err) {
-                                    showApMsg(apGlobalMsg, 'حدث خطأ، حاول مرة أخرى.', true);
-                                    toggleRoleBtn.disabled = false;
-                                }
-                            });
-                            actions.appendChild(toggleRoleBtn);
-                        }
-
-                        // إرسال رابط تغيير كلمة السر (متاح حتى للحساب نفسه)
-                        const resetBtn = document.createElement('button');
-                        resetBtn.className = 'ap-btn';
-                        resetBtn.textContent = 'رابط تغيير كلمة السر';
-                        resetBtn.addEventListener('click', async () => {
-                            resetBtn.disabled = true;
-                            const originalText = resetBtn.textContent;
-                            try {
-                                await sendPasswordResetEmail(auth, u.email);
-                                resetBtn.textContent = 'تم الإرسال ✓';
-                                setTimeout(() => { resetBtn.textContent = originalText; resetBtn.disabled = false; }, 2500);
-                            } catch (err) {
-                                showApMsg(apGlobalMsg, 'تعذر إرسال رابط تغيير كلمة السر.', true);
-                                resetBtn.disabled = false;
-                            }
-                        });
-                        actions.appendChild(resetBtn);
-
-                        apUsersList.appendChild(row);
-                    });
-                } catch (err) {
+                    apUsersCache = rows;
+                    renderUsersList();
+                }, (err) => {
                     console.error(err);
                     apUsersList.innerHTML = '<div style="text-align:center; color:#c0392b; padding: 20px 0;">تعذر تحميل قائمة الحسابات. تأكد من قواعد Firestore.</div>';
-                }
+                });
+
+                // تحديث دوري لنصوص "منذ كذا دقيقة/ساعة" حتى لو ما تغيّرت البيانات
+                if (apTickTimer) clearInterval(apTickTimer);
+                apTickTimer = setInterval(renderUsersList, 30 * 1000);
             }
 
             // إنشاء حساب واحد (عبر نسخة ثانية من Firebase حتى لا يسجل خروج الأدمن الحالي)
