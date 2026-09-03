@@ -1966,6 +1966,30 @@
             50% { background-color: rgba(237, 221, 83, 0.35); }
         }
 
+        /* ------------------------------------------------------------------ */
+        /* شجرة "الجديدة / القديمة" لباقات الهاتف وكويك نت المفوترة            */
+        /* (نفس أسلوب شجرة سوا، لكن المحتوى يبقى شبكة البطاقات الكبيرة الحالية) */
+        /* ------------------------------------------------------------------ */
+        .plan-tree-wrapper {
+            display: flex;
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .plan-tree-content {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        @media (max-width: 900px) {
+            .plan-tree-wrapper { flex-direction: column; align-items: stretch; }
+            .sawa-tree { position: static; max-width: 100%; }
+        }
+
         .sawa-plan-card {
             background: rgba(195, 174, 212, 0.12);
             border: 2px solid #A564DE;
@@ -2991,12 +3015,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div id="mobile-plans-section" style="display: none;">
             <h1 style="visibility: hidden;">باقات الهاتف المفوترة</h1>
-            <div class="cards-container" id="mobile-plans-container"></div>
+            <div class="plan-tree-wrapper">
+                <div class="sawa-tree" id="mobile-plans-tree"></div>
+                <div class="plan-tree-content">
+                    <div class="cards-container" id="mobile-plans-container"></div>
+                </div>
+            </div>
         </div>
 
         <div id="quick-net-section" style="display: none;">
             <h1 style="visibility: hidden;">كويك نت المفوترة</h1>
-            <div class="cards-container" id="quick-net-container"></div>
+            <div class="plan-tree-wrapper">
+                <div class="sawa-tree" id="quick-net-tree"></div>
+                <div class="plan-tree-content">
+                    <div class="cards-container" id="quick-net-container"></div>
+                </div>
+            </div>
         </div>
 
         <div id="sawa-section" style="display: none;">
@@ -4220,23 +4254,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     name: "بيتي بيسك",
                     price: 287.5,
+                    category: "new",
                     details: ["مكالمات محلية وداخلية مجانا لأي هاتف ثابت داخل أو خارج الشبكة", "جهاز المودم مجانا للتأسيس الجديد", "سرعة الرفع تصل الى 100 ميقا بايت", "سرعة التحميل تصل الى 300 ميقا بايت", "بيانات لا محدود", "عقد 12 شهر", "باقة لايت من stc tv"]
                 },
                 {
                     name: "بيتي ستريم",
                     price: 402.50,
+                    category: "new",
                     details: ["مكالمات محلية وداخلية مجانا لأي هاتف ثابت داخل أو خارج الشبكة", "جهاز المودم مجانا للتأسيس الجديد", "سرعة الرفع تصل الى 125 ميقا بايت", "سرعة التحميل تصل الى 500 ميقا بايت", "بيانات لا محدود", "عقد 12 شهر", "شاهد ViP"]
                 },
                 {
                     name: "بيتي ستريم لايت",
                     price: 402.50,
+                    category: "new",
                     details: ["مكالمات محلية وداخلية مجانا لأي هاتف ثابت داخل أو خارج الشبكة", "جهاز المودم مجانا للتأسيس الجديد", "سرعة الرفع تصل الى 125 ميقا بايت", "سرعة التحميل تصل الى 500 ميقا بايت", "بيانات لا محدود", "عقد 12 شهر", "باقة لايت من stc tv"]
                 },
                 {
                     name: "بيتي إنترتينمنت",
                     price: 345,
+                    category: "new",
                     details: ["مكالمات محلية وداخلية مجانا لأي هاتف ثابت داخل أو خارج الشبكة", "جهاز المودم مجانا للتأسيس الجديد", "سرعة الرفع تصل الى 200 ميقا بايت", "سرعة التحميل تصل الى 500 ميقا بايت", "بيانات لا محدود", "عقد 12 شهر", "باقة لايت من stc tv"]
                 }
+                // لإضافة باقة قديمة: أضف نفس الشكل مع category: "old"
             ];
             
             // بيانات باقات كويك نت المفوترة الجديدة
@@ -4244,18 +4283,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     name: "بيتي بيسك 5G لاسلكي",
                     price: 299,
+                    category: "new",
                     details: ["سعة البيانات لا محدود", "سرعة التحميل تصل الى 200 ميقا بايت", "سرعة الرفع تصل 40", "جهاز راوتر مجاني" ,"ضمن النطاق المحدود"]
                 },
                 {
                     name: "بيتي انترتينمنت 5G لاسلكي",
                     price: 353,
+                    category: "new",
                     details: ["سعة البيانات لا محدود", "سرعة التحميل تصل الى 200 ميقا بايت", "سرعة الرفع تصل 40", "جهاز راوتر مجاني" ,"stc tv لايت" ,"شاهد VIP | Sports" ,"ضمن النطاق المحدود"]
                 },
                 {
                     name: "بيتي لامحدود 5G",
                     price: 402.50,
+                    category: "new",
                     details: ["سعة البيانات لا محدود", "سرعة التحميل أقصى سرعة تدعمها الشبكة", "ضمن النطاق المفتوح", "راوتر مجاني"]
                 }
+                // لإضافة باقة قديمة: أضف نفس الشكل مع category: "old"
             ];
 
             // ***************************************************************
@@ -4583,6 +4626,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plans.forEach((plan, index) => {
                     const wrapper = document.createElement("div");
                     wrapper.className = "card-wrapper";
+                    wrapper.dataset.category = plan.category || "new";
 
                     const card = document.createElement("div");
                     card.className = "card";
@@ -4613,6 +4657,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         discountContainer.appendChild(btn);
                     });
                 });
+            }
+
+            // ***************************************************************
+            // شجرة "الجديدة / القديمة" لأقسام باقات الهاتف وكويك نت المفوترة
+            // بنفس أسلوب شجرة باقات سوا (معاينة عند المرور، تثبيت عند الضغط)،
+            // لكن بدل ما نستبدل المحتوى، نُظهر ونخفي بطاقات نفس الحاوية حسب
+            // الفئة (category) المحفوظة في بيانات كل باقة. هذا يحافظ على أرقام
+            // الفهارس الأصلية (مهم للبحث والمقارنة) بدون أي تعقيد إضافي.
+            // ***************************************************************
+            const planCategoryTreeState = {}; // kind -> { treeEl, containerId, pinned }
+
+            function applyPlanCategoryFilter(kind, category) {
+                const state = planCategoryTreeState[kind];
+                if (!state) return;
+                const container = document.getElementById(state.containerId);
+                if (!container) return;
+                container.querySelectorAll('.card-wrapper').forEach(w => {
+                    w.style.display = (w.dataset.category === category) ? '' : 'none';
+                });
+            }
+
+            function selectPlanCategory(kind, category) {
+                const state = planCategoryTreeState[kind];
+                if (!state) return;
+                state.pinned = category;
+                state.treeEl.querySelectorAll('.sawa-node-btn').forEach(b => {
+                    b.classList.toggle('pinned', b.dataset.node === category);
+                });
+                applyPlanCategoryFilter(kind, category);
+            }
+
+            function renderPlanCategoryTree(kind, treeElId, containerId, rootLabel, nodesMeta) {
+                const treeEl = document.getElementById(treeElId);
+                treeEl.innerHTML = `<div class="sawa-tree-root">${rootLabel}</div>` +
+                    nodesMeta.map((node, i) => `
+                        <div class="sawa-branch" style="animation-delay:${i * 0.06}s">
+                            <button class="sawa-node-btn" data-node="${node.id}">
+                                <span class="sawa-node-icon">${node.icon}</span>
+                                <span class="sawa-node-label">${node.title}</span>
+                                <span class="sawa-node-pin-mark">📌</span>
+                            </button>
+                        </div>
+                    `).join('');
+
+                planCategoryTreeState[kind] = { treeEl, containerId, pinned: nodesMeta[0].id };
+
+                treeEl.querySelectorAll('.sawa-node-btn').forEach(btn => {
+                    const nodeId = btn.dataset.node;
+
+                    // معاينة سريعة عند تمرير الماوس
+                    btn.addEventListener('mouseenter', () => applyPlanCategoryFilter(kind, nodeId));
+
+                    // العودة للفئة المثبتة عند إبعاد الماوس
+                    btn.addEventListener('mouseleave', () => applyPlanCategoryFilter(kind, planCategoryTreeState[kind].pinned));
+
+                    // تثبيت الفئة عند الضغط
+                    btn.addEventListener('click', () => selectPlanCategory(kind, nodeId));
+                });
+
+                // إظهار أول فئة (الجديدة) افتراضيًا عند أول فتح للقسم
+                selectPlanCategory(kind, nodesMeta[0].id);
             }
 
             // ***************************************************************
@@ -4962,8 +5067,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSection(plansSection, showPlansBtn);
             });
 
+            let mobileTreeRendered = false;
             showMobilePlansBtn.addEventListener('click', () => {
                 generatePlanCards(mobilePlansData, "mobile-plans-container", "mobile"); // توليد البطاقات لأول مرة
+                if (!mobileTreeRendered) {
+                    renderPlanCategoryTree('mobile', 'mobile-plans-tree', 'mobile-plans-container', 'باقات الهاتف المفوترة', [
+                        { id: 'new', title: 'باقات الهاتف الجديدة', icon: '✨' },
+                        { id: 'old', title: 'باقات الهاتف القديمة', icon: '🗂️' }
+                    ]);
+                    mobileTreeRendered = true;
+                } else {
+                    applyPlanCategoryFilter('mobile', planCategoryTreeState['mobile'].pinned);
+                }
                 showSection(mobilePlansSection, showMobilePlansBtn);
             });
 
@@ -4972,8 +5087,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // ربط زر كويك نت المفوترة
+            let quickNetTreeRendered = false;
             showQuickNetBtn.addEventListener('click', () => {
                 generatePlanCards(quickNetPlansData, "quick-net-container", "quicknet"); // توليد البطاقات
+                if (!quickNetTreeRendered) {
+                    renderPlanCategoryTree('quicknet', 'quick-net-tree', 'quick-net-container', 'كويك نت المفوترة', [
+                        { id: 'new', title: 'كويك نت الجديدة', icon: '✨' },
+                        { id: 'old', title: 'كويك نت القديمة', icon: '🗂️' }
+                    ]);
+                    quickNetTreeRendered = true;
+                } else {
+                    applyPlanCategoryFilter('quicknet', planCategoryTreeState['quicknet'].pinned);
+                }
                 showSection(quickNetSection, showQuickNetBtn);
             });
 
@@ -5094,6 +5219,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // الانتقال للفصل المناسب
                 meta.btn().click();
+
+                // لو الباقة من قسم فيه شجرة جديد/قديم، لازم نثبّت فئتها الصحيحة
+                // أول شيء وإلا تكون مخفية (display:none) ولن نقدر نمرر إليها
+                if (type === 'mobile' || type === 'quicknet') {
+                    const dataArr = type === 'mobile' ? mobilePlansData : quickNetPlansData;
+                    const matchedPlan = dataArr[idx];
+                    if (matchedPlan) {
+                        selectPlanCategory(type, matchedPlan.category || 'new');
+                    }
+                }
 
                 // التمرير للبطاقة وتمييزها
                 setTimeout(() => {
