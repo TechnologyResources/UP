@@ -1629,162 +1629,266 @@
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(2, 600px);
-            gap: 110px 90px; /* مسافة أكبر بين البطاقات لمنع تداخل تأثير التكبير عند المرور بالماوس */
+            grid-template-columns: repeat(2, 340px);
+            gap: 50px 40px;
             justify-content: center;
         }
 
         .card-wrapper {
-            width: 600px;
-            height: 550px;
-            /* الحجم الثابت هنا هو ما يحدد منطقة التفاعل مع الماوس،
-               بينما البطاقة بداخله تكبر بصريًا فقط دون أن تغيّر منطقة الحدث،
-               وهذا يمنع تكرار ظهور/اختفاء التأثير عند الوقوف بين بطاقتين */
+            width: 340px;
+            height: 340px;
             position: relative;
+            cursor: pointer;
         }
 
-        .card {
+        .flip-card {
             width: 100%;
             height: 100%;
-            background-color: #C3AED4;
-            box-shadow: 0px 0px 0px #fff, -10px -10px 30px #A564DE;
-            transition: border-radius 0.6s cubic-bezier(0.075, 0.82, 0.165, 1),
-            transform 0.6s cubic-bezier(0.075, 0.82, 0.165, 1),
-            background-color 0.5s ease, box-shadow 0.5s ease;
-            color: white;
-            padding: 15px;
+            perspective: 1200px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* عند المرور بالماوس (ولا تكون البطاقة مثبّتة): تنقلب لإظهار المزايا */
+        .card-wrapper:hover:not(.locked) .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* عند الضغط: تبقى منقلبة وتُظهر السعر والخصم بدل المزايا */
+        .card-wrapper.locked .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 30px;
+            box-sizing: border-box;
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            border-radius: 20px;
-            box-sizing: content-box;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 14px;
+            background: radial-gradient(130% 150% at 50% -15%, #4a2a86 0%, #2c1454 42%, #170a2e 100%);
+            box-shadow: 0 25px 60px rgba(10, 0, 30, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            padding-top: 26px;
         }
 
         /* الوضع النهاري للبطاقات */
-        body.light-mode .card {
-            background-color: #6D3687;
-            box-shadow: 1px 2px 20px #222, -15px 15px 20px #222;
-            color: #222;
+        body.light-mode .flip-card-front,
+        body.light-mode .flip-card-back {
+            background: radial-gradient(130% 150% at 50% -15%, #8a56c2 0%, #4b2678 42%, #24103f 100%);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
-        .card-wrapper:hover .card {
-            border-bottom-right-radius: 90px;
-            border-top-left-radius: 80px;
-            transform: scale(1.04);
+        .card-wrapper:hover .flip-card-front,
+        .card-wrapper:hover .flip-card-back {
+            box-shadow: 0 32px 70px rgba(10, 0, 30, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        .header {
+        .plan-icon-badge {
+            width: 640px;
+            height: 64px;
+            border-radius: 20px;
+            background: linear-gradient(150deg, #fffff , #fffff);
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: center;
+            font-size: 88px;
+            box-shadow: 0 10px 24px rgba(4, 11, 23, 0.45);
+            flex-shrink: 0;
         }
 
         .title {
-            font-weight: bold;
-            color: #fff;
-            line-height: 1.5;
-            margin-right: 15px; /* ← يحرك النص لليسار */
-            font-size: 40px;
+            font-weight: 800;
+            color: #fffff;
+            line-height: 1.4;
+            font-size: 45px;
+        }
+
+        .title.small {
+            font-size: 20px;
         }
 
         body.light-mode .title {
-            color: black;
+            color: #fff;
+        }
+
+        .plan-price-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin: 4px 0 8px;
+        }
+
+        .price-currency {
+            font-size: 15px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .price {
-            width: 200px;
-            height: 60px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 35px;
-            margin-left: -30px;
-            line-height: 1.9;
+            font-size: 55px;
+            font-weight: 800;
             color: #fff;
-            border-top-left-radius: 30px;
-            border-bottom-right-radius: 10px;
-
-
-            font-weight: bold;
+            line-height: 1.15;
         }
 
-
-        .details p {
-            margin: 10px 0;
-            font-size: 24px;
+        body.light-mode .price {
             color: #fff;
-            background: linear-gradient(90deg, #5a2483, #9b4dad);
-            padding: 7px 20px;
-            font-weight: bold;
-            border-radius: 15px;
-            margin: 30px 50; /* ← تباعد مخصص لمفوتر بيسك فقط */
-            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s ease;
-        }
-        body.light-mode .title {
-            color: black;
-        }
-        body.light-mode .details p {
-            background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
-            color: black;
-        }
-
-
-        .basic-plan .details p {
-            padding: 10px 20px;
-            margin: 60px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
-        }
-        .max-plan .details p {
-            margin: 20px 0; /* ← تباعد مخصص لمفوتر بيسك فقط */
-
         }
 
         .discounts {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            font-size: 25px;
-            margin-top: -170px;
+            gap: 8px;
             flex-wrap: wrap;
+            margin: 2px 0 4px;
         }
 
         .discount-circle {
-            width: 65px;
-            height: 65px;
+            width: 47px;
+            height: 47px;
             border-radius: 50%;
-            border: 5px solid #000000;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-weight: bold;
-            color: #000000;
-            transition: 0.9s ease;
+            font-weight: 700;
+            font-size: 12px;
+            color: #fff;
+            transition: all 0.3s ease;
         }
 
         .discount-circle:hover {
-            background-color: #000000;
-            color: white;
-            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.14);
+            border-color: #fff;
+            transform: scale(1.08);
         }
 
         .discount-circle.active {
-            background-color: #fff;
-            color: red;
-            border-color: #FF0D00;
+            background: rgba(245, 166, 35, 0.18);
+            border-color: #f5a623;
+            color: #ffd27a;
+            box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.22);
             transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(128, 0, 255, 0.5);
         }
 
         /* الوضع النهاري للدوائر */
         body.light-mode .discount-circle {
-            border-color: #000000;
-            color: #000000;
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
         }
 
         body.light-mode .discount-circle:hover {
-            background-color: #fff;
-            color: #000000;
+            background: rgba(255, 255, 255, 0.16);
+            border-color: #fff;
+            color: #fff;
+        }
+
+        body.light-mode .discount-circle.active {
+            background: rgba(245, 166, 35, 0.22);
+            border-color: #f5a623;
+            color: #ffe4ad;
+        }
+
+        /* عرضا وجه الخلف: المزايا (تلقائي) أو التثبيت (سعر + خصم) */
+        .flip-view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .flip-view-features {
+            display: flex;
+        }
+
+        .card-wrapper.locked .flip-view-features {
+            display: none;
+        }
+
+        .card-wrapper.locked .flip-view-locked {
+            display: flex;
+            justify-content: center;
+        }
+
+        .details {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .details p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #f1eaff;
+            text-align: right;
+            transition: background 0.3s ease;
+        }
+
+        .details p::after {
+            content: '✔';
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3ddc84;
+            color: #0d3a1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        body.light-mode .details p {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        .flip-hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 600;
+            margin-top: auto;
         }
 
         /* ------------------------------------------------------------------ */
@@ -1991,54 +2095,60 @@
         }
 
         .sawa-plan-card {
-            background: rgba(195, 174, 212, 0.12);
-            border: 2px solid #A564DE;
-            border-radius: 18px;
-            padding: 18px 20px;
+            background: radial-gradient(130% 150% at 50% -15%, #4a2a86 0%, #2c1454 42%, #170a2e 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 22px 22px;
             margin-bottom: 22px;
-            box-shadow: -8px -8px 20px rgba(165, 100, 222, 0.25);
+            box-shadow: 0 20px 45px rgba(10, 0, 30, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
 
         body.light-mode .sawa-plan-card {
-            background: rgba(255,255,255,0.07);
-            border-color: #EDDD53;
+            background: radial-gradient(130% 150% at 50% -15%, #8a56c2 0%, #4b2678 42%, #24103f 100%);
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .sawa-plan-card h3 {
-            color: #EDDD53;
-            font-size: 22px;
-            margin: 0 0 12px 0;
-            border-bottom: 2px dashed rgba(165, 100, 222, 0.6);
-            padding-bottom: 8px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0 0 14px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .sawa-meta-line {
-            font-size: 15px;
-            color: #d1a5f7;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 10px;
         }
 
         .sawa-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin: 10px 0 14px 0;
-            font-size: 15px;
+            font-size: 14px;
+            border-radius: 14px;
+            overflow: hidden;
         }
 
         .sawa-table th, .sawa-table td {
-            border: 1px solid rgba(165, 100, 222, 0.5);
-            padding: 8px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 10px 10px;
             text-align: center;
-            color: #fff;
+            color: #f1eaff;
+            background: rgba(255, 255, 255, 0.06);
         }
 
         body.light-mode .sawa-table th, body.light-mode .sawa-table td {
-            color: #222;
+            color: #fff;
         }
 
         .sawa-table th {
-            background: linear-gradient(90deg, #5a2483, #9b4dad);
+            background: linear-gradient(145deg, #4fb3ff, #2f6fed);
             color: #fff;
+            font-weight: 800;
         }
 
         .sawa-notes {
@@ -2048,34 +2158,47 @@
         }
 
         .sawa-notes li {
-            font-size: 14px;
-            background: linear-gradient(90deg, #5a2483, #9b4dad);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 10px;
-            margin: 6px 0;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: #f1eaff;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin: 8px 0;
+            text-align: right;
+        }
+
+        .sawa-notes li::after {
+            content: '✔';
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3ddc84;
+            color: #0d3a1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 900;
         }
 
         body.light-mode .sawa-notes li {
-            background: linear-gradient(135deg, #EDDD53, #BE57C7, #DB800F);
-            color: #222;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #fff;
         }
 
         .sawa-note-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #EDDD53;
-            margin-top: 8px;
-        }
-
-        body.light-mode .discount-circle.active {
-            background-color: #fff;
-            border-color: #000000;
-            box-shadow: 0 0 10px rgba(90, 34, 183, 0.5);
-        }
-
-        body.light-mode .price {
-            color: #000000;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffd27a;
+            margin-top: 10px;
         }
 
         body h1 {
@@ -2575,22 +2698,29 @@
                 margin: 5px;
             }
 
-            .title {
-                font-size: 24px !important;
-            }
-
-            .price {
-                font-size: 20px !important;
-                width: auto !important;
-                padding: 0 12px;
-            }
-
-            .details p {
-                font-size: 16px !important;
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
             .card-wrapper {
+                width: 100%;
+                max-width: 340px;
                 min-height: auto;
+            }
+
+            .title {
+                font-size: 22px !important;
+            }
+
+            .price {
+                font-size: 34px !important;
+                width: auto !important;
+                padding: 0;
+            }
+
+            .details p {
+                font-size: 13px !important;
             }
 
             .sawa-wrapper {
@@ -4612,11 +4742,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            const discounts = [0, 10, 20, 30, 40, 50];
+            const discounts = [10, 20, 30, 40, 50];
 
 
             // ***************************************************************
-            // وظيفة موحدة لتوليد بطاقات الباقات
+            // وظيفة موحدة لتوليد بطاقات الباقات (بطاقة قابلة للانقلاب)
+            // - الوجه الأمامي: اسم الباقة فقط
+            // - عند المرور بالماوس: تنقلب لتظهر مزايا الباقة
+            // - عند الضغط: تثبت منقلبة وتُظهر الاسم والسعر ونسب الخصم (10% - 50%)
             // ***************************************************************
 
             function generatePlanCards(plans, containerId, type) {
@@ -4628,32 +4761,53 @@ document.addEventListener('DOMContentLoaded', function() {
                     wrapper.className = "card-wrapper";
                     wrapper.dataset.category = plan.category || "new";
 
-                    const card = document.createElement("div");
-                    card.className = "card";
-
-                    card.innerHTML = `
-                        <div class="header">
-                            <span class="title">${plan.name}</span>
-                            <span class="price" id="price-${type}-${index}">${plan.price} ريال</span>
+                    wrapper.innerHTML = `
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <div class="plan-icon-badge"><svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <path d="M6 34 L34 6 L94 6 L94 68 L66 96 L66 34 Z" fill="#4F008C"/>
+  <rect x="6" y="54" width="40" height="40" fill="#FF3566"/>
+</svg></div>
+                                    <span class="title">${plan.name}</span>
+                                    <span class="flip-hint">مرّر الماوس لعرض المزايا</span>
+                                </div>
+                                <div class="flip-card-back">
+                                    <div class="flip-view flip-view-features">
+                                        <span class="title small">${plan.name}</span>
+                                        <div class="details">
+                                            ${plan.details.map(d => `<p>${d}</p>`).join("")}
+                                        </div>
+                                    </div>
+                                    <div class="flip-view flip-view-locked">
+                                        <span class="title">${plan.name}</span>
+                                        <div class="plan-price-wrap">
+                                            <span class="price-currency">ريال</span>
+                                            <span class="price" id="price-${type}-${index}">${plan.price}</span>
+                                        </div>
+                                        <div class="discounts" id="discounts-${type}-${index}"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="details">
-                            ${plan.details.map(d => `<p>• ${d}</p>`).join("")}
-                        </div>
-                        <div class="discounts" id="discounts-${type}-${index}"></div>
                     `;
 
-                    wrapper.appendChild(card);
                     plansContainer.appendChild(wrapper);
-                    if (plan.name.includes("بيسك+")) { card.classList.add("basic-plan"); }
-                    if (plan.name.includes("ماكس")) { card.classList.add("max-plan"); }
 
+                    // تثبيت/إلغاء تثبيت البطاقة عند الضغط عليها
+                    wrapper.addEventListener("click", () => {
+                        wrapper.classList.toggle("locked");
+                    });
 
-                    const discountContainer = document.getElementById(`discounts-${type}-${index}`);
+                    const discountContainer = wrapper.querySelector(`#discounts-${type}-${index}`);
                     discounts.forEach(discount => {
                         const btn = document.createElement("div");
                         btn.className = "discount-circle";
                         btn.textContent = `${discount}%`;
-                        btn.onclick = () => applyDiscount(`${type}-${index}`, plan.price, discount, btn);
+                        btn.onclick = (e) => {
+                            e.stopPropagation(); // حتى لا يُلغى تثبيت البطاقة عند اختيار نسبة الخصم
+                            applyDiscount(`${type}-${index}`, plan.price, discount, btn);
+                        };
                         discountContainer.appendChild(btn);
                     });
                 });
@@ -4726,7 +4880,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             function applyDiscount(id, originalPrice, discountPercent, clickedBtn) {
                 const finalPrice = (originalPrice - (originalPrice * discountPercent / 100)).toFixed(2);
-                document.getElementById(`price-${id}`).textContent = `${finalPrice} ريال`;
+                document.getElementById(`price-${id}`).textContent = `${finalPrice}`;
 
                 const buttons = clickedBtn.parentElement.querySelectorAll('.discount-circle');
                 buttons.forEach(btn => btn.classList.remove("active"));
@@ -5230,14 +5384,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
-                // التمرير للبطاقة وتمييزها
+                // التمرير للبطاقة، تثبيتها (لإظهار السعر والخصم) وتمييزها
                 setTimeout(() => {
                     const priceEl = document.getElementById(`price-${type}-${idx}`);
-                    const card = priceEl ? priceEl.closest('.card') : null;
-                    if (card) {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        card.classList.add('card-search-highlight');
-                        setTimeout(() => card.classList.remove('card-search-highlight'), 3500);
+                    const cardWrapper = priceEl ? priceEl.closest('.card-wrapper') : null;
+                    if (cardWrapper) {
+                        cardWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        cardWrapper.classList.add('locked');
+                        cardWrapper.classList.add('card-search-highlight');
+                        setTimeout(() => cardWrapper.classList.remove('card-search-highlight'), 3500);
                     }
                 }, 150);
             });
