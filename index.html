@@ -10,11 +10,23 @@
     <link rel="icon" href="images/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <style>
+        /* ==================================================================== */
+        /* تحسين عام للحركة: منحنى سلاسة موحّد لكل الانتقالات الموجودة بالموقع،   */
+        /* وردّة فعل خفيفة عند الضغط على أي زر (بدون المساس بأي تخطيط أو بيانات)  */
+        /* ==================================================================== */
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        button:active,
+        .btn:active {
+            transform: scale(0.96);
+        }
+
         /* ==================================================================== */
         /* سكرول بار عصري ورفيع، مخفي بشكل افتراضي ولا يظهر إلا أثناء التحريك     */
         /* أو عند تمرير المؤشر فوق المنطقة القابلة للتمرير                       */
@@ -151,7 +163,7 @@
             unicode-bidi: plaintext;
             flex-shrink: 0;
             padding: 0 32px;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-size: 15px;
             font-weight: 700;
             color: #fff;
@@ -291,7 +303,7 @@
             z-index: 10000;
             direction: rtl;
             display: flex;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
         }
 
         .login-split {
@@ -379,7 +391,7 @@
             font-weight: 800;
             color: #1a1a2e;
             margin: 0 0 8px 0;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             letter-spacing: -0.3px;
         }
 
@@ -387,7 +399,7 @@
             font-size: 15px;
             color: #8b8b9a;
             margin: 0 0 34px 0;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-weight: 500;
         }
 
@@ -414,7 +426,7 @@
             outline: none;
             transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
             text-align: right;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
         }
 
         .login-field input::placeholder {
@@ -480,7 +492,7 @@
             font-size: 14px;
             color: #6a1b9a;
             text-decoration: none;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s ease;
@@ -499,7 +511,7 @@
             color: #555;
             cursor: pointer;
             user-select: none;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
         }
 
         .login-remember-label input[type="checkbox"] {
@@ -523,7 +535,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.5s ease;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             opacity: 0;
             transform: translateY(14px);
             animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -564,7 +576,7 @@
             font-size: 14px;
             margin-top: 14px;
             text-align: center;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             animation: loginShake 0.45s ease;
         }
 
@@ -582,7 +594,7 @@
             font-size: 14px;
             margin-top: 14px;
             text-align: center;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
         }
 
         .login-terms {
@@ -591,7 +603,7 @@
             font-size: 13px;
             margin-top: 26px;
             cursor: pointer;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             transition: color 0.2s ease;
         }
 
@@ -806,7 +818,7 @@
             font-size: 18px;
             font-weight: 700;
             color: #6a1b9a;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             opacity: 0;
             transform: translateY(8px);
             transition: opacity 0.35s ease, transform 0.35s ease;
@@ -835,7 +847,7 @@
             background-size: cover;
             background-attachment: fixed;
             color: white;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-weight: 500;
             margin: 0;
             padding: 50px;
@@ -1488,7 +1500,7 @@
             transform: scale(0.92) translateY(14px);
             opacity: 0;
             transition: transform 0.32s cubic-bezier(.34, 1.56, .64, 1), opacity 0.26s ease;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             color: #fff;
         }
 
@@ -1596,7 +1608,7 @@
             border: 1.5px solid rgba(255, 255, 255, .22);
             background: rgba(0, 0, 0, .18);
             border-radius: 12px;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-size: 13.5px;
             color: #fff;
             outline: none;
@@ -1625,7 +1637,7 @@
             cursor: pointer;
             background: linear-gradient(135deg, #8E2DB0, var(--ap-accent));
             color: #fff;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-weight: 800;
             font-size: 14px;
             transition: .18s;
@@ -1807,7 +1819,7 @@
         .ap-search-wrap input {
             width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 12px;
             border: 1.5px solid rgba(255,255,255,.22); background: rgba(0,0,0,.18); color: #fff;
-            font-family: 'Cairo','Arial',sans-serif; font-size: 13.5px; outline: none; transition:.18s;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo','Arial',sans-serif; font-size: 13.5px; outline: none; transition:.18s;
         }
         .ap-search-wrap input::placeholder { color: rgba(255,255,255,.45); }
         .ap-search-wrap input:focus { border-color: var(--ap-accent); background: rgba(0,0,0,.28); }
@@ -1896,7 +1908,7 @@
             border: 1px solid rgba(255, 255, 255, .25);
             background: rgba(255, 255, 255, .06);
             color: #fff;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             transition: .15s;
         }
 
@@ -1922,7 +1934,7 @@
             background-size: cover;
             background-attachment: fixed;
             color: white;
-            font-family: 'Cairo', 'Arial', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
             font-weight: 500;
             margin: 0;
             padding: 50px;
@@ -2497,6 +2509,14 @@
             padding: 60px 20px;
             border: 2px dashed rgba(165, 100, 222, 0.5);
             border-radius: 20px;
+            background: rgba(45, 10, 78, 0.55);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        body.light-mode .sawa-placeholder {
+            background: rgba(255, 255, 255, 0.55);
+            color: #7a3fae;
         }
 
         .sawa-highlight {
@@ -2694,8 +2714,41 @@
             right: 0;
             z-index: 99;
             border-radius: 15px;
-            overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-height: 360px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .select-items .option-group-label {
+            position: sticky;
+            top: 46px;
+            padding: 10px 15px;
+            background: #5a2483;
+            color: #fff;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: default;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .select-search {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            height: 46px;
+            padding: 0 15px;
+            border: none;
+            border-bottom: 2px solid #E68D10;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            background: #fff;
+            color: #222;
         }
 
         .select-items .option {
@@ -2711,6 +2764,25 @@
         }
 
         .select-hide { display: none; }
+
+        .comparison-reset-btn {
+            padding: 15px 22px;
+            border-radius: 30px;
+            border: 3px solid #E68D10;
+            background: linear-gradient(135deg, #6a1b9a, #9b4dad);
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Arial', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .comparison-reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
 
         /* ================= شريط البحث الديناميكي ================= */
         #search-wrapper {
@@ -4134,6 +4206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="select-items select-hide">
                             </div>
                     </div>
+                    <button type="button" id="comparison-reset-btn" class="comparison-reset-btn" title="مسح الاختيار والرجوع لكل الفصول">↺ إعادة تعيين</button>
                 </div>
 
                 <div id="comparison-lock-hint"></div>
@@ -6550,33 +6623,117 @@ document.addEventListener('DOMContentLoaded', function() {
             // وظيفة توليد الخيارات في قوائم المقارنة المخصصة (مُحدَّثة)
             // ***************************************************************
 
+            // ***************************************************************
+            // استخراج باقات "سوا" من جداولها الحالية لتصير قابلة للمقارنة،
+            // بدون أي تعديل على sawaData الأصلية — قراءة فقط
+            // ***************************************************************
+            function buildSawaComparisonPlans() {
+                const plans = [];
+                Object.values(sawaData).forEach(htmlString => {
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = htmlString;
+                    wrapper.querySelectorAll('table.sawa-table').forEach(table => {
+                        const headerRow = table.querySelector('tr');
+                        if (!headerRow) return;
+                        const headers = Array.from(headerRow.querySelectorAll('th')).map(th => th.textContent.trim());
+                        const priceColIndex = headers.findIndex(h => /السعر/.test(h));
+                        const codeColIndex = headers.findIndex(h => /الرمز/.test(h));
+
+                        Array.from(table.querySelectorAll('tr')).slice(1).forEach(tr => {
+                            const cells = Array.from(tr.querySelectorAll('td')).map(td => td.textContent.trim());
+                            if (!cells.length || !cells[0]) return;
+
+                            let price = null;
+                            const nameMatch = cells[0].match(/\(([\d.]+)\s*ريال\)/);
+                            if (nameMatch) price = parseFloat(nameMatch[1]);
+                            if (price == null && priceColIndex > -1 && cells[priceColIndex]) {
+                                const pm = cells[priceColIndex].match(/([\d.]+)/);
+                                if (pm) price = parseFloat(pm[1]);
+                            }
+                            if (price == null) return; // بدون سعر ما نقدر نقارنها رقميًا
+
+                            const name = cells[0].replace(/\(([\d.]+)\s*ريال\)/, '').trim();
+                            const details = [];
+                            cells.forEach((val, idx) => {
+                                if (idx === 0 || idx === priceColIndex || idx === codeColIndex) return;
+                                if (!val || val === '-') return;
+                                details.push(`${headers[idx] || ''}: ${val}`);
+                            });
+                            plans.push({ name, price, details });
+                        });
+                    });
+                });
+                return plans;
+            }
+
+            const sawaComparisonPlans = buildSawaComparisonPlans();
+
+            // ***************************************************************
+            // وظيفة توليد الخيارات في قوائم المقارنة المخصصة (مُحدَّثة)
+            // ***************************************************************
+
             function populateComparisonOptions() {
-                const allPlans = [
-                    // باقات الجوال
-                    ...postpaidPlansData.map((p, i) => ({ ...p, type: 'postpaid', index: i, bgColor: `linear-gradient(135deg, ${['#9b4dad', '#6a1b9a', '#5a2483', '#ab85c9', '#e68d10', '#ff6347'][i % 6]}, #6D3687)` })),
-                    // باقات الهاتف
-                    ...mobilePlansData.map((p, i) => ({ ...p, type: 'mobile', index: i, bgColor: `linear-gradient(135deg, ${['#1abc9c', '#3498db', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'][i % 6]}, #34495e)` })),
-                    // باقات كويك نت الجديدة
-                    ...quickNetPlansData.map((p, i) => ({ ...p, type: 'quicknet', index: i, bgColor: `linear-gradient(135deg, ${['#ff4757', '#ffa500', '#2ed573'][i % 3]}, #eb3b5b)` }))
+                const groups = [
+                    { type: 'postpaid', label: 'باقات الجوال المفوترة', plans: postpaidPlansData, colors: ['#9b4dad', '#6a1b9a', '#5a2483', '#ab85c9', '#e68d10', '#ff6347'], tail: '#6D3687' },
+                    { type: 'mobile', label: 'باقات الهاتف المفوترة', plans: mobilePlansData, colors: ['#1abc9c', '#3498db', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'], tail: '#34495e' },
+                    { type: 'quicknet', label: 'كويك نت المفوترة', plans: quickNetPlansData, colors: ['#ff4757', '#ffa500', '#2ed573'], tail: '#eb3b5b' },
+                    { type: 'sawa', label: 'باقات سوا', plans: sawaComparisonPlans, colors: ['#ff6b81', '#c44569', '#e15fed'], tail: '#833471' }
                 ];
 
                 const comparisonSelectors = document.querySelectorAll("#custom-plan1 .select-items, #custom-plan2 .select-items");
 
                 comparisonSelectors.forEach(selectItems => {
                     selectItems.innerHTML = ''; // مسح الخيارات الحالية
-                    
-                    // إضافة خيارات جديدة
-                    allPlans.forEach(p => {
-                        const option = document.createElement("div");
-                        option.className = "option";
-                        option.textContent = p.name;
-                        option.dataset.price = p.price;
-                        option.dataset.index = p.index;
-                        option.dataset.type = p.type;
-                        option.style.background = p.bgColor;
-                        selectItems.appendChild(option);
+
+                    const searchInput = document.createElement('input');
+                    searchInput.type = 'text';
+                    searchInput.className = 'select-search';
+                    searchInput.placeholder = '🔍 ابحث عن باقة بالاسم...';
+                    searchInput.addEventListener('click', e => e.stopPropagation());
+                    searchInput.addEventListener('input', () => filterSelectItems(selectItems, searchInput.value));
+                    selectItems.appendChild(searchInput);
+
+                    groups.forEach(group => {
+                        if (!group.plans.length) return;
+                        const label = document.createElement('div');
+                        label.className = 'option-group-label';
+                        label.textContent = group.label;
+                        selectItems.appendChild(label);
+
+                        group.plans.forEach((p, i) => {
+                            const option = document.createElement("div");
+                            option.className = "option";
+                            option.textContent = p.name;
+                            option.dataset.price = p.price;
+                            option.dataset.index = i;
+                            option.dataset.type = group.type;
+                            option.style.background = `linear-gradient(135deg, ${group.colors[i % group.colors.length]}, ${group.tail})`;
+                            selectItems.appendChild(option);
+                        });
                     });
                 });
+            }
+
+            // فلترة فورية أثناء الكتابة في مربع البحث داخل القائمة، مع إخفاء
+            // عنوان أي فصل ما فيه نتائج مطابقة
+            function filterSelectItems(container, query) {
+                const q = query.trim().toLowerCase();
+                let lastLabel = null;
+                let labelHasVisibleChild = false;
+
+                Array.from(container.children).forEach(el => {
+                    if (el.classList.contains('select-search')) return;
+                    if (el.classList.contains('option-group-label')) {
+                        if (lastLabel) lastLabel.style.display = labelHasVisibleChild ? '' : 'none';
+                        lastLabel = el;
+                        labelHasVisibleChild = false;
+                        return;
+                    }
+                    const match = !q || el.textContent.toLowerCase().includes(q);
+                    el.style.display = match ? '' : 'none';
+                    if (match) labelHasVisibleChild = true;
+                });
+                if (lastLabel) lastLabel.style.display = labelHasVisibleChild ? '' : 'none';
             }
 
             // توليد الخيارات في قوائم المقارنة عند التحميل
@@ -6617,7 +6774,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const categoryLabels = {
                 postpaid: 'باقات الجوال المفوترة',
                 mobile: 'باقات الهاتف المفوترة',
-                quicknet: 'كويك نت المفوترة'
+                quicknet: 'كويك نت المفوترة',
+                sawa: 'باقات سوا'
             };
 
             // ***************************************************************
@@ -6713,10 +6871,58 @@ document.addEventListener('DOMContentLoaded', function() {
             // تهيئة حالة القفل عند بدء التشغيل
             refreshOptionAvailability();
 
+            // زر "إعادة تعيين": يمسح الاختيارين ويفك القفل عن الفصل بدون تحديث الصفحة
+            const comparisonResetBtn = document.getElementById('comparison-reset-btn');
+            if (comparisonResetBtn) {
+                comparisonResetBtn.addEventListener('click', () => {
+                    selected1.textContent = 'اختر الباقة الأولى';
+                    selected1.dataset.index = -1;
+                    selected2.textContent = 'اختر الباقة الثانية';
+                    selected2.dataset.index = -1;
+                    optionsContainer1.classList.add('select-hide');
+                    optionsContainer2.classList.add('select-hide');
+                    refreshOptionAvailability();
+                    updateComparisonFromCustom();
+                });
+            }
+
 
             // ***************************************************************
             // وظيفة المقارنة الموحدة (مُحدَّثة)
             // ***************************************************************
+            // ---------------- محرك المقارنة الذكي ----------------
+            // يحوّل نصوص الميزات (زي "20 جيجا إنترنت" أو "300 دقيقة") إلى
+            // قيم قابلة للمقارنة الرقمية، حتى لو الصياغة بين الباقتين مختلفة
+            // شوي، بدل ما يقارنها كنص متطابق فقط.
+            function classifyFeatureLine(line) {
+                let category = null;
+                if (/(انترنت|إنترنت)/.test(line) && !/تجوال/.test(line)) category = 'data';
+                else if (/دقائق|دقيقة/.test(line) && !/تجوال/.test(line)) category = 'minutes';
+                else if (/(رسائل|رسالة)/.test(line) && !/تجوال/.test(line)) category = 'sms';
+
+                if (!category) return { category: null, raw: line };
+
+                const unlimited = /لا\s*محدود/.test(line);
+                const m = line.match(/(\d+(?:\.\d+)?)/);
+                const value = m ? parseFloat(m[1]) : null;
+                return { category, unlimited, value, raw: line };
+            }
+
+            const FEATURE_CATEGORY_LABELS = { data: '📶 الإنترنت', minutes: '📞 الدقائق', sms: '✉️ الرسائل' };
+
+            // يرجع 1 لو الأول أفضل، 2 لو الثاني أفضل، 0 لو تعادل/غير محدد
+            function pickCategoryWinner(a, b) {
+                if (!a && !b) return 0;
+                if (a && !b) return 1;
+                if (!a && b) return 2;
+                if (a.unlimited && b.unlimited) return 0;
+                if (a.unlimited && !b.unlimited) return 1;
+                if (!a.unlimited && b.unlimited) return 2;
+                if (a.value == null || b.value == null) return 0;
+                if (a.value === b.value) return 0;
+                return a.value > b.value ? 1 : 2;
+            }
+
             function updateComparisonFromCustom() {
                 const index1 = parseInt(selected1.dataset.index);
                 const type1 = selected1.dataset.type;
@@ -6737,6 +6943,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     p1 = mobilePlansData[index1];
                 } else if (type1 === 'quicknet') { // **الحالة الجديدة: كويك نت**
                     p1 = quickNetPlansData[index1];
+                } else if (type1 === 'sawa') {
+                    p1 = sawaComparisonPlans[index1];
                 }
 
                 // الحصول على بيانات الباقة الثانية
@@ -6747,6 +6955,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     p2 = mobilePlansData[index2];
                 } else if (type2 === 'quicknet') { // **الحالة الجديدة: كويك نت**
                     p2 = quickNetPlansData[index2];
+                } else if (type2 === 'sawa') {
+                    p2 = sawaComparisonPlans[index2];
                 }
 
                 if (!p1 || !p2) return; // تأكد من وجود الباقات
@@ -6794,8 +7004,52 @@ document.addEventListener('DOMContentLoaded', function() {
                     dataSummaryText = 'لا تتوفر بيانات إنترنت قابلة للمقارنة بدقة';
                 }
 
+                // ---------------- تصنيف الميزات (الجزء الذكي الجديد) ----------------
+                const c1 = p1.details.map(classifyFeatureLine);
+                const c2 = p2.details.map(classifyFeatureLine);
+                const categoriesPresent = Array.from(new Set([
+                    ...c1.filter(x => x.category).map(x => x.category),
+                    ...c2.filter(x => x.category).map(x => x.category)
+                ]));
+
+                // صفوف ذكية مدموجة (إنترنت/دقائق/رسائل) حتى لو اختلفت الصياغة بين الباقتين
+                let winsFor1 = 0, winsFor2 = 0;
+                let smartRowsHtml = '';
+                categoriesPresent.forEach(cat => {
+                    const a = c1.find(x => x.category === cat) || null;
+                    const b = c2.find(x => x.category === cat) || null;
+                    const winner = pickCategoryWinner(a, b);
+                    if (winner === 1) winsFor1++;
+                    else if (winner === 2) winsFor2++;
+
+                    const val1 = a ? (a.unlimited ? 'لا محدود ✨' : a.raw) : '—';
+                    const val2 = b ? (b.unlimited ? 'لا محدود ✨' : b.raw) : '—';
+                    smartRowsHtml += `<tr class="feat-smart" style="color: white; background: linear-gradient(90deg, rgba(237,221,83,0.22), rgba(230,141,16,0.22));">
+                        <td style="padding: 12px; font-weight: 700;">${FEATURE_CATEGORY_LABELS[cat] || cat}</td>
+                        <td style="padding: 12px;">${winner === 1 ? '👑 ' : ''}${val1}</td>
+                        <td style="padding: 12px;">${winner === 2 ? '👑 ' : ''}${val2}</td>
+                    </tr>`;
+                });
+                // السعر يدخل ضمن الفوز الإجمالي أيضًا (الأرخص يكسب نقطة)
+                if (priceDiff > 0) { p1.price < p2.price ? winsFor1++ : winsFor2++; }
+
+                // ---------------- التوصية الذكية الإجمالية ----------------
+                let verdictText;
+                if (winsFor1 === winsFor2) {
+                    verdictText = 'الباقتين متقاربتين جدًا — الفرق راجع لتفضيلك الشخصي أكثر من القيمة';
+                } else {
+                    const winnerName = winsFor1 > winsFor2 ? p1.name : p2.name;
+                    const winnerScore = Math.max(winsFor1, winsFor2);
+                    const totalPoints = categoriesPresent.length + (priceDiff > 0 ? 1 : 0);
+                    verdictText = `باقة "${winnerName}" تتفوق في ${winnerScore} من ${totalPoints} نقاط مقارنة (السعر + المزايا الأساسية)`;
+                }
+
                 const summaryHtml = `
                     <div class="comparison-summary">
+                        <div class="diff-card" style="border: 2px solid #EDDD53;">
+                            <h4>🧠 التوصية الذكية</h4>
+                            <p>${verdictText}</p>
+                        </div>
                         <div class="diff-card">
                             <h4>💰 فرق السعر</h4>
                             <p>${priceSummaryText}</p>
@@ -6807,8 +7061,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>`;
 
                 // ---------------- جدول الميزات ----------------
-                // دمج جميع الميزات الفريدة
-                const allFeatures = Array.from(new Set([...p1.details, ...p2.details]));
+                // الميزات غير المصنّفة (بدون فئة إنترنت/دقائق/رسائل) تُقارن كنص كما كانت،
+                // لكن ترتيبها الآن: الفروقات أولًا ثم المشترك، بعد الصفوف الذكية مباشرة
+                const genericDetails1 = p1.details.filter(d => !classifyFeatureLine(d).category);
+                const genericDetails2 = p2.details.filter(d => !classifyFeatureLine(d).category);
+                const allGenericFeatures = Array.from(new Set([...genericDetails1, ...genericDetails2]));
+
+                const rows = allGenericFeatures.map(f => {
+                    const has1 = genericDetails1.includes(f);
+                    const has2 = genericDetails2.includes(f);
+                    let rowClass = 'feat-both';
+                    if (has1 && !has2) rowClass = 'feat-only1';
+                    else if (!has1 && has2) rowClass = 'feat-only2';
+                    return { f, has1, has2, rowClass };
+                });
+                // الفروقات فوق، والمشترك تحت — عشان العين تروح على الاختلاف الحقيقي أول شي
+                rows.sort((a, b) => (a.rowClass === 'feat-both') - (b.rowClass === 'feat-both'));
 
                 let table = `<table style="width: 100%; border-collapse: collapse; font-size: 24px; text-align: center;">
                     <thead>
@@ -6818,13 +7086,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <th style="padding: 15px;">${p2.name}<br><span style="font-size: 25px;">${p2.price} ريال</span></th>
                         </tr>
                     </thead>
-                    <tbody>`
-                allFeatures.forEach(f => {
-                    const has1 = p1.details.includes(f);
-                    const has2 = p2.details.includes(f);
-                    let rowClass = 'feat-both';
-                    if (has1 && !has2) rowClass = 'feat-only1';
-                    else if (!has1 && has2) rowClass = 'feat-only2';
+                    <tbody>` + smartRowsHtml;
+                rows.forEach(({ f, has1, has2, rowClass }) => {
                     table += `<tr class="${rowClass}" style="color: white;">
                         <td style="padding: 12px;">${f}</td>
                         <td style="padding: 12px;">${has1 ? '✔️' : '❌'}</td>
