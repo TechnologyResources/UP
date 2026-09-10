@@ -833,7 +833,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
-            background-attachment: scroll;
+            background-attachment: fixed;
             color: white;
             font-family: 'Cairo', 'Arial', sans-serif;
             font-weight: 500;
@@ -1920,7 +1920,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
-            background-attachment: scroll;
+            background-attachment: fixed;
             color: white;
             font-family: 'Cairo', 'Arial', sans-serif;
             font-weight: 500;
@@ -4312,14 +4312,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.backgroundImage = preset.css;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center center';
-                document.body.style.backgroundAttachment = 'scroll';
+                document.body.style.backgroundAttachment = 'fixed';
                 return true;
             }
             if (bg.type === 'image' && bg.url) {
                 document.body.style.backgroundImage = `url("${bg.url}")`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center center';
-                document.body.style.backgroundAttachment = 'scroll';
+                document.body.style.backgroundAttachment = 'fixed';
                 return true;
             }
             return false;
@@ -5215,12 +5215,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // ويقلّل تدريجيًا فقط عند الحاجة الفعلية لتمرير حد الحجم.
             function compressBackgroundImage(img) {
                 const SAFE_BYTES = 900 * 1024; // هامش أمان تحت حد المستند (1 ميغابايت)
-                let maxDim = 2560; // يكفي لمعظم الشاشات بما فيها الشاشات عالية الدقة
+
+                // بدل رقم ثابت (2560) كان يُصغّر الصور دائمًا حتى على الشاشات
+                // الكبيرة/4K أو عند تكبير المتصفح، مما يُظهر تشويشًا واضحًا لأن
+                // background-size:cover يكبّر صورة أصغر من حجم الشاشة الفعلي.
+                // الآن نحسب أعلى دقة مفيدة فعليًا بناءً على الشاشة الحالية
+                // (تشمل كثافة البكسل)، مع سقف معقول لحجم الملف.
+                const screenLongest = Math.max(window.screen.width || 0, window.screen.height || 0) * (window.devicePixelRatio || 1);
+                let maxDim = Math.min(4096, Math.max(2560, Math.round(screenLongest) || 2560));
                 let result = null;
+
+                // WebP يعطي جودة أعلى بنفس حجم الملف تقريبًا مقارنة بـ JPEG؛
+                // نستخدمه إن كان المتصفح يدعمه، ونرجع تلقائيًا لـ JPEG غير ذلك.
+                const probeCanvas = document.createElement('canvas');
+                const supportsWebp = probeCanvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+                const mime = supportsWebp ? 'image/webp' : 'image/jpeg';
 
                 while (maxDim >= 640) {
                     const longest = Math.max(img.width, img.height);
-                    const scale = Math.min(1, maxDim / longest);
+                    const scale = Math.min(1, maxDim / longest); // لا نكبّر الصور الأصغر من الحد أبدًا
                     const width = Math.max(1, Math.round(img.width * scale));
                     const height = Math.max(1, Math.round(img.height * scale));
                     const canvas = document.createElement('canvas');
@@ -5231,14 +5244,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    let quality = 0.92;
+                    let quality = 0.95;
                     while (quality >= 0.5) {
-                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        const dataUrl = canvas.toDataURL(mime, quality);
                         result = { dataUrl, width, height };
                         if (dataUrl.length * 0.75 <= SAFE_BYTES) return result;
-                        quality -= 0.07;
+                        quality -= 0.05;
                     }
-                    maxDim = Math.round(maxDim * 0.8); // لسه كبيرة حتى بأقل جودة: صغّر الأبعاد وأعد المحاولة
+                    maxDim = Math.round(maxDim * 0.85); // لسه كبيرة حتى بأقل جودة: صغّر الأبعاد وأعد المحاولة
                 }
                 return result; // أفضل محاولة توصّلنا لها حتى لو لم تصل للحجم المثالي تمامًا
             }
